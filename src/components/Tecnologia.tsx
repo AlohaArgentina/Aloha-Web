@@ -1,0 +1,57 @@
+import { motion } from "framer-motion";
+import { Smartphone, Phone, Mail, Globe, Headphones, BarChart } from "lucide-react";
+
+const techItems = [
+  { icon: Smartphone, title: "WhatsApp Business API", desc: "Atención masiva y automatizada por WhatsApp con chatbots inteligentes." },
+  { icon: Phone, title: "Telefonía IP / VoIP", desc: "Infraestructura de llamadas escalable, sin hardware, con grabación y monitoreo." },
+  { icon: Mail, title: "Email & Ticketing", desc: "Gestión centralizada de correos con SLAs y escalamiento automático." },
+  { icon: Globe, title: "Redes Sociales", desc: "Respuesta en Facebook, Instagram, Twitter y más desde una única plataforma." },
+  { icon: Headphones, title: "Integraciones CRM", desc: "Conexión con tu sistema de gestión para una visión 360° del cliente." },
+  { icon: BarChart, title: "Analytics en Tiempo Real", desc: "Dashboards con KPIs, tiempos de respuesta, satisfacción y productividad." },
+];
+
+const Tecnologia = () => {
+  return (
+    <section id="tecnologia" className="py-24 lg:py-32">
+      <div className="container mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Tecnología</p>
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+            Omnicanalidad de verdad
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Integramos las herramientas más modernas para que tus clientes siempre sean atendidos, sin importar el canal.
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {techItems.map((t, i) => (
+            <motion.div
+              key={t.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+              className="flex items-start gap-4 p-6 rounded-xl border border-border hover:border-primary/30 transition-colors"
+            >
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <t.icon className="text-primary" size={20} />
+              </div>
+              <div>
+                <h3 className="font-display font-semibold text-foreground mb-1">{t.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{t.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Tecnologia;
