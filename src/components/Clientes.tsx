@@ -69,10 +69,16 @@ const Clientes = () => {
           className="mt-16 text-center"
         >
           <p className="text-muted-foreground text-sm mb-8">Operando desde 2016 con empresas de ISPs, retail, telecomunicaciones y tecnología</p>
-          <div className="flex flex-wrap justify-center gap-12 items-center">
-            <img src={logoAirsat} alt="Airsat" className="h-12 object-contain" />
-            <img src={logoFiberty} alt="Fiberty" className="h-12 object-contain" />
-            <img src={logoAvc} alt="AVC" className="h-12 object-contain" />
+          <div className="flex flex-wrap justify-center gap-8 items-center">
+            <div className="bg-card rounded-xl p-4 border border-border">
+              <img src={logoAirsat} alt="Airsat" className="h-12 object-contain" />
+            </div>
+            <div className="bg-secondary rounded-xl p-4">
+              <img src={logoFiberty} alt="Fiberty" className="h-12 object-contain" />
+            </div>
+            <div className="bg-secondary rounded-xl p-4">
+              <img src={logoAvc} alt="AVC" className="h-12 object-contain brightness-0 invert" />
+            </div>
           </div>
         </motion.div>
       </div>
