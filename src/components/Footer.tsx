@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div>
-            <img src={alohaLogo} alt="Aloha" className="h-14" />
+            <img src={alohaLogo} alt="Aloha" className="h-14 brightness-0 invert" />
             <p className="text-primary-foreground/60 text-sm mt-1">Aloha Argentina SAS</p>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/60">
