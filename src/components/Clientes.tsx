@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
+import logoAirsat from "@/assets/logo-airsat.jpeg";
+import logoFiberty from "@/assets/logo-fiberty.svg";
+import logoAvc from "@/assets/logo-avc.png";
 
 const testimonials = [
   {
@@ -65,11 +68,11 @@ const Clientes = () => {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <p className="text-muted-foreground text-sm mb-6">Operando desde 2016 con empresas de ISPs, retail, telecomunicaciones y tecnología</p>
-          <div className="flex flex-wrap justify-center gap-8 items-center opacity-40">
-            {["ISP Partner", "TeleCom Corp", "RetailPro", "TechStart", "ConnectNet"].map((name) => (
-              <span key={name} className="text-lg font-display font-bold text-foreground">{name}</span>
-            ))}
+          <p className="text-muted-foreground text-sm mb-8">Operando desde 2016 con empresas de ISPs, retail, telecomunicaciones y tecnología</p>
+          <div className="flex flex-wrap justify-center gap-12 items-center">
+            <img src={logoAirsat} alt="Airsat" className="h-12 object-contain" />
+            <img src={logoFiberty} alt="Fiberty" className="h-12 object-contain" />
+            <img src={logoAvc} alt="AVC" className="h-12 object-contain" />
           </div>
         </motion.div>
       </div>

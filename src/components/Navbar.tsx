@@ -30,7 +30,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4">
         <a href="#" className="flex items-center">
-          <img src={alohaLogo} alt="Aloha" className="h-10" />
+          <img src={alohaLogo} alt="Aloha" className="h-14" />
         </a>
 
         {/* Desktop */}
