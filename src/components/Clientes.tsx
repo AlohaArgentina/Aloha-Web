@@ -5,14 +5,16 @@ import logoAvc from "@/assets/logo-avc.png";
 import logo2f from "@/assets/logo-2f.png";
 import logo37sur from "@/assets/logo-37sur.png";
 import logoIntercity from "@/assets/logo-intercity.png";
+import logoRedUno from "@/assets/logo-red-uno.jpg";
 
 const clients = [
-  { src: logoAirsat, alt: "Airsat", invert: false },
-  { src: logoFiberty, alt: "Fiberty", invert: false },
-  { src: logoAvc, alt: "AVC", invert: true },
-  { src: logo2f, alt: "2F Internet", invert: false },
-  { src: logo37sur, alt: "37 Sur", invert: false },
-  { src: logoIntercity, alt: "Intercity", invert: false },
+  { src: logoAirsat, alt: "Airsat" },
+  { src: logoFiberty, alt: "Fiberty" },
+  { src: logoAvc, alt: "AVC" },
+  { src: logo2f, alt: "2F Internet" },
+  { src: logo37sur, alt: "37 Sur" },
+  { src: logoIntercity, alt: "Intercity" },
+  { src: logoRedUno, alt: "Red Uno" },
 ];
 
 // Duplicate for seamless loop
@@ -20,7 +22,11 @@ const allClients = [...clients, ...clients];
 
 const Clientes = () => {
   return (
-    <section id="clientes" className="py-32 lg:py-40" style={{ backgroundColor: "#f8f9fa" }}>
+    <section
+      id="clientes"
+      className="py-32 lg:py-40 border-y"
+      style={{ backgroundColor: "#F3F4F6", borderColor: "#E5E7EB" }}
+    >
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,8 +52,8 @@ const Clientes = () => {
       {/* Infinite scroll carousel */}
       <div className="relative overflow-hidden group">
         {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#f8f9fa] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#f8f9fa] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #F3F4F6, transparent)" }} />
+        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #F3F4F6, transparent)" }} />
 
         <div className="flex animate-scroll group-hover:[animation-play-state:paused]">
           {allClients.map((client, i) => (
@@ -58,9 +64,14 @@ const Clientes = () => {
               <img
                 src={client.src}
                 alt={client.alt}
-                className={`h-10 md:h-12 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 ${
-                  client.invert ? "brightness-50 hover:brightness-100 hover:invert" : ""
-                }`}
+                className="h-14 md:h-[70px] w-auto object-contain transition-all duration-500"
+                style={{ filter: "brightness(0) opacity(0.6)" }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.filter = "none";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.filter = "brightness(0) opacity(0.6)";
+                }}
               />
             </div>
           ))}
