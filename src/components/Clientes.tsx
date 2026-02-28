@@ -7,17 +7,20 @@ import logo37sur from "@/assets/logo-37sur.png";
 import logoIntercity from "@/assets/logo-intercity.png";
 
 const clients = [
-  { src: logoAirsat, alt: "Airsat" },
-  { src: logoFiberty, alt: "Fiberty" },
-  { src: logoAvc, alt: "AVC" },
-  { src: logo2f, alt: "2F Internet" },
-  { src: logo37sur, alt: "37 Sur" },
-  { src: logoIntercity, alt: "Intercity" },
+  { src: logoAirsat, alt: "Airsat", invert: false },
+  { src: logoFiberty, alt: "Fiberty", invert: false },
+  { src: logoAvc, alt: "AVC", invert: true },
+  { src: logo2f, alt: "2F Internet", invert: false },
+  { src: logo37sur, alt: "37 Sur", invert: false },
+  { src: logoIntercity, alt: "Intercity", invert: false },
 ];
+
+// Duplicate for seamless loop
+const allClients = [...clients, ...clients];
 
 const Clientes = () => {
   return (
-    <section id="clientes" className="py-32 lg:py-40 bg-secondary/30">
+    <section id="clientes" className="py-32 lg:py-40" style={{ backgroundColor: "#f8f9fa" }}>
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -38,23 +41,28 @@ const Clientes = () => {
             constante de la excelencia en la experiencia de sus clientes.
           </p>
         </motion.div>
+      </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          {clients.map((client, i) => (
-            <motion.div
-              key={client.alt}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="flex items-center justify-center bg-card rounded-xl border border-border p-8 h-28"
+      {/* Infinite scroll carousel */}
+      <div className="relative overflow-hidden group">
+        {/* Fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#f8f9fa] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#f8f9fa] to-transparent z-10 pointer-events-none" />
+
+        <div className="flex animate-scroll group-hover:[animation-play-state:paused]">
+          {allClients.map((client, i) => (
+            <div
+              key={`${client.alt}-${i}`}
+              className="flex-shrink-0 flex items-center justify-center px-10 md:px-14"
             >
               <img
                 src={client.src}
                 alt={client.alt}
-                className="max-h-14 max-w-[160px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                className={`h-10 md:h-12 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500 ${
+                  client.invert ? "brightness-50 hover:brightness-100 hover:invert" : ""
+                }`}
               />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
