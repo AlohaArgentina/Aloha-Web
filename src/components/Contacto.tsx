@@ -5,11 +5,8 @@ import { Send, MessageCircle, MapPin, Mail, Phone } from "lucide-react";
 const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Future: integrate with backend
-    alert("¡Gracias por tu mensaje! Nos comunicaremos a la brevedad.");
-    setForm({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
+  const handleSubmit = () => {
+    // Allow normal form submission to Netlify
   };
 
   return (
@@ -37,11 +34,17 @@ const Contacto = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             onSubmit={handleSubmit}
+            name="contacto-aloha"
+            method="POST"
+            data-netlify="true"
             className="lg:col-span-3 space-y-5">
+
+            <input type="hidden" name="form-name" value="contacto-aloha" />
 
             <div className="grid sm:grid-cols-2 gap-5">
               <input
                 type="text"
+                name="nombre"
                 placeholder="Nombre completo"
                 required
                 value={form.nombre}
@@ -50,6 +53,7 @@ const Contacto = () => {
 
               <input
                 type="text"
+                name="empresa"
                 placeholder="Empresa"
                 required
                 value={form.empresa}
@@ -60,6 +64,7 @@ const Contacto = () => {
             <div className="grid sm:grid-cols-2 gap-5">
               <input
                 type="email"
+                name="email"
                 placeholder="Email"
                 required
                 value={form.email}
@@ -68,6 +73,7 @@ const Contacto = () => {
 
               <input
                 type="tel"
+                name="telefono"
                 placeholder="Teléfono"
                 value={form.telefono}
                 onChange={(e) => setForm({ ...form, telefono: e.target.value })}
@@ -75,6 +81,7 @@ const Contacto = () => {
 
             </div>
             <textarea
+              name="mensaje"
               placeholder="Contanos sobre tu necesidad..."
               rows={4}
               required
