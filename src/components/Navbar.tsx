@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import alohaLogo from "@/assets/aloha-logo.png";
+
 
 const navItems = [
   { label: "Soluciones", href: "#soluciones" },
@@ -30,7 +30,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4">
         <a href="#" className="flex items-center">
-          <img src={alohaLogo} alt="Aloha" className="h-14 brightness-0 invert" />
+          <span className="text-2xl font-bold text-primary-foreground tracking-tight">ALOHA ARGENTINA</span>
         </a>
 
         {/* Desktop */}
