@@ -1,89 +1,65 @@
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
 import logoAirsat from "@/assets/logo-airsat.jpeg";
 import logoFiberty from "@/assets/logo-fiberty.svg";
 import logoAvc from "@/assets/logo-avc.png";
+import logo2f from "@/assets/logo-2f.png";
+import logo37sur from "@/assets/logo-37sur.png";
+import logoIntercity from "@/assets/logo-intercity.png";
 
-const testimonials = [
-{
-  quote: "Desde que trabajamos con Aloha, nuestra tasa de churn bajó un 30%. El equipo se integró como si fuera parte de nuestra empresa.",
-  author: "Director de Operaciones",
-  company: "ISP Regional - Buenos Aires"
-},
-{
-  quote: "La atención 24/7 nos permitió expandirnos a nuevas regiones sin preocuparnos por la cobertura de soporte.",
-  author: "Gerente General",
-  company: "Empresa de Telecomunicaciones"
-},
-{
-  quote: "Aloha nos ayudó a profesionalizar nuestra atención al cliente. Hoy nuestros clientes nos califican con 4.8/5.",
-  author: "CEO",
-  company: "Startup de Tecnología"
-}];
-
+const clients = [
+  { src: logoAirsat, alt: "Airsat" },
+  { src: logoFiberty, alt: "Fiberty" },
+  { src: logoAvc, alt: "AVC" },
+  { src: logo2f, alt: "2F Internet" },
+  { src: logo37sur, alt: "37 Sur" },
+  { src: logoIntercity, alt: "Intercity" },
+];
 
 const Clientes = () => {
   return (
-    <section id="clientes" className="py-24 lg:py-32 section-alt">
+    <section id="clientes" className="py-32 lg:py-40 bg-secondary/30">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16">
-
-          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Clientes y Experiencia</p>
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
-            Empresas que confían en nosotros
+          className="text-center mb-20 max-w-3xl mx-auto"
+        >
+          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-4">
+            Nuestros Clientes
+          </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6 leading-tight">
+            Empresas líderes que confían en nuestra trayectoria
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">+10 años de trayectoria acompañando a empresas de toda Argentina y Latinoamérica.
-
+          <p className="text-muted-foreground text-lg leading-relaxed">
+            Para Aloha Argentina es un honor haber colaborado con organizaciones
+            punteras de diversos sectores. Nos enorgullece ser socios
+            estratégicos en la optimización de sus procesos y en la búsqueda
+            constante de la excelencia en la experiencia de sus clientes.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {testimonials.map((t, i) =>
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
-            className="bg-card rounded-xl p-8 border border-border relative px-[32px]">
-
-              <Quote className="text-accent/20 absolute top-6 right-6" size={32} />
-              <p className="text-foreground mb-6 leading-relaxed italic text-justify my-0 mx-0 px-0 py-0">"{t.quote}"</p>
-              <div>
-                <p className="font-display font-semibold text-foreground text-sm">{t.author}</p>
-                <p className="text-muted-foreground text-sm">{t.company}</p>
-              </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          {clients.map((client, i) => (
+            <motion.div
+              key={client.alt}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="flex items-center justify-center bg-card rounded-xl border border-border p-8 h-28"
+            >
+              <img
+                src={client.src}
+                alt={client.alt}
+                className="max-h-14 max-w-[160px] object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+              />
             </motion.div>
-          )}
+          ))}
         </div>
-
-        {/* Trust bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center">
-
-          <p className="text-muted-foreground text-sm mb-8">Operando desde 2016 con empresas de ISPs, retail, telecomunicaciones y tecnología</p>
-          <div className="flex flex-wrap justify-center gap-8 items-center">
-            <div className="bg-card rounded-xl p-4 border border-border">
-              <img src={logoAirsat} alt="Airsat" className="h-12 object-contain" />
-            </div>
-            <div className="bg-secondary rounded-xl p-4">
-              <img src={logoFiberty} alt="Fiberty" className="h-12 object-contain" />
-            </div>
-            <div className="bg-secondary rounded-xl p-4">
-              <img src={logoAvc} alt="AVC" className="h-12 object-contain brightness-0 invert" />
-            </div>
-          </div>
-        </motion.div>
       </div>
-    </section>);
-
+    </section>
+  );
 };
 
 export default Clientes;
