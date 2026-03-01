@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import logoAirsat from "@/assets/logo-airsat.jpeg";
+import logoAirsat from "@/assets/logo-airsat.png";
 import logoFiberty from "@/assets/logo-fiberty.svg";
 import logoAvc from "@/assets/logo-avc.png";
 import logo2f from "@/assets/logo-2f.png";
 import logo37sur from "@/assets/logo-37sur.png";
 import logoIntercity from "@/assets/logo-intercity.png";
-import logoRedUno from "@/assets/logo-red-uno.jpg";
+import logoRedUno from "@/assets/logo-red-uno.png";
 
 const clients = [
   { src: logoAirsat, alt: "Airsat" },
