@@ -22,21 +22,21 @@ const techItems = [
 ];
 
 const stackLogos = [
-  { src: logoBotmaker, alt: "Botmaker" },
+  { src: logoBotmaker, alt: "Botmaker", tall: true },
   { src: logoChatgpt, alt: "ChatGPT" },
   { src: logoIspcube, alt: "ISP Cube" },
-  { src: logoChatbot, alt: "ChatBot" },
+  { src: logoChatbot, alt: "ChatBot", tall: true },
   { src: logoAnura, alt: "Anura" },
   { src: logoNet2phone, alt: "Net2Phone" },
   { src: logoSmartolt, alt: "SmartOLT" },
   { src: logoZendesk, alt: "Zendesk" },
   { src: logoZoiper, alt: "ZoiPer" },
-  { src: logoWhatsapp, alt: "WhatsApp Business" },
+  { src: logoWhatsapp, alt: "WhatsApp Business", tall: true },
 ];
 
 const Tecnologia = () => {
   return (
-    <section id="tecnologia" className="py-24 lg:py-32" style={{ backgroundColor: "#f0f2f5" }}>
+    <section id="tecnologia" className="py-24 lg:py-32" style={{ backgroundColor: "#e8ecf1" }}>
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,7 +99,7 @@ const Tecnologia = () => {
               <img
                 src={logo.src}
                 alt={logo.alt}
-                className="max-h-12 w-auto object-contain transition-all duration-500 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105"
+                className={`${(logo as any).tall ? 'max-h-[70px]' : 'max-h-12'} w-auto object-contain transition-all duration-500 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105`}
                 style={{ mixBlendMode: "multiply" }}
               />
             </motion.div>
