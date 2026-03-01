@@ -25,7 +25,7 @@ const Clientes = () => {
     <section
       id="clientes"
       className="py-32 lg:py-40 border-y"
-      style={{ backgroundColor: "#F3F4F6", borderColor: "#E5E7EB" }}
+      style={{ backgroundColor: "#f0f2f5", borderColor: "#E5E7EB" }}
     >
       <div className="container mx-auto">
         <motion.div
@@ -52,43 +52,37 @@ const Clientes = () => {
       {/* Infinite scroll carousel */}
       <div className="max-w-7xl mx-auto overflow-hidden relative group">
         {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #F3F4F6, transparent)" }} />
-        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #F3F4F6, transparent)" }} />
+        <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #f0f2f5, transparent)" }} />
+        <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #f0f2f5, transparent)" }} />
 
         <div className="flex items-center animate-scroll group-hover:[animation-play-state:paused]">
           {allClients.map((client, i) => (
             <div
               key={`${client.alt}-${i}`}
-              className="flex-shrink-0 flex items-center justify-center px-10 md:px-14 group/logo relative"
+              className="flex-shrink-0 flex items-center justify-center px-10 md:px-14"
               onMouseEnter={(e) => {
                 const img = e.currentTarget.querySelector("img") as HTMLImageElement;
-                const bg = e.currentTarget.querySelector("[data-hover-bg]") as HTMLElement;
-                if (img) img.style.filter = "none";
-                if (bg) bg.style.opacity = "1";
+                if (img) {
+                  img.style.filter = "contrast(1.05)";
+                  img.style.transform = "scale(1.05)";
+                }
               }}
               onMouseLeave={(e) => {
                 const img = e.currentTarget.querySelector("img") as HTMLImageElement;
-                const bg = e.currentTarget.querySelector("[data-hover-bg]") as HTMLElement;
-                if (img) img.style.filter = "brightness(0) opacity(0.6)";
-                if (bg) bg.style.opacity = "0";
+                if (img) {
+                  img.style.filter = "grayscale(100%) contrast(1.1)";
+                  img.style.transform = "scale(1)";
+                }
               }}
             >
-              {/* Glassmorphism hover backdrop for white logos */}
-              <div
-                data-hover-bg
-                className="absolute inset-0 rounded-xl transition-opacity duration-500 pointer-events-none"
-                style={{
-                  opacity: 0,
-                  background: "rgba(0, 0, 0, 0.4)",
-                  backdropFilter: "blur(8px)",
-                  WebkitBackdropFilter: "blur(8px)",
-                }}
-              />
               <img
                 src={client.src}
                 alt={client.alt}
-                className="h-14 md:h-[70px] w-auto object-contain transition-all duration-500 relative z-[1]"
-                style={{ filter: "brightness(0) opacity(0.6)" }}
+                className="h-14 md:h-[70px] w-auto object-contain transition-all duration-500"
+                style={{
+                  filter: "grayscale(100%) contrast(1.1)",
+                  mixBlendMode: "multiply",
+                }}
               />
             </div>
           ))}
