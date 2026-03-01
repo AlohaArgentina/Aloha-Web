@@ -1,6 +1,17 @@
 import { motion } from "framer-motion";
 import { Smartphone, Phone, Mail, Globe, Headphones, BarChart } from "lucide-react";
 
+import logoBotmaker from "@/assets/logo-botmaker.png";
+import logoChatgpt from "@/assets/logo-chatgpt.webp";
+import logoIspcube from "@/assets/logo-ispcube.png";
+import logoChatbot from "@/assets/logo-chatbot.png";
+import logoAnura from "@/assets/logo-anura.png";
+import logoNet2phone from "@/assets/logo-net2phone.svg";
+import logoSmartolt from "@/assets/logo-smartolt.png";
+import logoZendesk from "@/assets/logo-zendesk.png";
+import logoZoiper from "@/assets/logo-zoiper.png";
+import logoWhatsapp from "@/assets/logo-whatsapp.png";
+
 const techItems = [
   { icon: Smartphone, title: "WhatsApp Business API", desc: "Atención masiva y automatizada por WhatsApp con chatbots inteligentes." },
   { icon: Phone, title: "Telefonía IP / VoIP", desc: "Infraestructura de llamadas escalable, sin hardware, con grabación y monitoreo." },
@@ -10,9 +21,22 @@ const techItems = [
   { icon: BarChart, title: "Analytics en Tiempo Real", desc: "Dashboards con KPIs, tiempos de respuesta, satisfacción y productividad." },
 ];
 
+const stackLogos = [
+  { src: logoBotmaker, alt: "Botmaker" },
+  { src: logoChatgpt, alt: "ChatGPT" },
+  { src: logoIspcube, alt: "ISP Cube" },
+  { src: logoChatbot, alt: "ChatBot" },
+  { src: logoAnura, alt: "Anura" },
+  { src: logoNet2phone, alt: "Net2Phone" },
+  { src: logoSmartolt, alt: "SmartOLT" },
+  { src: logoZendesk, alt: "Zendesk" },
+  { src: logoZoiper, alt: "ZoiPer" },
+  { src: logoWhatsapp, alt: "WhatsApp Business" },
+];
+
 const Tecnologia = () => {
   return (
-    <section id="tecnologia" className="py-24 lg:py-32">
+    <section id="tecnologia" className="py-24 lg:py-32" style={{ backgroundColor: "#f0f2f5" }}>
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,6 +70,38 @@ const Tecnologia = () => {
                 <h3 className="font-display font-semibold text-foreground mb-1">{t.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{t.desc}</p>
               </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Stack de herramientas */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mt-24 mb-12"
+        >
+          <h3 className="text-2xl md:text-3xl font-display font-semibold text-foreground">
+            Tecnologías que impulsan nuestras soluciones
+          </h3>
+        </motion.div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-10 items-center justify-items-center max-w-5xl mx-auto">
+          {stackLogos.map((logo, i) => (
+            <motion.div
+              key={logo.alt}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className="flex items-center justify-center"
+            >
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                className="max-h-12 w-auto object-contain transition-all duration-500 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105"
+                style={{ mixBlendMode: "multiply" }}
+              />
             </motion.div>
           ))}
         </div>
