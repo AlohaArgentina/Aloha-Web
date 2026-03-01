@@ -6,17 +6,45 @@ const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
 
   const handleSubmit = () => {
-    // Allow normal form submission to Netlify
-  };
 
-  return (
-    <section id="contacto" className="py-24 lg:py-32">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Allow normal form submission to Netlify
+  };return <section id="contacto" className="py-24 lg:py-32">
       <div className="container mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
 
           <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Contacto</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
@@ -29,69 +57,41 @@ const Contacto = () => {
 
         <div className="grid lg:grid-cols-5 gap-12 max-w-5xl mx-auto">
           {/* Form */}
-          <motion.form
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            onSubmit={handleSubmit}
-            name="contacto-aloha"
-            method="POST"
-            data-netlify="true"
-            className="lg:col-span-3 space-y-5">
+          <motion.form initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} onSubmit={handleSubmit} name="contacto-aloha" method="POST" data-netlify="true" className="lg:col-span-3 space-y-5">
 
             <input type="hidden" name="form-name" value="contacto-aloha" />
 
             <div className="grid sm:grid-cols-2 gap-5">
-              <input
-                type="text"
-                name="nombre"
-                placeholder="Nombre completo"
-                required
-                value={form.nombre}
-                onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
+              <input type="text" name="nombre" placeholder="Nombre completo" required value={form.nombre} onChange={(e) => setForm({ ...form, nombre: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
 
-              <input
-                type="text"
-                name="empresa"
-                placeholder="Empresa"
-                required
-                value={form.empresa}
-                onChange={(e) => setForm({ ...form, empresa: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
+              <input type="text" name="empresa" placeholder="Empresa" required value={form.empresa} onChange={(e) => setForm({ ...form, empresa: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
 
             </div>
             <div className="grid sm:grid-cols-2 gap-5">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
+              <input type="email" name="email" placeholder="Email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
 
               <input
-                type="tel"
-                name="telefono"
-                placeholder="Teléfono"
-                value={form.telefono}
-                onChange={(e) => setForm({ ...form, telefono: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
+              type="tel"
+              name="telefono"
+              placeholder="Teléfono"
+              value={form.telefono}
+              onChange={(e) => setForm({ ...form, telefono: e.target.value })}
+              className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
 
             </div>
             <textarea
-              name="mensaje"
-              placeholder="Contanos sobre tu necesidad..."
-              rows={4}
-              required
-              value={form.mensaje}
-              onChange={(e) => setForm({ ...form, mensaje: e.target.value })}
-              className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition resize-none" />
+            name="mensaje"
+            placeholder="Contanos sobre tu necesidad..."
+            rows={4}
+            required
+            value={form.mensaje}
+            onChange={(e) => setForm({ ...form, mensaje: e.target.value })}
+            className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition resize-none" />
 
             <button
-              type="submit"
-              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity w-full sm:w-auto">
+            type="submit"
+            className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity w-full sm:w-auto">
 
               Enviar Consulta
               <Send size={18} />
@@ -100,19 +100,19 @@ const Contacto = () => {
 
           {/* Contact info */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-2 space-y-8">
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-2 space-y-8">
 
             <div>
               <h3 className="font-display font-semibold text-foreground mb-4">Otros canales</h3>
               <div className="space-y-4">
                 <a
-                  href="https://wa.me/5491100000000"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
+                href="https://wa.me/5491100000000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
 
                   <MessageCircle size={20} className="text-accent" />
                   <span>WhatsApp</span>
@@ -123,7 +123,7 @@ const Contacto = () => {
                 </a>
                 <a href="tel:+5491100000000" className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
                   <Phone size={20} className="text-accent" />
-                  <span>+54 11 0000-0000</span>
+                  <span>+54 9 351 522 0808</span>
                 </a>
                 <div className="flex items-center gap-3 text-foreground">
                   <MapPin size={20} className="text-accent" />
@@ -141,7 +141,7 @@ const Contacto = () => {
           </motion.div>
         </div>
       </div>
-    </section>);
+    </section>;
 
 };
 
