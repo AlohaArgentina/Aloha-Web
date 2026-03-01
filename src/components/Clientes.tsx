@@ -50,28 +50,45 @@ const Clientes = () => {
       </div>
 
       {/* Infinite scroll carousel */}
-      <div className="relative overflow-hidden group">
+      <div className="max-w-7xl mx-auto overflow-hidden relative group">
         {/* Fade edges */}
         <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #F3F4F6, transparent)" }} />
         <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #F3F4F6, transparent)" }} />
 
-        <div className="flex animate-scroll group-hover:[animation-play-state:paused]">
+        <div className="flex items-center animate-scroll group-hover:[animation-play-state:paused]">
           {allClients.map((client, i) => (
             <div
               key={`${client.alt}-${i}`}
-              className="flex-shrink-0 flex items-center justify-center px-10 md:px-14"
+              className="flex-shrink-0 flex items-center justify-center px-10 md:px-14 group/logo relative"
+              onMouseEnter={(e) => {
+                const img = e.currentTarget.querySelector("img") as HTMLImageElement;
+                const bg = e.currentTarget.querySelector("[data-hover-bg]") as HTMLElement;
+                if (img) img.style.filter = "none";
+                if (bg) bg.style.opacity = "1";
+              }}
+              onMouseLeave={(e) => {
+                const img = e.currentTarget.querySelector("img") as HTMLImageElement;
+                const bg = e.currentTarget.querySelector("[data-hover-bg]") as HTMLElement;
+                if (img) img.style.filter = "brightness(0) opacity(0.6)";
+                if (bg) bg.style.opacity = "0";
+              }}
             >
+              {/* Glassmorphism hover backdrop for white logos */}
+              <div
+                data-hover-bg
+                className="absolute inset-0 rounded-xl transition-opacity duration-500 pointer-events-none"
+                style={{
+                  opacity: 0,
+                  background: "rgba(0, 0, 0, 0.4)",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                }}
+              />
               <img
                 src={client.src}
                 alt={client.alt}
-                className="h-14 md:h-[70px] w-auto object-contain transition-all duration-500"
+                className="h-14 md:h-[70px] w-auto object-contain transition-all duration-500 relative z-[1]"
                 style={{ filter: "brightness(0) opacity(0.6)" }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.filter = "none";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.filter = "brightness(0) opacity(0.6)";
-                }}
               />
             </div>
           ))}
