@@ -79,7 +79,7 @@ const Tecnologia = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mt-24 mb-12">
+          className="text-center mt-24 mb-12 my-[35px]">
 
           <h3 className="text-2xl font-display font-semibold text-foreground md:text-xl mx-0 px-0 py-0 my-[25px]">
             Tecnologías que impulsan nuestras soluciones
@@ -94,7 +94,7 @@ const Tecnologia = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.05 }}
-            className="flex items-center justify-center">
+            className="flex items-center justify-center mx-0">
 
               <img
               src={logo.src}
