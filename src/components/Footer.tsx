@@ -5,14 +5,15 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div>
             <a href="#" className="block">
-              <span className="text-3xl font-bold text-primary-foreground tracking-tight">ALOHA ARGENTINA</span>
+              <span className="text-3xl font-bold text-primary-foreground tracking-tight">
+                ALOHA ARGENTINA<span className="text-accent">.</span>
+              </span>
             </a>
             <p className="text-primary-foreground/60 text-sm mt-1">Aloha Argentina SAS</p>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/60">
-            <a href="#soluciones" className="hover:text-accent transition-colors">Soluciones</a>
-            <a href="#sectores" className="hover:text-accent transition-colors">Sectores</a>
-            <a href="#propuesta" className="hover:text-accent transition-colors">Propuesta de Valor</a>
+            <a href="#servicios" className="hover:text-accent transition-colors">Servicios</a>
+            <a href="#nosotros" className="hover:text-accent transition-colors">Nosotros</a>
             <a href="#tecnologia" className="hover:text-accent transition-colors">Tecnología</a>
             <a href="#clientes" className="hover:text-accent transition-colors">Clientes</a>
             <a href="#contacto" className="hover:text-accent transition-colors">Contacto</a>

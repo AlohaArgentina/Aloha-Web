@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 const navItems = [
-  { label: "Soluciones", href: "#soluciones" },
-  { label: "Sectores", href: "#sectores" },
-  { label: "Propuesta de Valor", href: "#propuesta" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "Nosotros", href: "#nosotros" },
   { label: "Tecnología", href: "#tecnologia" },
   { label: "Clientes", href: "#clientes" },
   { label: "Contacto", href: "#contacto" },
@@ -30,7 +28,9 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4">
         <a href="#" className="flex items-center">
-          <span className="text-2xl font-bold text-primary-foreground tracking-tight">ALOHA ARGENTINA</span>
+          <span className="text-2xl font-bold text-primary-foreground tracking-tight">
+            ALOHA ARGENTINA<span className="text-accent">.</span>
+          </span>
         </a>
 
         {/* Desktop */}
@@ -46,7 +46,7 @@ const Navbar = () => {
           ))}
           <a
             href="#contacto"
-            className="bg-accent text-accent-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity"
+            className="bg-accent text-accent-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity shadow-md"
           >
             Auditoría Gratuita
           </a>
