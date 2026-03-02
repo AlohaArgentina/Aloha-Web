@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Smartphone, Phone, Mail, Globe, Headphones, BarChart } from "lucide-react";
+import { MessageCircle, Phone, Mail, Globe, Headphones, BarChart } from "lucide-react";
 
 import logoBotmaker from "@/assets/logo-botmaker.png";
 import logoChatgpt from "@/assets/logo-chatgpt.webp";
@@ -13,7 +13,7 @@ import logoZoiper from "@/assets/logo-zoiper.png";
 import logoWhatsapp from "@/assets/logo-whatsapp.png";
 
 const techItems = [
-  { icon: Smartphone, title: "WhatsApp Business API", desc: "Atención masiva y automatizada por WhatsApp con chatbots inteligentes.", highlight: true },
+  { icon: MessageCircle, title: "WhatsApp & Chatbot IA", desc: "Gestión híbrida avanzada: combinamos la eficiencia de la IA con la capacidad resolutiva de nuestro equipo experto." },
   { icon: Phone, title: "Telefonía IP / VoIP", desc: "Infraestructura de llamadas escalable, sin hardware, con grabación y monitoreo." },
   { icon: Mail, title: "Email & Ticketing", desc: "Gestión centralizada de correos con SLAs y escalamiento automático." },
   { icon: Globe, title: "Redes Sociales", desc: "Respuesta en Facebook, Instagram, Twitter y más desde una única plataforma." },
@@ -61,23 +61,10 @@ const Tecnologia = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className={`flex items-start gap-4 p-6 rounded-xl border transition-colors ${
-                (t as any).highlight
-                  ? "border-accent/40 bg-accent/5 hover:border-accent/60"
-                  : "border-border hover:border-primary/30"
-              }`}
+              className="flex items-start gap-4 p-6 rounded-xl border border-border hover:border-primary/30 transition-colors"
             >
-              <div
-                className={`flex items-center justify-center flex-shrink-0 rounded-lg ${
-                  (t as any).highlight
-                    ? "w-14 h-14 bg-accent/15"
-                    : "w-10 h-10 bg-primary/10"
-                }`}
-              >
-                <t.icon
-                  className={(t as any).highlight ? "text-accent" : "text-primary"}
-                  size={(t as any).highlight ? 28 : 20}
-                />
+              <div className="flex items-center justify-center flex-shrink-0 rounded-lg w-10 h-10 bg-primary/10">
+                <t.icon className="text-primary" size={20} />
               </div>
               <div>
                 <h3 className="font-display font-semibold text-foreground mb-1">{t.title}</h3>
