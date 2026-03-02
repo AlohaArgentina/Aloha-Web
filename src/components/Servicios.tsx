@@ -35,10 +35,10 @@ const services = [
 ];
 
 const sectors = [
-  { icon: Wifi, label: "ISPs y Telecomunicaciones" },
-  { icon: ShoppingBag, label: "Retail" },
-  { icon: Cpu, label: "Tecnología" },
-  { icon: Building2, label: "Empresas de Alto Impacto" },
+  { icon: Wifi, label: "ISPs y Telecomunicaciones", desc: "Soporte técnico nivel 1 y 2, gestión de reclamos, activaciones y cobranzas para proveedores de internet." },
+  { icon: ShoppingBag, label: "Retail", desc: "Atención pre y post-venta, gestión de devoluciones, seguimiento de pedidos y fidelización de clientes." },
+  { icon: Cpu, label: "Empresas de Tecnología", desc: "Help desk especializado, onboarding de usuarios, soporte de productos SaaS y soluciones técnicas." },
+  { icon: Building2, label: "Empresas en Crecimiento", desc: "Tercerización completa del área de atención al cliente para empresas que buscan escalar sin aumentar estructura." },
 ];
 
 const Servicios = () => {
@@ -89,14 +89,19 @@ const Servicios = () => {
           <p className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-6">
             Sectores que atendemos
           </p>
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {sectors.map((s) => (
               <div
                 key={s.label}
-                className="flex items-center gap-2.5 bg-card border border-border rounded-xl px-5 py-3"
+                className="flex gap-4 bg-card border border-border rounded-xl px-5 py-4"
               >
-                <s.icon className="text-accent" size={20} />
-                <span className="text-sm font-medium text-foreground">{s.label}</span>
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <s.icon className="text-accent" size={20} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-display font-semibold text-foreground mb-1">{s.label}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
+                </div>
               </div>
             ))}
           </div>
