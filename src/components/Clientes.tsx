@@ -35,10 +35,10 @@ const Clientes = () => {
           className="text-center mb-20 max-w-3xl mx-auto"
         >
           <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-4">
-            Nuestros Clientes
+            Casos de Éxito
           </p>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6 leading-tight">
-            Empresas líderes que confían en nuestra trayectoria
+            Soluciones probadas por empresas que transforman su industria
           </h2>
           <p className="text-muted-foreground text-lg leading-relaxed">
             Para Aloha Argentina es un honor haber colaborado con organizaciones

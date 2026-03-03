@@ -46,7 +46,7 @@ const Contacto = () => {
             <div>
               <h3 className="font-display font-semibold text-foreground mb-4">Otros canales</h3>
               <div className="space-y-4">
-                <a href="https://wa.me/5493515220808" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
+                <a href="https://wa.me/5493516534220" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
                   <MessageCircle size={20} className="text-accent" />
                   <span>WhatsApp</span>
                 </a>
@@ -54,9 +54,9 @@ const Contacto = () => {
                   <Mail size={20} className="text-accent" />
                   <span>administracion@aloha.net.ar</span>
                 </a>
-                <a href="tel:+5493515220808" className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
+                <a href="tel:+5493516534220" className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
                   <Phone size={20} className="text-accent" />
-                  <span>+54 9 351 522 0808</span>
+                  <span>+54 9 351 653 4220</span>
                 </a>
                 <div className="flex items-center gap-3 text-foreground">
                   <MapPin size={20} className="text-accent" />
