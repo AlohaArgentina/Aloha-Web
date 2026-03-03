@@ -10,7 +10,7 @@ import logoNet2phone from "@/assets/logo-net2phone.svg";
 import logoSmartolt from "@/assets/logo-smartolt.png";
 import logoZendesk from "@/assets/logo-zendesk.png";
 import logoZoiper from "@/assets/logo-zoiper.png";
-import logoWhatsapp from "@/assets/logo-whatsapp.png";
+import logoWhatsapp from "@/assets/logo-whatsapp-business.png";
 
 const techItems = [
   { icon: MessageCircle, title: "WhatsApp & Chatbot IA", desc: "Gestión híbrida avanzada: combinamos la eficiencia de la IA con la capacidad resolutiva de nuestro equipo experto." },
@@ -31,7 +31,7 @@ const stackLogos = [
   { src: logoSmartolt, alt: "SmartOLT" },
   { src: logoZendesk, alt: "Zendesk" },
   { src: logoZoiper, alt: "ZoiPer" },
-  { src: logoWhatsapp, alt: "WhatsApp Business", tall: true },
+  { src: logoWhatsapp, alt: "WhatsApp Business", tall: true, wide: true },
 ];
 
 const Tecnologia = () => {
@@ -99,7 +99,7 @@ const Tecnologia = () => {
               <img
                 src={logo.src}
                 alt={logo.alt}
-                className={`${logo.tall ? "max-h-[70px]" : "max-h-12"} w-auto object-contain transition-all duration-500 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105`}
+                className={`${logo.wide ? "max-h-10 max-w-[180px]" : logo.tall ? "max-h-[70px]" : "max-h-12"} w-auto object-contain transition-all duration-500 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105`}
                 style={{ mixBlendMode: "multiply" }}
               />
             </motion.div>
