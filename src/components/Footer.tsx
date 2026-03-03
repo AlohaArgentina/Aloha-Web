@@ -15,7 +15,7 @@ const Footer = () => {
             <a href="#servicios" className="hover:text-accent transition-colors">Servicios</a>
             <a href="#nosotros" className="hover:text-accent transition-colors">Nosotros</a>
             <a href="#tecnologia" className="hover:text-accent transition-colors">Tecnología</a>
-            <a href="#clientes" className="hover:text-accent transition-colors">Clientes</a>
+            <a href="#clientes" className="hover:text-accent transition-colors">Casos de Éxito</a>
             <a href="#contacto" className="hover:text-accent transition-colors">Contacto</a>
           </div>
         </div>
@@ -23,8 +23,8 @@ const Footer = () => {
           © {new Date().getFullYear()} Aloha Argentina SAS. Todos los derechos reservados.
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 };
 
 export default Footer;
