@@ -90,7 +90,7 @@ export default {
         },
         scroll: {
           from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-50%)" },
+          to: { transform: "translateX(-33.333%)" },
         },
       },
       animation: {
@@ -99,7 +99,7 @@ export default {
         "fade-in-up": "fade-in-up 0.6s ease-out forwards",
         "fade-in": "fade-in 0.5s ease-out forwards",
         "count-up": "count-up 0.5s ease-out forwards",
-        scroll: "scroll 12s linear infinite",
+        scroll: "scroll 20s linear infinite",
       },
     },
   },

@@ -17,8 +17,8 @@ const clients = [
 { src: logoRedUno, alt: "Red Uno" }];
 
 
-// Duplicate for seamless loop
-const allClients = [...clients, ...clients];
+// Triplicate for seamless infinite loop
+const allClients = [...clients, ...clients, ...clients];
 
 const Clientes = () => {
   return (
@@ -55,7 +55,7 @@ const Clientes = () => {
         <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #f0f2f5, transparent)" }} />
         <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #f0f2f5, transparent)" }} />
 
-        <div className="flex items-center animate-scroll group-hover:[animation-play-state:paused]">
+        <div className="flex items-center animate-scroll group-hover:[animation-play-state:paused]" style={{ width: 'max-content' }}>
           {allClients.map((client, i) =>
           <div
             key={`${client.alt}-${i}`}
