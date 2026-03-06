@@ -44,7 +44,7 @@ const Contacto = () => {
             <textarea name="mensaje" placeholder="Contanos sobre tu necesidad..." rows={4} required value={form.mensaje} onChange={(e) => setForm({ ...form, mensaje: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition resize-none" />
 
             {/* Turnstile Widget */}
-            <div className="flex-col mb-6 flex items-start justify-start gap-0">
+            <div className="flex flex-col items-start gap-4">
               <Turnstile
                 siteKey={TURNSTILE_SITE_KEY}
                 onSuccess={(token) => {setTurnstileToken(token);setTurnstileError(false);}}
@@ -53,21 +53,20 @@ const Contacto = () => {
                 options={{ theme: "light", size: "normal" }} />
               
               {turnstileError &&
-              <div className="flex items-center gap-2 text-destructive text-sm mt-3">
+              <div className="flex items-center gap-2 text-destructive text-sm">
                   <AlertCircle size={16} />
                   <span>La verificación falló o expiró. Por favor, reintentá.</span>
                 </div>
               }
-            </div>
 
-            <button
-              type="submit"
-              disabled={!isVerified}
-              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity w-full sm:w-auto disabled:opacity-40 disabled:cursor-not-allowed">
-              
-              Enviar Consulta
-              <Send size={18} />
-            </button>
+              <button
+                type="submit"
+                disabled={!isVerified}
+                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity w-[300px] disabled:opacity-40 disabled:cursor-not-allowed">
+                Enviar Consulta
+                <Send size={18} />
+              </button>
+            </div>
           </motion.form>
 
           {/* Contact info */}
