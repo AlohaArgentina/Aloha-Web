@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, MessageCircle, MapPin, Mail, Phone } from "lucide-react";
+import { Send, MessageCircle, MapPin, Mail, Phone, AlertCircle } from "lucide-react";
+import { Turnstile } from "@marsidev/react-turnstile";
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAACnIcJCY0rNYR6j2";
 
 const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
+  const [turnstileStatus, setTurnstileStatus] = useState<"idle" | "solved" | "error" | "expired">("idle");
 
   const handleSubmit = () => {
     // Allow normal form submission to Netlify
   };
+
+  const isVerified = turnstileStatus === "solved";
 
   return (
     <section id="contacto" className="py-24 lg:py-32">
@@ -35,7 +41,33 @@ const Contacto = () => {
               <input type="tel" name="telefono" placeholder="Teléfono" value={form.telefono} onChange={(e) => setForm({ ...form, telefono: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition" />
             </div>
             <textarea name="mensaje" placeholder="Contanos sobre tu necesidad..." rows={4} required value={form.mensaje} onChange={(e) => setForm({ ...form, mensaje: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition resize-none" />
-            <button type="submit" className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity w-full sm:w-auto">
+
+            {/* Turnstile Widget */}
+            <div className="flex flex-col items-center gap-3">
+              <Turnstile
+                siteKey={TURNSTILE_SITE_KEY}
+                onSuccess={() => setTurnstileStatus("solved")}
+                onError={() => setTurnstileStatus("error")}
+                onExpire={() => setTurnstileStatus("expired")}
+                options={{ theme: "light", size: "normal" }}
+              />
+              {(turnstileStatus === "error" || turnstileStatus === "expired") && (
+                <div className="flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle size={16} />
+                  <span>
+                    {turnstileStatus === "expired"
+                      ? "La verificación expiró. Por favor, reintentá para enviar tu mensaje."
+                      : "Error en la verificación. Por favor, reintentá."}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={!isVerified}
+              className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity w-full sm:w-auto disabled:opacity-40 disabled:cursor-not-allowed"
+            >
               Enviar Consulta
               <Send size={18} />
             </button>
