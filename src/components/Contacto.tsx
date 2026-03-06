@@ -7,13 +7,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAA
 
 const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
-  const [turnstileStatus, setTurnstileStatus] = useState<"idle" | "solved" | "error" | "expired">("idle");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState(false);
 
   const handleSubmit = () => {
     // Allow normal form submission to Netlify
   };
 
-  const isVerified = turnstileStatus === "solved";
+  const isVerified = !!turnstileToken;
 
   return (
     <section id="contacto" className="py-24 lg:py-32">
