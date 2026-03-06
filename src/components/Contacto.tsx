@@ -7,13 +7,14 @@ const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAA
 
 const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
-  const [turnstileStatus, setTurnstileStatus] = useState<"idle" | "solved" | "error" | "expired">("idle");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileError, setTurnstileError] = useState(false);
 
   const handleSubmit = () => {
     // Allow normal form submission to Netlify
   };
 
-  const isVerified = turnstileStatus === "solved";
+  const isVerified = !!turnstileToken;
 
   return (
     <section id="contacto" className="py-24 lg:py-32">
@@ -43,22 +44,18 @@ const Contacto = () => {
             <textarea name="mensaje" placeholder="Contanos sobre tu necesidad..." rows={4} required value={form.mensaje} onChange={(e) => setForm({ ...form, mensaje: e.target.value })} className="w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition resize-none" />
 
             {/* Turnstile Widget */}
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center mb-6">
               <Turnstile
                 siteKey={TURNSTILE_SITE_KEY}
-                onSuccess={() => setTurnstileStatus("solved")}
-                onError={() => setTurnstileStatus("error")}
-                onExpire={() => setTurnstileStatus("expired")}
+                onSuccess={(token) => { setTurnstileToken(token); setTurnstileError(false); }}
+                onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
+                onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }}
                 options={{ theme: "light", size: "normal" }}
               />
-              {(turnstileStatus === "error" || turnstileStatus === "expired") && (
-                <div className="flex items-center gap-2 text-destructive text-sm">
+              {turnstileError && (
+                <div className="flex items-center gap-2 text-destructive text-sm mt-3">
                   <AlertCircle size={16} />
-                  <span>
-                    {turnstileStatus === "expired"
-                      ? "La verificación expiró. Por favor, reintentá para enviar tu mensaje."
-                      : "Error en la verificación. Por favor, reintentá."}
-                  </span>
+                  <span>La verificación falló o expiró. Por favor, reintentá.</span>
                 </div>
               )}
             </div>
