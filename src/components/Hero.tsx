@@ -33,14 +33,25 @@ const Hero = () => {
             al cliente
           </motion.h1>
 
-          <motion.p
+          <motion.ul
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="text-lg md:text-xl text-primary-foreground/75 mb-10 max-w-2xl leading-relaxed"
+            className="text-lg md:text-xl text-primary-foreground/75 mb-10 max-w-2xl leading-relaxed space-y-3 list-none"
           >
-            Reducimos tus costos operativos, eliminamos tus contingencias laborales y potenciamos la productividad de tu equipo. Ofrecemos atención 24/7 con tecnología omnicanal. Somos la inversión estratégica que tu empresa necesita para escalar.
-          </motion.p>
+            <li className="flex items-start gap-3">
+              <span className="text-accent mt-1.5 text-sm">●</span>
+              <span>Reducimos tus costos operativos y eliminamos tus contingencias laborales.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-accent mt-1.5 text-sm">●</span>
+              <span>Potenciamos la productividad de tu equipo con atención 24/7 y tecnología omnicanal.</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-accent mt-1.5 text-sm">●</span>
+              <span>Somos la inversión estratégica que tu empresa necesita para escalar.</span>
+            </li>
+          </motion.ul>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
