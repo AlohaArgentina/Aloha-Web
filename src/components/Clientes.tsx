@@ -5,7 +5,6 @@ import logoAvc from "@/assets/logo-avc.png";
 import logo2f from "@/assets/logo-2f.png";
 import logo37sur from "@/assets/logo-37sur.png";
 import logoIntercity from "@/assets/logo-intercity.png";
-import logoRedUno from "@/assets/logo-red-uno.png";
 
 const clients = [
 { src: logoAirsat, alt: "Airsat" },
@@ -13,8 +12,7 @@ const clients = [
 { src: logoAvc, alt: "AVC" },
 { src: logo2f, alt: "2F Internet" },
 { src: logo37sur, alt: "37 Sur" },
-{ src: logoIntercity, alt: "Intercity" },
-{ src: logoRedUno, alt: "Red Uno" }];
+{ src: logoIntercity, alt: "Intercity" }];
 
 
 // Triplicate for seamless infinite loop
