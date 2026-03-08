@@ -40,15 +40,15 @@ const Hero = () => {
             className="text-lg md:text-xl text-primary-foreground/75 mb-10 max-w-2xl leading-relaxed space-y-3 list-none"
           >
             <li className="flex items-start gap-3">
-              <span className="text-accent mt-1.5 text-sm">●</span>
+              <Check className="text-accent mt-1  shrink-0" size={18} />
               <span>Reducimos tus costos operativos y eliminamos tus contingencias laborales.</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-accent mt-1.5 text-sm">●</span>
+              <Check className="text-accent mt-1 shrink-0" size={18} />
               <span>Potenciamos la productividad de tu equipo con atención 24/7 y tecnología omnicanal.</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="text-accent mt-1.5 text-sm">●</span>
+              <Check className="text-accent mt-1 shrink-0" size={18} />
               <span>Somos la inversión estratégica que tu empresa necesita para escalar.</span>
             </li>
           </motion.ul>
