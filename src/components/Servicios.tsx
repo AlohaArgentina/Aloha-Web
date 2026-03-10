@@ -148,10 +148,10 @@ const Servicios = () => {
           </p>
         </motion.div>
 
-        {/* Layout 2 columnas */}
+        {/* Layout 2 columnas en desktop, 1 columna en mobile */}
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-          {/* Izquierda — cards apiladas */}
+          {/* Izquierda — cards */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -162,7 +162,7 @@ const Servicios = () => {
             <DisplayCards cards={sectorCards} />
           </motion.div>
 
-          {/* Derecha — grilla 2x3 servicios */}
+          {/* Derecha — grilla servicios */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
