@@ -129,7 +129,7 @@ const sectorCards = [
 
 const Servicios = () => {
   return (
-    <section id="servicios" className="py-24 lg:py-32">
+    <section id="servicios" className="py-24 lg:py-32 overflow-x-hidden">
       <div className="container mx-auto">
 
         {/* Header */}

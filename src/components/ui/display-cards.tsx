@@ -24,49 +24,56 @@ export default function DisplayCards({ cards = [] }: DisplayCardsProps) {
 
   return (
     <div className="relative flex items-center justify-center"
-      style={{ minHeight: "280px", minWidth: "min(420px, 90vw)" }}
+      style={{ minHeight: "320px", minWidth: "min(420px, 90vw)" }}
     >
-      {/* ── STACK — igual en mobile y desktop, solo cambia tamaño ── */}
+
+      {/* ── STACK — siempre montado, se opaca al expandir ── */}
       <motion.div
         animate={{
-          opacity: expanded !== null ? 0.15 : 1,
-          scale: expanded !== null ? 0.97 : 1
+          opacity: expanded !== null ? 0.12 : 1,
+          scale:   expanded !== null ? 0.97  : 1,
         }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="grid [grid-template-areas:'stack'] place-items-center w-full"
         style={{ pointerEvents: expanded !== null ? "none" : "auto" }}
+        // grid-area:stack es lo que apila todas las cards en el mismo lugar
+        className="grid [grid-template-areas:'stack'] place-items-center"
       >
         {cards.map((card, index) => (
           <div
             key={index}
             onClick={() => setExpanded(index)}
             className={cn(
-              "relative flex h-36 -skew-y-[8deg] select-none flex-col justify-between",
-              // ancho responsivo: más chico en mobile
-              "w-[min(22rem,80vw)]",
+              // base — igual al componente original
+              "relative flex h-40 w-[22rem] -skew-y-[8deg] select-none flex-col justify-between",
               "rounded-xl border-2 border-border bg-card/80 backdrop-blur-sm px-5 py-4",
               "cursor-pointer overflow-hidden",
-              "transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-              "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[6rem] after:bg-gradient-to-l after:from-card after:to-transparent after:content-[''] after:pointer-events-none",
-              // hover solo en desktop
-              "md:hover:border-primary/20 md:hover:shadow-lg md:hover:-translate-y-2",
-              // tap feedback en mobile
-              "active:scale-[0.98]",
+              "transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+              // fade lateral
+              "after:absolute after:-right-1 after:top-[-5%] after:h-[110%] after:w-[8rem]",
+              "after:bg-gradient-to-l after:from-card after:to-transparent after:content-[''] after:pointer-events-none",
               "[&>*]:flex [&>*]:items-center [&>*]:gap-2",
-              card.className
+              // mobile: ancho responsivo
+              "w-[min(22rem,80vw)]",
+              // className de cada card (translate, grayscale, hover, before overlay)
+              card.className,
             )}
           >
+            {/* Fila 1: ícono + título */}
             <div className="overflow-hidden">
               <span className="relative inline-block rounded-full bg-primary/10 p-1.5 flex-shrink-0">
                 {card.icon}
               </span>
-              <p className={cn("text-sm font-display font-semibold truncate", card.titleClassName)}>
+              <p className={cn("text-base font-display font-semibold truncate", card.titleClassName)}>
                 {card.title}
               </p>
             </div>
-            <p className="text-xs text-foreground/70 line-clamp-2 block w-full">
+
+            {/* Fila 2: descripción */}
+            <p className="text-sm text-foreground/70 line-clamp-2 block w-full">
               {card.description}
             </p>
+
+            {/* Fila 3: tag */}
             <p className="text-xs text-muted-foreground truncate block w-full">
               {card.tag}
             </p>
@@ -74,11 +81,11 @@ export default function DisplayCards({ cards = [] }: DisplayCardsProps) {
         ))}
       </motion.div>
 
-      {/* ── EXPANDIDA desktop: flota encima ── */}
+      {/* ── EXPANDIDA desktop: flota encima del stack ── */}
       <AnimatePresence>
         {expanded !== null && (
           <motion.div
-            key="expanded"
+            key="expanded-desktop"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
@@ -140,7 +147,7 @@ export default function DisplayCards({ cards = [] }: DisplayCardsProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm px-4 pb-4 md:hidden"
+            className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 backdrop-blur-sm px-4 pb-6 md:hidden"
             onClick={() => setExpanded(null)}
           >
             <motion.div
@@ -189,6 +196,7 @@ export default function DisplayCards({ cards = [] }: DisplayCardsProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
     </div>
   );
 }
