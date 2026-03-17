@@ -31,8 +31,9 @@ const Navbar = () => {
           <img
             src="/favicon.svg"
             alt="Logo Aloha"
-            className="h-10 w-10 object-contain"
+            className="h-7 w-7 object-contain"
           />
+          <span className="ml-4 text-lg font-bold" style={{ fontFamily: 'RidleyGrotesk-Bold', color: '#839ca6' }}>ALOHA ARGENTINA</span>
         </a>
 
         {/* Desktop */}

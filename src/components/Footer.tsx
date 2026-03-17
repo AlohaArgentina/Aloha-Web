@@ -4,12 +4,13 @@ const Footer = () => {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex flex-col items-center md:items-start">
-            <a href="#" className="block">
+            <a href="#" className="flex items-center">
               <img
                 src="/favicon.svg"
                 alt="Logo Aloha"
-                className="h-10 w-10 object-contain"
+                className="h-7 w-7 object-contain"
               />
+              <span className="ml-4 text-lg font-bold" style={{ fontFamily: 'RidleyGrotesk-Bold', color: '#839ca6' }}>ALOHA ARGENTINA</span>
             </a>
             <p className="text-primary-foreground/60 text-sm mt-1">Aloha Argentina SAS</p>
           </div>
