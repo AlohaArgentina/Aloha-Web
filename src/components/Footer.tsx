@@ -3,11 +3,13 @@ const Footer = () => {
     <footer className="hero-gradient text-primary-foreground py-12">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div>
+          <div className="flex flex-col items-center md:items-start">
             <a href="#" className="block">
-              <span className="text-3xl font-bold text-primary-foreground tracking-tight">
-                ALOHA ARGENTINA<span className="text-accent">.</span>
-              </span>
+              <img
+                src="/favicon.svg"
+                alt="Logo Aloha"
+                className="h-10 w-10 object-contain"
+              />
             </a>
             <p className="text-primary-foreground/60 text-sm mt-1">Aloha Argentina SAS</p>
           </div>
@@ -23,8 +25,8 @@ const Footer = () => {
           © {new Date().getFullYear()} Aloha Argentina SAS. Todos los derechos reservados.
         </div>
       </div>
-    </footer>);
-
+    </footer>
+  );
 };
 
 export default Footer;

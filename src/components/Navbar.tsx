@@ -28,9 +28,11 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4">
         <a href="#" className="flex items-center">
-          <span className="text-2xl font-bold text-primary-foreground tracking-tight">
-            ALOHA ARGENTINA<span className="text-accent">.</span>
-          </span>
+          <img
+            src="/favicon.svg"
+            alt="Logo Aloha"
+            className="h-10 w-10 object-contain"
+          />
         </a>
 
         {/* Desktop */}
