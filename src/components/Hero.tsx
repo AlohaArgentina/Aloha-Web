@@ -63,7 +63,7 @@ const Hero = () => {
               href="#contacto"
               className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity glow-accent"
             >
-              Solicitar Auditoría Gratuita
+              Solicitar Asesoría Gratuita
               <ArrowRight size={20} />
             </a>
             <a
