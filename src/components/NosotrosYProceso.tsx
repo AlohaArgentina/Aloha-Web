@@ -10,7 +10,7 @@ const stats = [
 ];
 
 const steps = [
-  { icon: ClipboardList, time: "Hoy",         title: "Auditoría gratuita",  desc: "Analizamos tu operación actual y te presentamos un diagnóstico sin costo." },
+  { icon: ClipboardList, time: "Hoy",         title: "Asesoría gratuita",  desc: "Analizamos tu operación actual y te presentamos un diagnóstico sin costo." },
   { icon: Users,         time: "1–3 días",    title: "Propuesta y acuerdo", desc: "Diseñamos un plan a medida: equipo, canales, horarios y métricas." },
   { icon: GraduationCap, time: "1–2 semanas", title: "Capacitación",        desc: "Entrenamos a tus agentes en tus productos, tono de marca y herramientas." },
   { icon: Rocket,        time: "Semana 3",    title: "Go live",             desc: "Comenzamos la operación con monitoreo en tiempo real y ajuste fino." },

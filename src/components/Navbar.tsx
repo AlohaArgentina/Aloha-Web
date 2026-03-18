@@ -51,7 +51,7 @@ const Navbar = () => {
             href="#contacto"
             className="bg-accent text-accent-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity shadow-md"
           >
-            Auditoría Gratuita
+            Asesoría Gratuita
           </a>
         </div>
 
@@ -90,7 +90,7 @@ const Navbar = () => {
                 onClick={() => setOpen(false)}
                 className="bg-accent text-accent-foreground px-5 py-2.5 rounded-lg text-sm font-semibold text-center hover:opacity-90 transition-opacity mt-2"
               >
-                Auditoría Gratuita
+                Asesoría Gratuita
               </a>
             </div>
           </motion.div>

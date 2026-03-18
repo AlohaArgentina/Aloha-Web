@@ -22,7 +22,7 @@ const Contacto = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
           <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Contacto</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
-            Solicitá tu auditoría gratuita
+            Solicitá tu asesoría gratuita
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Analizamos tu operación sin costo y te mostramos cómo podemos mejorar tus resultados.
@@ -93,7 +93,7 @@ const Contacto = () => {
               </div>
             </div>
             <div className="bg-secondary rounded-xl p-6 text-secondary-foreground">
-              <h4 className="font-display font-semibold mb-2">Auditoría Gratuita</h4>
+              <h4 className="font-display font-semibold mb-2">Asesoría Gratuita</h4>
               <p className="text-sm text-secondary-foreground/80 leading-relaxed">
                 Sin compromiso, analizamos tu operación actual y te presentamos un plan de mejora con presupuesto personalizado.
               </p>
