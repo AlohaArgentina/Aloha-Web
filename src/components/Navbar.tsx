@@ -3,11 +3,12 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { label: "Servicios", href: "#servicios" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Tecnología", href: "#tecnologia" },
-  { label: "Casos de Éxito", href: "#clientes" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Servicios",     href: "/#servicios",   external: false },
+  { label: "Nosotros",      href: "/#nosotros",    external: false },
+  { label: "Tecnología",    href: "/#tecnologia",  external: false },
+  { label: "Casos de Éxito",href: "/#clientes",    external: false },
+  { label: "Trabajá con Nosotros", href: "/empleos", external: false },
+  { label: "Contacto",      href: "/#contacto",    external: false },
 ];
 
 const Navbar = () => {
@@ -27,13 +28,15 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-4">
-        <a href="#" className="flex items-center">
+        <a href="/" className="flex items-center">
           <img
             src="/favicon.svg"
             alt="Logo Aloha"
             className="h-7 w-7 object-contain"
           />
-          <span className="ml-4 text-lg font-bold" style={{ fontFamily: 'RidleyGrotesk-Bold', color: '#839ca6' }}>ALOHA ARGENTINA</span>
+          <span className="ml-4 text-lg font-bold" style={{ fontFamily: 'RidleyGrotesk-Bold', color: '#839ca6' }}>
+            ALOHA ARGENTINA
+          </span>
         </a>
 
         {/* Desktop */}
@@ -48,7 +51,7 @@ const Navbar = () => {
             </a>
           ))}
           <a
-            href="#contacto"
+            href="/#contacto"
             className="bg-accent text-accent-foreground px-5 py-2.5 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity shadow-md"
           >
             Asesoría Gratuita
@@ -86,7 +89,7 @@ const Navbar = () => {
                 </a>
               ))}
               <a
-                href="#contacto"
+                href="/#contacto"
                 onClick={() => setOpen(false)}
                 className="bg-accent text-accent-foreground px-5 py-2.5 rounded-lg text-sm font-semibold text-center hover:opacity-90 transition-opacity mt-2"
               >
