@@ -67,6 +67,9 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundSize: {
+        "200": "200% 100%",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -92,6 +95,10 @@ export default {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-33.333%)" },
         },
+        shimmer2: {
+          "0%": { backgroundPosition: "0% 0%" },
+          "100%": { backgroundPosition: "-200% 0%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -100,6 +107,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out forwards",
         "count-up": "count-up 0.5s ease-out forwards",
         scroll: "scroll 20s linear infinite",
+        shimmer2: "shimmer2 2s infinite linear",
       },
     },
   },

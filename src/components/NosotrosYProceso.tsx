@@ -10,11 +10,36 @@ const stats = [
 ];
 
 const steps = [
-  { icon: ClipboardList, time: "Hoy",         title: "Asesoría gratuita",  desc: "Analizamos tu operación actual y te presentamos un diagnóstico sin costo." },
-  { icon: Users,         time: "1–3 días",    title: "Propuesta y acuerdo", desc: "Diseñamos un plan a medida: equipo, canales, horarios y métricas." },
-  { icon: GraduationCap, time: "1–2 semanas", title: "Capacitación",        desc: "Entrenamos a tus agentes en tus productos, tono de marca y herramientas." },
-  { icon: Rocket,        time: "Semana 3",    title: "Go live",             desc: "Comenzamos la operación con monitoreo en tiempo real y ajuste fino." },
-  { icon: BarChart3,     time: "Mes 1+",      title: "Mejora continua",     desc: "Reportes periódicos, KPIs transparentes y reuniones de optimización." },
+  {
+    icon: ClipboardList,
+    time: "Hoy",
+    title: "Asesoría gratuita",
+    desc: "Analizamos tu operación actual y te entregamos un diagnóstico integral sin costo.",
+  },
+  {
+    icon: Users,
+    time: "1–3 días",
+    title: "Propuesta y acuerdo",
+    desc: "Diseñamos un plan a medida que incluye equipo, canales, horarios y métricas clave.",
+  },
+  {
+    icon: GraduationCap,
+    time: "1–2 semanas",
+    title: "Capacitación",
+    desc: "Entrenamos a tus agentes en tus productos, procesos de marca y herramientas digitales.",
+  },
+  {
+    icon: Rocket,
+    time: "Semana 3",
+    title: "Go live",
+    desc: "Iniciamos la operación con monitoreo constante y procesos de ajuste fino.",
+  },
+  {
+    icon: BarChart3,
+    time: "Mes 1+",
+    title: "Mejora continua",
+    desc: "Reportes periódicos, métricas claras y reuniones para optimizar tus resultados.",
+  },
 ];
 
 function AnimatedNumber({ value, prefix = "", suffix = "", display }: {
@@ -112,7 +137,6 @@ const NosotrosYProceso = () => {
       id="nosotros"
       className="hero-gradient text-primary-foreground relative overflow-hidden"
     >
-      {/* Canvas partículas — cubre toda la sección */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }} />
 
       {/* ── NOSOTROS ── */}
@@ -125,7 +149,7 @@ const NosotrosYProceso = () => {
         >
           <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Nosotros</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
-            Nuestra Esencia<span className="text-accent">.</span>
+            Nuestra esencia
           </h2>
           <p className="text-primary-foreground/70 text-lg max-w-2xl mx-auto leading-relaxed">
             Desde 2016, Aloha Argentina se consolida como el socio estratégico en la externalización de procesos de atención al cliente.
@@ -186,7 +210,6 @@ const NosotrosYProceso = () => {
         </motion.div>
       </div>
 
-      {/* Divisor sutil entre las dos mitades */}
       <div className="w-full border-t border-primary-foreground/10" />
 
       {/* ── PROCESO ── */}
@@ -202,7 +225,7 @@ const NosotrosYProceso = () => {
           </p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-primary-foreground">
             De cero a operativo{" "}
-            <span className="text-gradient">en menos de un mes.</span>
+            <span className="text-gradient">en menos de un mes</span>
           </h2>
         </motion.div>
 
