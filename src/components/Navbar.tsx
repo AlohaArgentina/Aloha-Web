@@ -7,8 +7,8 @@ const navItems = [
   { label: "Nosotros",             href: "/#nosotros" },
   { label: "Tecnología",           href: "/#tecnologia" },
   { label: "Casos de Éxito",       href: "/#clientes" },
-  { label: "Trabajá con Nosotros", href: "/empleos" },
   { label: "Contacto",             href: "/#contacto" },
+  { label: "Trabajá con Nosotros", href: "/empleos" },
 ];
 
 const Navbar = () => {

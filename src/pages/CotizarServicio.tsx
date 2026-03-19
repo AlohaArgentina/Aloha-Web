@@ -79,6 +79,8 @@ function RadioGroup({ options, value, onChange }: { options: string[]; value: st
 const inputClass = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition text-sm";
 const labelClass = "block text-sm font-medium text-foreground mb-1";
 const subClass   = "text-xs text-muted-foreground mb-2";
+// Input visible pero posicionado fuera de pantalla — Netlify lo lee, el usuario no lo ve
+const hiddenInput = "sr-only";
 
 const stepVariants = {
   enter:  { opacity: 0, x: 30 },
@@ -114,23 +116,27 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
       onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
       <input type="hidden" name="form-name" value="cotizar-isp" />
       <input type="hidden" name="rubro" value="ISP / Telecomunicaciones" />
-      <input type="hidden" name="empresa" value={empresa} />
-      <input type="hidden" name="telefono" value={telefono} />
-      <input type="hidden" name="email" value={email} />
-      <input type="hidden" name="clientes" value={clientes} />
-      <input type="hidden" name="reclamos" value={reclamos} />
-      <input type="hidden" name="canales" value={canales.join(", ")} />
-      <input type="hidden" name="horario_actual" value={horario} />
-      <input type="hidden" name="nivel_soporte" value={nivelSoporte.join(", ")} />
-      <input type="hidden" name="tipo_cobertura" value={cobertura.join(", ")} />
-      <input type="hidden" name="usa_ia" value={usaIA} />
-      <input type="hidden" name="dias_horario" value={diasHorario} />
-      <input type="hidden" name="motivo" value={motivo.join(", ")} />
-      <input type="hidden" name="plazo" value={plazo} />
-      <input type="hidden" name="comentarios" value={comentarios} />
+
+      {/* Inputs visualmente ocultos — sr-only los hace accesibles para Netlify sin mostrarse */}
+      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"        value={empresa} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"       value={telefono} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="email"          value={email} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="clientes"       value={clientes} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="reclamos"       value={reclamos} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="canales"        value={canales.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="horario_actual" value={horario} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="nivel_soporte"  value={nivelSoporte.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="tipo_cobertura" value={cobertura.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="usa_ia"         value={usaIA} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="dias_horario"   value={diasHorario} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="motivo"         value={motivo.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"          value={plazo} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"    value={comentarios} />
 
       <ProgressBar step={step} total={4} />
       <AnimatePresence mode="wait">
+
+        {/* Step 1 */}
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Datos de la empresa</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de contacto.</p></div>
@@ -142,6 +148,8 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
+
+        {/* Step 2 */}
         {step === 2 && (
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Su operación hoy</h3><p className="text-sm text-muted-foreground">Contanos cómo es tu operación actual.</p></div>
@@ -152,6 +160,8 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(3)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
+
+        {/* Step 3 */}
         {step === 3 && (
           <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 3 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Lo que necesita</h3><p className="text-sm text-muted-foreground">Ayudanos a entender qué estás buscando.</p></div>
@@ -168,6 +178,8 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(2)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(4)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
+
+        {/* Step 4 */}
         {step === 4 && (
           <motion.div key="s4" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 4 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Último paso</h3><p className="text-sm text-muted-foreground">¿Hay algo más que quieras contarnos antes de enviar?</p></div>
@@ -207,14 +219,14 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
       onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
       <input type="hidden" name="form-name" value="cotizar-retail" />
       <input type="hidden" name="rubro" value="Retail / E-commerce" />
-      <input type="hidden" name="empresa" value={empresa} />
-      <input type="hidden" name="telefono" value={telefono} />
-      <input type="hidden" name="email" value={email} />
-      <input type="hidden" name="volumen_pedidos" value={volumen} />
-      <input type="hidden" name="canales" value={canales.join(", ")} />
-      <input type="hidden" name="necesidad" value={necesidad.join(", ")} />
-      <input type="hidden" name="plazo" value={plazo} />
-      <input type="hidden" name="comentarios" value={comentarios} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"         value={empresa} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"        value={telefono} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="email"           value={email} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="volumen_pedidos" value={volumen} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="canales"         value={canales.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"       value={necesidad.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"           value={plazo} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"     value={comentarios} />
 
       <ProgressBar step={step} total={2} />
       <AnimatePresence mode="wait">
@@ -236,10 +248,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
             <div><label className={labelClass}>¿Por qué canales atienden actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p><CheckGroup options={["Teléfono", "WhatsApp", "Email", "Chat web", "Redes sociales", "Marketplace"]} value={canales} onChange={setCanales} /></div>
             <div><label className={labelClass}>¿Qué necesitás mejorar?</label><CheckGroup options={["Atención pre-venta", "Soporte post-venta", "Gestión de devoluciones", "Atención fuera de horario", "Reducir costos operativos"]} value={necesidad} onChange={setNecesidad} /></div>
             <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
-            <div>
-              <label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label>
-              <textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} />
-            </div>
+            <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
@@ -275,14 +284,14 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
       onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
       <input type="hidden" name="form-name" value="cotizar-tech" />
       <input type="hidden" name="rubro" value="Tecnología / SaaS" />
-      <input type="hidden" name="empresa" value={empresa} />
-      <input type="hidden" name="telefono" value={telefono} />
-      <input type="hidden" name="email" value={email} />
-      <input type="hidden" name="usuarios_activos" value={usuarios} />
-      <input type="hidden" name="canales_soporte" value={soporte.join(", ")} />
-      <input type="hidden" name="necesidad" value={necesidad.join(", ")} />
-      <input type="hidden" name="plazo" value={plazo} />
-      <input type="hidden" name="comentarios" value={comentarios} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"          value={empresa} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"         value={telefono} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="email"            value={email} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="usuarios_activos" value={usuarios} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="canales_soporte"  value={soporte.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"        value={necesidad.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"            value={plazo} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"      value={comentarios} />
 
       <ProgressBar step={step} total={2} />
       <AnimatePresence mode="wait">
@@ -304,10 +313,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
             <div><label className={labelClass}>¿Qué canales de soporte ofrecés actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p><CheckGroup options={["Email / ticket", "Chat en vivo", "WhatsApp", "Teléfono", "Base de conocimiento", "Sin soporte aún"]} value={soporte} onChange={setSoporte} /></div>
             <div><label className={labelClass}>¿Qué necesitás mejorar?</label><CheckGroup options={["Help desk nivel 1 y 2", "Onboarding de nuevos usuarios", "Soporte fuera de horario", "Reducir tiempo de respuesta", "Escalar el equipo de soporte"]} value={necesidad} onChange={setNecesidad} /></div>
             <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
-            <div>
-              <label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label>
-              <textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} />
-            </div>
+            <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
@@ -342,14 +348,14 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
     <form name="cotizar-otro" method="POST" data-netlify="true"
       onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
       <input type="hidden" name="form-name" value="cotizar-otro" />
-      <input type="hidden" name="empresa" value={empresa} />
-      <input type="hidden" name="telefono" value={telefono} />
-      <input type="hidden" name="email" value={email} />
-      <input type="hidden" name="rubro_descripcion" value={rubro} />
-      <input type="hidden" name="tamaño_empresa" value={tamaño} />
-      <input type="hidden" name="necesidad" value={necesidad.join(", ")} />
-      <input type="hidden" name="plazo" value={plazo} />
-      <input type="hidden" name="comentarios" value={comentarios} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"          value={empresa} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"         value={telefono} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="email"            value={email} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="rubro_descripcion" value={rubro} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="tamaño_empresa"   value={tamaño} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"        value={necesidad.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"            value={plazo} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"      value={comentarios} />
 
       <ProgressBar step={step} total={2} />
       <AnimatePresence mode="wait">
@@ -371,10 +377,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
             <div><label className={labelClass}>¿De qué tamaño es tu empresa?</label><RadioGroup options={["1 – 10 empleados", "10 – 50 empleados", "50 – 200 empleados", "Más de 200 empleados"]} value={tamaño} onChange={setTamaño} /></div>
             <div><label className={labelClass}>¿Qué necesitás mejorar en tu atención?</label><CheckGroup options={["Reducir costos operativos", "Ampliar horario de atención", "Mejorar la calidad del servicio", "Escalar sin contratar personal fijo", "Atención multicanal"]} value={necesidad} onChange={setNecesidad} /></div>
             <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
-            <div>
-              <label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label>
-              <textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} />
-            </div>
+            <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}

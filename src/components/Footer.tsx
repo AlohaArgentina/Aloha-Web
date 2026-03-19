@@ -19,8 +19,8 @@ const Footer = () => {
             <a href="#nosotros" className="hover:text-accent transition-colors">Nosotros</a>
             <a href="#tecnologia" className="hover:text-accent transition-colors">Tecnología</a>
             <a href="#clientes" className="hover:text-accent transition-colors">Casos de Éxito</a>
-            <a href="/empleos" className="hover:text-accent transition-colors">Trabajá con Nosotros</a>
             <a href="#contacto" className="hover:text-accent transition-colors">Contacto</a>
+            <a href="/empleos" className="hover:text-accent transition-colors">Trabajá con Nosotros</a>
           </div>
         </div>
         <div className="mt-8 pt-6 border-t border-primary-foreground/10 text-center text-primary-foreground/40 text-sm">
