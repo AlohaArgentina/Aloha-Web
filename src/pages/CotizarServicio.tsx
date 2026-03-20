@@ -14,6 +14,7 @@ const rubros = [
   { id: "otro",       icon: Building2,   label: "Otro rubro",               desc: "Empresa en crecimiento de cualquier industria" },
 ];
 
+// ── Shimmer Button ───────────────────────────────────────────
 function ShimmerButton({ children, className = "", disabled = false, type = "button", onClick }: {
   children: React.ReactNode; className?: string; disabled?: boolean;
   type?: "button" | "submit"; onClick?: () => void;
@@ -31,6 +32,7 @@ function ShimmerButton({ children, className = "", disabled = false, type = "but
   );
 }
 
+// ── Barra de progreso ────────────────────────────────────────
 function ProgressBar({ step, total }: { step: number; total: number }) {
   return (
     <div className="w-full mb-8">
@@ -46,16 +48,63 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
   );
 }
 
-function CheckGroup({ options, value, onChange }: { options: string[]; value: string[]; onChange: (v: string[]) => void }) {
-  const toggle = (opt: string) => onChange(value.includes(opt) ? value.filter(x => x !== opt) : [...value, opt]);
+// ── CheckGroup — otroTexto es estado externo para evitar resets ──
+function CheckGroup({ options, value, onChange, otroTexto = "", onOtroTexto }: {
+  options: string[];
+  value: string[];
+  onChange: (v: string[]) => void;
+  otroTexto?: string;
+  onOtroTexto?: (t: string) => void;
+}) {
+  const OTRO = "Otro";
+  const hasOtro = options.includes(OTRO);
+  const otroActivo = value.some(v => v === OTRO || v.startsWith("Otro: "));
+
+  const toggle = (opt: string) => {
+    if (opt === OTRO) {
+      if (otroActivo) {
+        // Deseleccionar: quitar Otro y cualquier "Otro: ..."
+        onChange(value.filter(v => v !== OTRO && !v.startsWith("Otro: ")));
+        onOtroTexto?.("");
+      } else {
+        onChange([...value, OTRO]);
+      }
+    } else {
+      onChange(value.includes(opt) ? value.filter(x => x !== opt) : [...value, opt]);
+    }
+  };
+
+  const handleTexto = (texto: string) => {
+    onOtroTexto?.(texto);
+    const sinOtro = value.filter(v => v !== OTRO && !v.startsWith("Otro: "));
+    onChange(texto.trim() ? [...sinOtro, `Otro: ${texto}`] : [...sinOtro, OTRO]);
+  };
+
   return (
-    <div className="flex flex-wrap gap-2">
-      {options.map(opt => (
-        <button key={opt} type="button" onClick={() => toggle(opt)}
-          className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${value.includes(opt) ? "bg-primary/15 border-primary/40 text-primary font-medium" : "border-border bg-background text-muted-foreground hover:border-primary/30"}`}>
-          {opt}
-        </button>
-      ))}
+    <div className="space-y-2">
+      <div className="flex flex-wrap gap-2">
+        {options.map(opt => {
+          const isSelected = opt === OTRO
+            ? otroActivo
+            : value.includes(opt);
+          return (
+            <button key={opt} type="button" onClick={() => toggle(opt)}
+              className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${isSelected ? "bg-primary/15 border-primary/40 text-primary font-medium" : "border-border bg-background text-muted-foreground hover:border-primary/30"}`}>
+              {opt}
+            </button>
+          );
+        })}
+      </div>
+      {hasOtro && otroActivo && (
+        <input
+          type="text"
+          value={otroTexto}
+          onChange={e => handleTexto(e.target.value)}
+          placeholder="Especificá cuál..."
+          className="w-full px-4 py-2.5 rounded-lg border border-primary/40 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition text-sm"
+          autoFocus
+        />
+      )}
     </div>
   );
 }
@@ -76,7 +125,6 @@ function RadioGroup({ options, value, onChange }: { options: string[]; value: st
 const inputClass = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition text-sm";
 const labelClass = "block text-sm font-medium text-foreground mb-1";
 const subClass   = "text-xs text-muted-foreground mb-2";
-const hiddenInput = "sr-only";
 
 const stepVariants = {
   enter:  { opacity: 0, x: 30 },
@@ -84,46 +132,65 @@ const stepVariants = {
   exit:   { opacity: 0, x: -30 },
 };
 
+async function submitForm(formName: string, data: Record<string, string>) {
+  const body = new URLSearchParams({ "form-name": formName, ...data });
+  await fetch("/", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// FORMULARIO ISP — 4 pasos
+// ════════════════════════════════════════════════════════════
 function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
+  const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
+
   const [empresa, setEmpresa]           = useState("");
   const [telefono, setTelefono]         = useState("");
   const [email, setEmail]               = useState("");
   const [clientes, setClientes]         = useState("");
   const [reclamos, setReclamos]         = useState("");
   const [canales, setCanales]           = useState<string[]>([]);
+  const [canalesOtro, setCanalesOtro]   = useState("");
   const [horario, setHorario]           = useState("");
   const [nivelSoporte, setNivelSoporte] = useState<string[]>([]);
   const [cobertura, setCobertura]       = useState<string[]>([]);
   const [usaIA, setUsaIA]               = useState("");
   const [diasHorario, setDiasHorario]   = useState("");
   const [motivo, setMotivo]             = useState<string[]>([]);
+  const [motivoOtro, setMotivoOtro]     = useState("");
   const [plazo, setPlazo]               = useState("");
   const [comentarios, setComentarios]   = useState("");
 
-  return (
-    <form name="cotizar-isp" method="POST" data-netlify="true"
-      onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
-      <input type="hidden" name="form-name" value="cotizar-isp" />
-      <input type="hidden" name="rubro" value="ISP / Telecomunicaciones" />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"        value={empresa} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"       value={telefono} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="email"          value={email} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="clientes"       value={clientes} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="reclamos"       value={reclamos} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="canales"        value={canales.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="horario_actual" value={horario} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="nivel_soporte"  value={nivelSoporte.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="tipo_cobertura" value={cobertura.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="usa_ia"         value={usaIA} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="dias_horario"   value={diasHorario} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="motivo"         value={motivo.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"          value={plazo} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"    value={comentarios} />
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isVerified) return;
+    setLoading(true);
+    try {
+      await submitForm("cotizar-isp", {
+        rubro: "ISP / Telecomunicaciones",
+        empresa, telefono, email, clientes, reclamos,
+        canales: canales.join(", "),
+        horario_actual: horario,
+        nivel_soporte: nivelSoporte.join(", "),
+        tipo_cobertura: cobertura.join(", "),
+        usa_ia: usaIA,
+        dias_horario: diasHorario,
+        motivo: motivo.join(", "),
+        plazo, comentarios,
+      });
+      onSubmitted();
+    } catch { setLoading(false); }
+  };
 
+  return (
+    <form onSubmit={handleSubmit}>
       <ProgressBar step={step} total={4} />
       <AnimatePresence mode="wait">
         {step === 1 && (
@@ -142,7 +209,9 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Su operación hoy</h3><p className="text-sm text-muted-foreground">Contanos cómo es tu operación actual.</p></div>
             <div><label className={labelClass}>¿Cuántos clientes tiene en servicio?</label><p className={subClass}>Cantidad aproximada</p><RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={clientes} onChange={setClientes} /></div>
             <div><label className={labelClass}>¿Cuántos reclamos recibe por mes?</label><p className={subClass}>Todos los canales</p><RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={reclamos} onChange={setReclamos} /></div>
-            <div><label className={labelClass}>¿Por qué canales recibe contactos?</label><p className={subClass}>Seleccione todos los que apliquen</p><CheckGroup options={["Teléfono / llamada", "WhatsApp", "Email", "Chat web", "Redes sociales", "Otro"]} value={canales} onChange={setCanales} /></div>
+            <div><label className={labelClass}>¿Por qué canales recibe contactos?</label><p className={subClass}>Seleccione todos los que apliquen</p>
+              <CheckGroup options={["Teléfono / llamada", "WhatsApp", "Email", "Chat web", "Redes sociales", "Otro"]} value={canales} onChange={setCanales} otroTexto={canalesOtro} onOtroTexto={setCanalesOtro} />
+            </div>
             <div><label className={labelClass}>Horario actual de atención</label><input type="text" value={horario} onChange={e => setHorario(e.target.value)} placeholder="Indicá días y horarios" className={inputClass} /></div>
             <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(3)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -150,15 +219,15 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 3 && (
           <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 3 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Lo que necesita</h3><p className="text-sm text-muted-foreground">Ayudanos a entender qué estás buscando.</p></div>
-            <div>
-              <label className={labelClass}>¿Qué nivel de soporte técnico requiere?</label>
-              <p className={subClass}>Seleccione una o más opciones</p>
+            <div><label className={labelClass}>¿Qué nivel de soporte técnico requiere?</label><p className={subClass}>Seleccione una o más opciones</p>
               <CheckGroup options={["Soporte Nivel 1 (L1): atención inicial, pruebas básicas y resolución de consultas frecuentes", "Soporte Nivel 2 (L2): diagnóstico técnico avanzado y configuración de equipos", "Ambos (L1 + L2)", "No estoy seguro / necesito asesoramiento"]} value={nivelSoporte} onChange={setNivelSoporte} />
             </div>
             <div><label className={labelClass}>¿Qué tipo de cobertura necesita?</label><CheckGroup options={["Refuerzo por desborde de líneas propias", "Cobertura fuera de horario", "Atención completa (reemplazo total)", "Aún no lo tengo definido"]} value={cobertura} onChange={setCobertura} /></div>
             <div><label className={labelClass}>¿Considera soluciones de IA en su soporte?</label><RadioGroup options={["Sí", "No", "No lo sé"]} value={usaIA} onChange={setUsaIA} /></div>
             <div><label className={labelClass}>¿Qué días y horario requiere cobertura?</label><input type="text" value={diasHorario} onChange={e => setDiasHorario(e.target.value)} placeholder="Indicá días y horario requerido" className={inputClass} /></div>
-            <div><label className={labelClass}>¿Principal motivo para contratar el servicio?</label><CheckGroup options={["Reducir costos operativos", "Mejorar la calidad de atención", "Cubrir horarios sin cobertura", "Saturación del equipo interno", "Crecimiento de clientes", "Otro"]} value={motivo} onChange={setMotivo} /></div>
+            <div><label className={labelClass}>¿Principal motivo para contratar el servicio?</label>
+              <CheckGroup options={["Reducir costos operativos", "Mejorar la calidad de atención", "Cubrir horarios sin cobertura", "Saturación del equipo interno", "Crecimiento de clientes", "Otro"]} value={motivo} onChange={setMotivo} otroTexto={motivoOtro} onOtroTexto={setMotivoOtro} />
+            </div>
             <div><label className={labelClass}>¿En qué plazo necesita el servicio operativo?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Más de 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
             <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(2)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(4)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -171,7 +240,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
             </div>
-            <div className="flex gap-3"><button type="button" onClick={() => setStep(3)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified} className="flex-1">Cotizá tu equipo a medida <Send size={18} /></ShimmerButton></div>
+            <div className="flex gap-3"><button type="button" onClick={() => setStep(3)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso ni costos ocultos.</p>
           </motion.div>
         )}
@@ -180,34 +249,46 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
+// ════════════════════════════════════════════════════════════
+// FORMULARIO RETAIL — 2 pasos
+// ════════════════════════════════════════════════════════════
 function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
+  const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
-  const [empresa, setEmpresa]         = useState("");
-  const [telefono, setTelefono]       = useState("");
-  const [email, setEmail]             = useState("");
-  const [volumen, setVolumen]         = useState("");
-  const [canales, setCanales]         = useState<string[]>([]);
-  const [necesidad, setNecesidad]     = useState<string[]>([]);
-  const [plazo, setPlazo]             = useState("");
-  const [comentarios, setComentarios] = useState("");
+
+  const [empresa, setEmpresa]           = useState("");
+  const [telefono, setTelefono]         = useState("");
+  const [email, setEmail]               = useState("");
+  const [volumen, setVolumen]           = useState("");
+  const [canales, setCanales]           = useState<string[]>([]);
+  const [canalesOtro, setCanalesOtro]   = useState("");
+  const [necesidad, setNecesidad]       = useState<string[]>([]);
+  const [necesidadOtro, setNecesidadOtro] = useState("");
+  const [plazo, setPlazo]               = useState("");
+  const [comentarios, setComentarios]   = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isVerified) return;
+    setLoading(true);
+    try {
+      await submitForm("cotizar-retail", {
+        rubro: "Retail / E-commerce",
+        empresa, telefono, email,
+        volumen_pedidos: volumen,
+        canales: canales.join(", "),
+        necesidad: necesidad.join(", "),
+        plazo, comentarios,
+      });
+      onSubmitted();
+    } catch { setLoading(false); }
+  };
 
   return (
-    <form name="cotizar-retail" method="POST" data-netlify="true"
-      onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
-      <input type="hidden" name="form-name" value="cotizar-retail" />
-      <input type="hidden" name="rubro" value="Retail / E-commerce" />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"         value={empresa} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"        value={telefono} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="email"           value={email} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="volumen_pedidos" value={volumen} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="canales"         value={canales.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"       value={necesidad.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"           value={plazo} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"     value={comentarios} />
-
+    <form onSubmit={handleSubmit}>
       <ProgressBar step={step} total={2} />
       <AnimatePresence mode="wait">
         {step === 1 && (
@@ -225,15 +306,19 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-5">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Tu operación</h3><p className="text-sm text-muted-foreground">Algunas preguntas rápidas para armar tu propuesta.</p></div>
             <div><label className={labelClass}>¿Cuántos pedidos / consultas recibís por mes?</label><RadioGroup options={["Menos de 200", "200 – 1.000", "1.000 – 5.000", "Más de 5.000"]} value={volumen} onChange={setVolumen} /></div>
-            <div><label className={labelClass}>¿Por qué canales atienden actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p><CheckGroup options={["Teléfono", "WhatsApp", "Email", "Chat web", "Redes sociales", "Marketplace"]} value={canales} onChange={setCanales} /></div>
-            <div><label className={labelClass}>¿Qué necesitás mejorar?</label><CheckGroup options={["Atención pre-venta", "Soporte post-venta", "Gestión de devoluciones", "Atención fuera de horario", "Reducir costos operativos"]} value={necesidad} onChange={setNecesidad} /></div>
+            <div><label className={labelClass}>¿Por qué canales atienden actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p>
+              <CheckGroup options={["Teléfono", "WhatsApp", "Email", "Chat web", "Redes sociales", "Marketplace", "Otro"]} value={canales} onChange={setCanales} otroTexto={canalesOtro} onOtroTexto={setCanalesOtro} />
+            </div>
+            <div><label className={labelClass}>¿Qué necesitás mejorar?</label>
+              <CheckGroup options={["Atención pre-venta", "Soporte post-venta", "Gestión de devoluciones", "Atención fuera de horario", "Reducir costos operativos", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
+            </div>
             <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
             <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
             </div>
-            <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified} className="flex-1">Cotizá tu equipo a medida <Send size={18} /></ShimmerButton></div>
+            <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
           </motion.div>
         )}
@@ -242,34 +327,46 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
+// ════════════════════════════════════════════════════════════
+// FORMULARIO TECNOLOGÍA / SaaS — 2 pasos
+// ════════════════════════════════════════════════════════════
 function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
+  const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
-  const [empresa, setEmpresa]         = useState("");
-  const [telefono, setTelefono]       = useState("");
-  const [email, setEmail]             = useState("");
-  const [usuarios, setUsuarios]       = useState("");
-  const [soporte, setSoporte]         = useState<string[]>([]);
-  const [necesidad, setNecesidad]     = useState<string[]>([]);
-  const [plazo, setPlazo]             = useState("");
-  const [comentarios, setComentarios] = useState("");
+
+  const [empresa, setEmpresa]               = useState("");
+  const [telefono, setTelefono]             = useState("");
+  const [email, setEmail]                   = useState("");
+  const [usuarios, setUsuarios]             = useState("");
+  const [soporte, setSoporte]               = useState<string[]>([]);
+  const [soporteOtro, setSoporteOtro]       = useState("");
+  const [necesidad, setNecesidad]           = useState<string[]>([]);
+  const [necesidadOtro, setNecesidadOtro]   = useState("");
+  const [plazo, setPlazo]                   = useState("");
+  const [comentarios, setComentarios]       = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isVerified) return;
+    setLoading(true);
+    try {
+      await submitForm("cotizar-tech", {
+        rubro: "Tecnología / SaaS",
+        empresa, telefono, email,
+        usuarios_activos: usuarios,
+        canales_soporte: soporte.join(", "),
+        necesidad: necesidad.join(", "),
+        plazo, comentarios,
+      });
+      onSubmitted();
+    } catch { setLoading(false); }
+  };
 
   return (
-    <form name="cotizar-tech" method="POST" data-netlify="true"
-      onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
-      <input type="hidden" name="form-name" value="cotizar-tech" />
-      <input type="hidden" name="rubro" value="Tecnología / SaaS" />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"          value={empresa} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"         value={telefono} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="email"            value={email} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="usuarios_activos" value={usuarios} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="canales_soporte"  value={soporte.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"        value={necesidad.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"            value={plazo} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"      value={comentarios} />
-
+    <form onSubmit={handleSubmit}>
       <ProgressBar step={step} total={2} />
       <AnimatePresence mode="wait">
         {step === 1 && (
@@ -287,15 +384,19 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-5">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Tu producto y soporte</h3><p className="text-sm text-muted-foreground">Algunas preguntas rápidas para armar tu propuesta.</p></div>
             <div><label className={labelClass}>¿Cuántos usuarios activos tiene tu producto?</label><RadioGroup options={["Menos de 500", "500 – 5.000", "5.000 – 20.000", "Más de 20.000"]} value={usuarios} onChange={setUsuarios} /></div>
-            <div><label className={labelClass}>¿Qué canales de soporte ofrecés actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p><CheckGroup options={["Email / ticket", "Chat en vivo", "WhatsApp", "Teléfono", "Base de conocimiento", "Sin soporte aún"]} value={soporte} onChange={setSoporte} /></div>
-            <div><label className={labelClass}>¿Qué necesitás mejorar?</label><CheckGroup options={["Help desk nivel 1 y 2", "Onboarding de nuevos usuarios", "Soporte fuera de horario", "Reducir tiempo de respuesta", "Escalar el equipo de soporte"]} value={necesidad} onChange={setNecesidad} /></div>
+            <div><label className={labelClass}>¿Qué canales de soporte ofrecés actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p>
+              <CheckGroup options={["Email / ticket", "Chat en vivo", "WhatsApp", "Teléfono", "Base de conocimiento", "Sin soporte aún", "Otro"]} value={soporte} onChange={setSoporte} otroTexto={soporteOtro} onOtroTexto={setSoporteOtro} />
+            </div>
+            <div><label className={labelClass}>¿Qué necesitás mejorar?</label>
+              <CheckGroup options={["Help desk nivel 1 y 2", "Onboarding de nuevos usuarios", "Soporte fuera de horario", "Reducir tiempo de respuesta", "Escalar el equipo de soporte", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
+            </div>
             <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
             <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
             </div>
-            <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified} className="flex-1">Cotizá tu equipo a medida <Send size={18} /></ShimmerButton></div>
+            <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
           </motion.div>
         )}
@@ -304,33 +405,44 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
+// ════════════════════════════════════════════════════════════
+// FORMULARIO OTRO RUBRO — 2 pasos
+// ════════════════════════════════════════════════════════════
 function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
-  const [step, setStep]                     = useState(1);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
-  const [turnstileError, setTurnstileError] = useState(false);
+  const [step, setStep]                       = useState(1);
+  const [turnstileToken, setTurnstileToken]   = useState<string | null>(null);
+  const [turnstileError, setTurnstileError]   = useState(false);
+  const [loading, setLoading]                 = useState(false);
   const isVerified = !!turnstileToken;
-  const [empresa, setEmpresa]         = useState("");
-  const [telefono, setTelefono]       = useState("");
-  const [email, setEmail]             = useState("");
-  const [rubro, setRubro]             = useState("");
-  const [tamaño, setTamaño]           = useState("");
-  const [necesidad, setNecesidad]     = useState<string[]>([]);
-  const [plazo, setPlazo]             = useState("");
-  const [comentarios, setComentarios] = useState("");
+
+  const [empresa, setEmpresa]                 = useState("");
+  const [telefono, setTelefono]               = useState("");
+  const [email, setEmail]                     = useState("");
+  const [rubro, setRubro]                     = useState("");
+  const [tamaño, setTamaño]                   = useState("");
+  const [necesidad, setNecesidad]             = useState<string[]>([]);
+  const [necesidadOtro, setNecesidadOtro]     = useState("");
+  const [plazo, setPlazo]                     = useState("");
+  const [comentarios, setComentarios]         = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isVerified) return;
+    setLoading(true);
+    try {
+      await submitForm("cotizar-otro", {
+        empresa, telefono, email,
+        rubro_descripcion: rubro,
+        tamaño_empresa: tamaño,
+        necesidad: necesidad.join(", "),
+        plazo, comentarios,
+      });
+      onSubmitted();
+    } catch { setLoading(false); }
+  };
 
   return (
-    <form name="cotizar-otro" method="POST" data-netlify="true"
-      onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
-      <input type="hidden" name="form-name" value="cotizar-otro" />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"           value={empresa} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"          value={telefono} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="email"             value={email} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="rubro_descripcion" value={rubro} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="tamaño_empresa"    value={tamaño} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"         value={necesidad.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"             value={plazo} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"       value={comentarios} />
-
+    <form onSubmit={handleSubmit}>
       <ProgressBar step={step} total={2} />
       <AnimatePresence mode="wait">
         {step === 1 && (
@@ -349,14 +461,16 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-5">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Tu empresa y necesidades</h3><p className="text-sm text-muted-foreground">Algunas preguntas rápidas para armar tu propuesta.</p></div>
             <div><label className={labelClass}>¿De qué tamaño es tu empresa?</label><RadioGroup options={["1 – 10 empleados", "10 – 50 empleados", "50 – 200 empleados", "Más de 200 empleados"]} value={tamaño} onChange={setTamaño} /></div>
-            <div><label className={labelClass}>¿Qué necesitás mejorar en tu atención?</label><CheckGroup options={["Reducir costos operativos", "Ampliar horario de atención", "Mejorar la calidad del servicio", "Escalar sin contratar personal fijo", "Atención multicanal"]} value={necesidad} onChange={setNecesidad} /></div>
+            <div><label className={labelClass}>¿Qué necesitás mejorar en tu atención?</label>
+              <CheckGroup options={["Reducir costos operativos", "Ampliar horario de atención", "Mejorar la calidad del servicio", "Escalar sin contratar personal fijo", "Atención multicanal", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
+            </div>
             <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
             <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
             </div>
-            <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified} className="flex-1">Cotizá tu equipo a medida <Send size={18} /></ShimmerButton></div>
+            <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
           </motion.div>
         )}
@@ -365,6 +479,9 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
+// ════════════════════════════════════════════════════════════
+// Canvas de partículas
+// ════════════════════════════════════════════════════════════
 function ParticleCanvas() {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -382,6 +499,9 @@ function ParticleCanvas() {
   return <div ref={sectionRef} className="absolute inset-0 pointer-events-none"><canvas ref={canvasRef} className="absolute inset-0" /></div>;
 }
 
+// ════════════════════════════════════════════════════════════
+// Página principal
+// ════════════════════════════════════════════════════════════
 const CotizarServicio = () => {
   const [rubroId, setRubroId]     = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
