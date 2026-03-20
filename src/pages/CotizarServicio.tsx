@@ -14,7 +14,6 @@ const rubros = [
   { id: "otro",       icon: Building2,   label: "Otro rubro",               desc: "Empresa en crecimiento de cualquier industria" },
 ];
 
-// ── Shimmer Button ───────────────────────────────────────────
 function ShimmerButton({ children, className = "", disabled = false, type = "button", onClick }: {
   children: React.ReactNode; className?: string; disabled?: boolean;
   type?: "button" | "submit"; onClick?: () => void;
@@ -32,7 +31,6 @@ function ShimmerButton({ children, className = "", disabled = false, type = "but
   );
 }
 
-// ── Barra de progreso ────────────────────────────────────────
 function ProgressBar({ step, total }: { step: number; total: number }) {
   return (
     <div className="w-full mb-8">
@@ -48,7 +46,6 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
   );
 }
 
-// ── Helpers ──────────────────────────────────────────────────
 function CheckGroup({ options, value, onChange }: { options: string[]; value: string[]; onChange: (v: string[]) => void }) {
   const toggle = (opt: string) => onChange(value.includes(opt) ? value.filter(x => x !== opt) : [...value, opt]);
   return (
@@ -79,7 +76,6 @@ function RadioGroup({ options, value, onChange }: { options: string[]; value: st
 const inputClass = "w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition text-sm";
 const labelClass = "block text-sm font-medium text-foreground mb-1";
 const subClass   = "text-xs text-muted-foreground mb-2";
-// Input visible pero posicionado fuera de pantalla — Netlify lo lee, el usuario no lo ve
 const hiddenInput = "sr-only";
 
 const stepVariants = {
@@ -88,9 +84,6 @@ const stepVariants = {
   exit:   { opacity: 0, x: -30 },
 };
 
-// ════════════════════════════════════════════════════════════
-// FORMULARIO ISP — 4 pasos
-// ════════════════════════════════════════════════════════════
 function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -116,8 +109,6 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
       onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
       <input type="hidden" name="form-name" value="cotizar-isp" />
       <input type="hidden" name="rubro" value="ISP / Telecomunicaciones" />
-
-      {/* Inputs visualmente ocultos — sr-only los hace accesibles para Netlify sin mostrarse */}
       <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"        value={empresa} />
       <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"       value={telefono} />
       <input className={hiddenInput} tabIndex={-1} readOnly name="email"          value={email} />
@@ -135,33 +126,27 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
 
       <ProgressBar step={step} total={4} />
       <AnimatePresence mode="wait">
-
-        {/* Step 1 */}
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Datos de la empresa</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de contacto.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Ej. InterNet Córdoba SRL" className={inputClass} /></div>
+            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="+54 9 351..." className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="contacto@empresa.com" className={inputClass} /></div>
+              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
+              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
             </div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
-
-        {/* Step 2 */}
         {step === 2 && (
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Su operación hoy</h3><p className="text-sm text-muted-foreground">Contanos cómo es tu operación actual.</p></div>
             <div><label className={labelClass}>¿Cuántos clientes tiene en servicio?</label><p className={subClass}>Cantidad aproximada</p><RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={clientes} onChange={setClientes} /></div>
             <div><label className={labelClass}>¿Cuántos reclamos recibe por mes?</label><p className={subClass}>Todos los canales</p><RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={reclamos} onChange={setReclamos} /></div>
             <div><label className={labelClass}>¿Por qué canales recibe contactos?</label><p className={subClass}>Seleccione todos los que apliquen</p><CheckGroup options={["Teléfono / llamada", "WhatsApp", "Email", "Chat web", "Redes sociales", "Otro"]} value={canales} onChange={setCanales} /></div>
-            <div><label className={labelClass}>Horario actual de atención</label><input type="text" value={horario} onChange={e => setHorario(e.target.value)} placeholder="Ej. Lunes a viernes 8–20 hs" className={inputClass} /></div>
+            <div><label className={labelClass}>Horario actual de atención</label><input type="text" value={horario} onChange={e => setHorario(e.target.value)} placeholder="Indicá días y horarios" className={inputClass} /></div>
             <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(3)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
-
-        {/* Step 3 */}
         {step === 3 && (
           <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 3 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Lo que necesita</h3><p className="text-sm text-muted-foreground">Ayudanos a entender qué estás buscando.</p></div>
@@ -172,14 +157,12 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             </div>
             <div><label className={labelClass}>¿Qué tipo de cobertura necesita?</label><CheckGroup options={["Refuerzo por desborde de líneas propias", "Cobertura fuera de horario", "Atención completa (reemplazo total)", "Aún no lo tengo definido"]} value={cobertura} onChange={setCobertura} /></div>
             <div><label className={labelClass}>¿Considera soluciones de IA en su soporte?</label><RadioGroup options={["Sí", "No", "No lo sé"]} value={usaIA} onChange={setUsaIA} /></div>
-            <div><label className={labelClass}>¿Qué días y horario requiere cobertura?</label><input type="text" value={diasHorario} onChange={e => setDiasHorario(e.target.value)} placeholder="Ej. Lunes a viernes 8–20 hs / 24×7" className={inputClass} /></div>
+            <div><label className={labelClass}>¿Qué días y horario requiere cobertura?</label><input type="text" value={diasHorario} onChange={e => setDiasHorario(e.target.value)} placeholder="Indicá días y horario requerido" className={inputClass} /></div>
             <div><label className={labelClass}>¿Principal motivo para contratar el servicio?</label><CheckGroup options={["Reducir costos operativos", "Mejorar la calidad de atención", "Cubrir horarios sin cobertura", "Saturación del equipo interno", "Crecimiento de clientes", "Otro"]} value={motivo} onChange={setMotivo} /></div>
             <div><label className={labelClass}>¿En qué plazo necesita el servicio operativo?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Más de 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
             <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(2)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(4)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
-
-        {/* Step 4 */}
         {step === 4 && (
           <motion.div key="s4" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 4 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Último paso</h3><p className="text-sm text-muted-foreground">¿Hay algo más que quieras contarnos antes de enviar?</p></div>
@@ -197,9 +180,6 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════
-// FORMULARIO RETAIL — 2 pasos
-// ════════════════════════════════════════════════════════════
 function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -233,10 +213,10 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Ej. MiTienda Online SRL" className={inputClass} /></div>
+            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="+54 9 351..." className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="contacto@empresa.com" className={inputClass} /></div>
+              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
+              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
             </div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -262,9 +242,6 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════
-// FORMULARIO TECNOLOGÍA / SaaS — 2 pasos
-// ════════════════════════════════════════════════════════════
 function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -298,10 +275,10 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Ej. MiApp SaaS SA" className={inputClass} /></div>
+            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="+54 9 351..." className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="contacto@empresa.com" className={inputClass} /></div>
+              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
+              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
             </div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -327,9 +304,6 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════
-// FORMULARIO OTRO RUBRO — 2 pasos
-// ════════════════════════════════════════════════════════════
 function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
@@ -348,14 +322,14 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
     <form name="cotizar-otro" method="POST" data-netlify="true"
       onSubmit={(e) => { if (!isVerified) e.preventDefault(); else onSubmitted(); }}>
       <input type="hidden" name="form-name" value="cotizar-otro" />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"          value={empresa} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"         value={telefono} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="email"            value={email} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="empresa"           value={empresa} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="telefono"          value={telefono} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="email"             value={email} />
       <input className={hiddenInput} tabIndex={-1} readOnly name="rubro_descripcion" value={rubro} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="tamaño_empresa"   value={tamaño} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"        value={necesidad.join(", ")} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"            value={plazo} />
-      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"      value={comentarios} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="tamaño_empresa"    value={tamaño} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="necesidad"         value={necesidad.join(", ")} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="plazo"             value={plazo} />
+      <input className={hiddenInput} tabIndex={-1} readOnly name="comentarios"       value={comentarios} />
 
       <ProgressBar step={step} total={2} />
       <AnimatePresence mode="wait">
@@ -364,10 +338,10 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
             <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="+54 9 351..." className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="contacto@empresa.com" className={inputClass} /></div>
+              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
+              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
             </div>
-            <div><label className={labelClass}>¿A qué se dedica tu empresa?</label><input type="text" value={rubro} onChange={e => setRubro(e.target.value)} placeholder="Ej. Distribuidora, clínica, inmobiliaria..." className={inputClass} /></div>
+            <div><label className={labelClass}>¿A qué se dedica tu empresa?</label><input type="text" value={rubro} onChange={e => setRubro(e.target.value)} placeholder="Describí a qué se dedica" className={inputClass} /></div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
@@ -391,9 +365,6 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
   );
 }
 
-// ════════════════════════════════════════════════════════════
-// Canvas de partículas
-// ════════════════════════════════════════════════════════════
 function ParticleCanvas() {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -411,9 +382,6 @@ function ParticleCanvas() {
   return <div ref={sectionRef} className="absolute inset-0 pointer-events-none"><canvas ref={canvasRef} className="absolute inset-0" /></div>;
 }
 
-// ════════════════════════════════════════════════════════════
-// Página principal
-// ════════════════════════════════════════════════════════════
 const CotizarServicio = () => {
   const [rubroId, setRubroId]     = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -422,7 +390,6 @@ const CotizarServicio = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-
       <section className="relative hero-gradient text-primary-foreground overflow-hidden">
         <ParticleCanvas />
         <div className="container mx-auto text-center relative z-10 py-28 lg:py-36 max-w-2xl">
@@ -440,7 +407,6 @@ const CotizarServicio = () => {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container mx-auto max-w-3xl">
           <AnimatePresence mode="wait">
-
             {!rubroId && !submitted && (
               <motion.div key="selector" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
                 <div className="text-center mb-10">
@@ -460,7 +426,6 @@ const CotizarServicio = () => {
                 </div>
               </motion.div>
             )}
-
             {rubroId && !submitted && (
               <motion.div key={`form-${rubroId}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.4 }}>
                 <div className="flex items-center gap-3 mb-6">
@@ -481,7 +446,6 @@ const CotizarServicio = () => {
                 </div>
               </motion.div>
             )}
-
             {submitted && (
               <motion.div key="success" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 28 }} className="text-center py-16">
                 <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 300, delay: 0.1 }} className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
@@ -492,11 +456,9 @@ const CotizarServicio = () => {
                 <a href="/" className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">Volver al inicio</a>
               </motion.div>
             )}
-
           </AnimatePresence>
         </div>
       </section>
-
       <Footer />
     </div>
   );
