@@ -47,7 +47,7 @@ const Navbar = () => {
               bg-[length:200%_100%]
               transition-opacity hover:opacity-90"
           >
-            Cotizar Ahora
+            Hablemos de tu operación
           </a>
         </div>
 
@@ -79,7 +79,7 @@ const Navbar = () => {
                   bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
                   bg-[length:200%_100%]"
               >
-                Cotizar Ahora
+                Hablemos de tu operación
               </a>
             </div>
           </motion.div>

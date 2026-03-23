@@ -142,7 +142,7 @@ async function submitForm(formName: string, data: Record<string, string>) {
 }
 
 // ════════════════════════════════════════════════════════════
-// FORMULARIO ISP — 4 pasos
+// FORMULARIO ISP — 3 pasos (paso 4 fusionado en paso 3)
 // ════════════════════════════════════════════════════════════
 function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   const [step, setStep]                     = useState(1);
@@ -151,22 +151,24 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
 
-  const [empresa, setEmpresa]           = useState("");
-  const [telefono, setTelefono]         = useState("");
-  const [email, setEmail]               = useState("");
-  const [clientes, setClientes]         = useState("");
-  const [reclamos, setReclamos]         = useState("");
-  const [canales, setCanales]           = useState<string[]>([]);
-  const [canalesOtro, setCanalesOtro]   = useState("");
-  const [horario, setHorario]           = useState("");
-  const [nivelSoporte, setNivelSoporte] = useState<string[]>([]);
-  const [cobertura, setCobertura]       = useState<string[]>([]);
-  const [usaIA, setUsaIA]               = useState("");
-  const [diasHorario, setDiasHorario]   = useState("");
-  const [motivo, setMotivo]             = useState<string[]>([]);
-  const [motivoOtro, setMotivoOtro]     = useState("");
-  const [plazo, setPlazo]               = useState("");
-  const [comentarios, setComentarios]   = useState("");
+  const [empresa, setEmpresa]               = useState("");
+  const [telefono, setTelefono]             = useState("");
+  const [email, setEmail]                   = useState("");
+  const [clientes, setClientes]             = useState("");
+  const [reclamos, setReclamos]             = useState("");
+  const [servicios, setServicios]           = useState<string[]>([]);       // ✅ FIX 1: estado propio
+  const [serviciosOtro, setServiciosOtro]   = useState("");                 // ✅ FIX 1: estado propio
+  const [canales, setCanales]               = useState<string[]>([]);
+  const [canalesOtro, setCanalesOtro]       = useState("");
+  const [horario, setHorario]               = useState("");
+  const [nivelSoporte, setNivelSoporte]     = useState<string[]>([]);
+  const [cobertura, setCobertura]           = useState<string[]>([]);
+  const [usaIA, setUsaIA]                   = useState("");
+  const [diasHorario, setDiasHorario]       = useState("");
+  const [motivo, setMotivo]                 = useState<string[]>([]);
+  const [motivoOtro, setMotivoOtro]         = useState("");
+  const [plazo, setPlazo]                   = useState("");
+  const [comentarios, setComentarios]       = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -176,6 +178,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
       await submitForm("cotizar-isp", {
         rubro: "ISP / Telecomunicaciones",
         empresa, telefono, email, clientes, reclamos,
+        servicios: servicios.join(", "),
         canales: canales.join(", "),
         horario_actual: horario,
         nivel_soporte: nivelSoporte.join(", "),
@@ -191,59 +194,184 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <ProgressBar step={step} total={4} />
+      <ProgressBar step={step} total={3} /> {/* ✅ FIX 2: total={3} */}
       <AnimatePresence mode="wait">
+
+        {/* ── PASO 1 ── */}
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
-            <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Datos de la empresa</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de contacto.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
+            <div className="mb-5">
+              <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 3</p>
+              <h3 className="text-lg font-display font-bold text-foreground">Datos de la empresa</h3>
+              <p className="text-sm text-muted-foreground">Empecemos con los datos básicos de contacto.</p>
             </div>
-            <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
+            <div>
+              <label className={labelClass}>Nombre de la empresa *</label>
+              <input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} />
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelClass}>Teléfono *</label>
+                <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>Correo electrónico *</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} />
+              </div>
+            </div>
+            <div className="pt-3">
+              <ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">
+                Continuar <ArrowRight size={18} />
+              </ShimmerButton>
+            </div>
           </motion.div>
         )}
+
+        {/* ── PASO 2 ── */}
         {step === 2 && (
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
-            <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Su operación hoy</h3><p className="text-sm text-muted-foreground">Contanos cómo es tu operación actual.</p></div>
-            <div><label className={labelClass}>¿Cuántos clientes tiene en servicio?</label><p className={subClass}>Cantidad aproximada</p><RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={clientes} onChange={setClientes} /></div>
-            <div><label className={labelClass}>¿Cuántos reclamos recibe por mes?</label><p className={subClass}>Todos los canales</p><RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={reclamos} onChange={setReclamos} /></div>
-            <div><label className={labelClass}>¿Por qué canales recibe contactos?</label><p className={subClass}>Seleccione todos los que apliquen</p>
-              <CheckGroup options={["Teléfono / llamada", "WhatsApp", "Email", "Chat web", "Redes sociales", "Otro"]} value={canales} onChange={setCanales} otroTexto={canalesOtro} onOtroTexto={setCanalesOtro} />
+            <div className="mb-5">
+              <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 3</p>
+              <h3 className="text-lg font-display font-bold text-foreground">Su operación hoy</h3>
+              <p className="text-sm text-muted-foreground">Contanos cómo es tu operación actual.</p>
             </div>
-            <div><label className={labelClass}>Horario actual de atención</label><input type="text" value={horario} onChange={e => setHorario(e.target.value)} placeholder="Indicá días y horarios" className={inputClass} /></div>
-            <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(3)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
+
+            {/* ✅ FIX 1: servicios usa sus propias variables, ya no "canales" */}
+            <div>
+              <label className={labelClass}>¿Que servicios ofrece?</label>
+              <p className={subClass}>Seleccione los que aplique</p>
+              <CheckGroup
+                options={["Internet", "TV", "Telefonía IP", "Otro"]}
+                value={servicios}
+                onChange={setServicios}
+                otroTexto={serviciosOtro}
+                onOtroTexto={setServiciosOtro}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>¿Cuántos clientes tiene en servicio?</label>
+              <p className={subClass}>Cantidad aproximada</p>
+              <RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={clientes} onChange={setClientes} />
+            </div>
+            <div>
+              <label className={labelClass}>¿Cuántos reclamos recibe por mes?</label>
+              <p className={subClass}>Todos los canales</p>
+              <RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={reclamos} onChange={setReclamos} />
+            </div>
+
+            <div>
+              <label className={labelClass}>¿Por qué canales recibe contactos?</label>
+              <p className={subClass}>Seleccione todos los que apliquen</p>
+              <CheckGroup
+                options={["Teléfono / llamada", "WhatsApp", "Email", "Chat web", "Redes sociales", "Otro"]}
+                value={canales}
+                onChange={setCanales}
+                otroTexto={canalesOtro}
+                onOtroTexto={setCanalesOtro}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>Horario actual de atención</label>
+              <input type="text" value={horario} onChange={e => setHorario(e.target.value)} placeholder="Indicá días y horarios" className={inputClass} />
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button>
+              <ShimmerButton onClick={() => setStep(3)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton>
+            </div>
           </motion.div>
         )}
+
+        {/* ── PASO 3 (ex pasos 3 + 4 fusionados) ── */}
         {step === 3 && (
           <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
-            <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 3 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Lo que necesita</h3><p className="text-sm text-muted-foreground">Ayudanos a entender qué estás buscando.</p></div>
-            <div><label className={labelClass}>¿Qué nivel de soporte técnico requiere?</label><p className={subClass}>Seleccione una o más opciones</p>
-              <CheckGroup options={["Soporte Nivel 1 (L1): atención inicial, pruebas básicas y resolución de consultas frecuentes", "Soporte Nivel 2 (L2): diagnóstico técnico avanzado y configuración de equipos", "Ambos (L1 + L2)", "No estoy seguro / necesito asesoramiento"]} value={nivelSoporte} onChange={setNivelSoporte} />
+            <div className="mb-5">
+              <p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 3 de 3</p> {/* ✅ FIX 2 */}
+              <h3 className="text-lg font-display font-bold text-foreground">Lo que necesita</h3>
+              <p className="text-sm text-muted-foreground">Ayudanos a entender qué estás buscando.</p>
             </div>
-            <div><label className={labelClass}>¿Qué tipo de cobertura necesita?</label><CheckGroup options={["Refuerzo por desborde de líneas propias", "Cobertura fuera de horario", "Atención completa (reemplazo total)", "Aún no lo tengo definido"]} value={cobertura} onChange={setCobertura} /></div>
-            <div><label className={labelClass}>¿Considera soluciones de IA en su soporte?</label><RadioGroup options={["Sí", "No", "No lo sé"]} value={usaIA} onChange={setUsaIA} /></div>
-            <div><label className={labelClass}>¿Qué días y horario requiere cobertura?</label><input type="text" value={diasHorario} onChange={e => setDiasHorario(e.target.value)} placeholder="Indicá días y horario requerido" className={inputClass} /></div>
-            <div><label className={labelClass}>¿Principal motivo para contratar el servicio?</label>
-              <CheckGroup options={["Reducir costos operativos", "Mejorar la calidad de atención", "Cubrir horarios sin cobertura", "Saturación del equipo interno", "Crecimiento de clientes", "Otro"]} value={motivo} onChange={setMotivo} otroTexto={motivoOtro} onOtroTexto={setMotivoOtro} />
+
+            <div>
+              <label className={labelClass}>¿Qué nivel de soporte técnico requiere?</label>
+              <p className={subClass}>Seleccione una o más opciones</p>
+              <CheckGroup
+                options={[
+                  "Nivel 1 (L1): atención inicial, pruebas básicas y resolución de consultas frecuentes",
+                  "Nivel 2 (L2): diagnóstico técnico avanzado y configuración de equipos",
+                  "Ambos (L1 + L2)",
+                  "No estoy seguro / necesito asesoramiento",
+                ]}
+                value={nivelSoporte}
+                onChange={setNivelSoporte}
+              />
             </div>
-            <div><label className={labelClass}>¿En qué plazo necesita el servicio operativo?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Más de 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
-            <div className="flex gap-3 pt-2"><button type="button" onClick={() => setStep(2)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton onClick={() => setStep(4)} className="flex-1">Continuar <ArrowRight size={18} /></ShimmerButton></div>
-          </motion.div>
-        )}
-        {step === 4 && (
-          <motion.div key="s4" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-6">
-            <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 4 de 4</p><h3 className="text-lg font-display font-bold text-foreground">Último paso</h3><p className="text-sm text-muted-foreground">¿Hay algo más que quieras contarnos antes de enviar?</p></div>
-            <div><label className={labelClass}>Comentarios adicionales</label><textarea rows={4} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
+
+            <div>
+              <label className={labelClass}>¿Qué tipo de cobertura necesita?</label>
+              <CheckGroup
+                options={[
+                  "Refuerzo por desborde de líneas propias",
+                  "Cobertura fuera de horario",
+                  "Atención completa (reemplazo total)",
+                  "Aún no lo tengo definido",
+                ]}
+                value={cobertura}
+                onChange={setCobertura}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>¿Considera soluciones de IA en su soporte?</label>
+              <RadioGroup options={["Sí", "No", "No lo sé"]} value={usaIA} onChange={setUsaIA} />
+            </div>
+
+            <div>
+              <label className={labelClass}>¿En qué plazo necesita el servicio operativo?</label>
+              <RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Más de 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} />
+            </div>
+
+            {/* ✅ FIX 2: contenido del ex-paso 4 fusionado aquí */}
+            <div>
+              <label className={labelClass}>Comentarios adicionales</label>
+              <textarea
+                rows={4}
+                value={comentarios}
+                onChange={e => setComentarios(e.target.value)}
+                placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..."
+                className={`${inputClass} resize-none`}
+              />
+            </div>
+
             <div className="flex flex-col items-start gap-4">
-              <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
-              {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
+              <Turnstile
+                siteKey={TURNSTILE_SITE_KEY}
+                onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }}
+                onError={() => { setTurnstileToken(null); setTurnstileError(true); }}
+                onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }}
+                options={{ theme: "light", size: "normal" }}
+              />
+              {turnstileError && (
+                <div className="flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span>
+                </div>
+              )}
             </div>
-            <div className="flex gap-3"><button type="button" onClick={() => setStep(3)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
-            <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso ni costos ocultos.</p>
+
+            <div className="flex gap-3">
+              <button type="button" onClick={() => setStep(2)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button>
+              <ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">
+                {loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} />
+              </ShimmerButton>
+            </div>
+
+            <p className="text-xs text-muted-foreground text-center">
+              En menos de 48 hs te enviamos una propuesta. Sin compromiso ni costos ocultos.
+            </p>
           </motion.div>
         )}
+
       </AnimatePresence>
     </form>
   );

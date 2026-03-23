@@ -2,6 +2,71 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, MessageCircle } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 
+// ─── Íconos SVG personalizados por bullet ───────────────────────────────────
+ 
+function IconCostos() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-accent mt-1 shrink-0"
+    >
+      <circle cx="10" cy="8" r="5.5" />
+      <path d="M10 5.5v5M8.2 9.2l1.8 1.8 1.8-1.8" />
+      <path d="M6 15.5h8" opacity={0.5} />
+      <path d="M7.5 17.5h5" opacity={0.3} />
+    </svg>
+  );
+}
+ 
+function IconProductividad() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-accent mt-1 shrink-0"
+    >
+      <circle cx="10" cy="10" r="7.5" />
+      <path d="M10 5.5V10l2.5 2" />
+      <path d="M14.5 3.5l1 1" opacity={0.5} />
+    </svg>
+  );
+}
+ 
+function IconEscala() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-accent mt-1 shrink-0"
+    >
+      <polyline points="3,15 8,9 12,12 17,5" />
+      <polyline points="13,5 17,5 17,9" />
+    </svg>
+  );
+}
+ 
+// ─── Componente principal ────────────────────────────────────────────────────
+
+
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -28,20 +93,23 @@ const Hero = () => {
             al cliente
           </motion.h1>
 
+{/* Bullets con íconos personalizados */}
           <motion.ul
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
             className="text-lg md:text-xl text-primary-foreground/75 mb-10 max-w-2xl leading-relaxed space-y-3 list-none"
           >
             <li className="flex items-start gap-3">
-              <Check className="text-accent mt-1 shrink-0" size={18} />
+              <IconCostos />
               <span>Reducimos tus costos operativos y eliminamos tus contingencias laborales.</span>
             </li>
             <li className="flex items-start gap-3">
-              <Check className="text-accent mt-1 shrink-0" size={18} />
+              <IconProductividad />
               <span>Potenciamos la productividad de tu equipo con atención 24/7 y tecnología omnicanal.</span>
             </li>
             <li className="flex items-start gap-3">
-              <Check className="text-accent mt-1 shrink-0" size={18} />
+              <IconEscala />
               <span>Somos la inversión estratégica que tu empresa necesita para escalar.</span>
             </li>
           </motion.ul>
@@ -61,7 +129,7 @@ const Hero = () => {
                 shadow-lg shadow-accent/30
                 transition-opacity hover:opacity-90"
             >
-              Cotizar Ahora
+              Hablemos de tu operación
               <ArrowRight size={20} />
             </a>
 
