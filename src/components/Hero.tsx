@@ -15,17 +15,9 @@ const ANIMATED_WORDS = [
 
 function IconCostos() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="text-accent mt-1 shrink-0"
-    >
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none"
+      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+      strokeLinejoin="round" className="text-accent mt-1 shrink-0">
       <circle cx="10" cy="8" r="5.5" />
       <path d="M10 5.5v5M8.2 9.2l1.8 1.8 1.8-1.8" />
       <path d="M6 15.5h8" opacity={0.5} />
@@ -36,17 +28,9 @@ function IconCostos() {
 
 function IconProductividad() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="text-accent mt-1 shrink-0"
-    >
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none"
+      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+      strokeLinejoin="round" className="text-accent mt-1 shrink-0">
       <circle cx="10" cy="10" r="7.5" />
       <path d="M10 5.5V10l2.5 2" />
       <path d="M14.5 3.5l1 1" opacity={0.5} />
@@ -56,17 +40,9 @@ function IconProductividad() {
 
 function IconEscala() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 20 20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="text-accent mt-1 shrink-0"
-    >
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none"
+      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+      strokeLinejoin="round" className="text-accent mt-1 shrink-0">
       <polyline points="3,15 8,9 12,12 17,5" />
       <polyline points="13,5 17,5 17,9" />
     </svg>
@@ -87,83 +63,95 @@ const Hero = () => {
   }, [titleNumber, titles]);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative min-h-[100svh] md:min-h-screen flex items-start md:items-center overflow-hidden">
       {/* Fondo */}
       <div className="absolute inset-0">
-        <img
-          src={heroBg}
-          alt="Equipo de soporte"
-          className="w-full h-full object-cover"
-        />
+        <img src={heroBg} alt="Equipo de soporte" className="w-full h-full object-cover" />
         <div className="absolute inset-0 hero-gradient opacity-90" />
       </div>
 
-      <div className="container mx-auto relative z-10 py-20 lg:py-28">
+      {/* pt-16 en mobile compensa el navbar fixed. Ajustá si tu navbar tiene otra altura */}
+      <div className="container mx-auto relative z-10 pt-20 pb-10 md:py-20 lg:py-28">
         <div className="max-w-3xl">
 
           {/* Eyebrow */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-accent font-semibold text-sm uppercase tracking-widest mb-4"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="text-accent font-semibold text-xs md:text-sm uppercase tracking-widest mb-3 md:mb-4"
           >
             Desde 2016 transformando la atención al cliente
           </motion.p>
 
-          {/* Título con palabra animada inline */}
+          {/* Título */}
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground leading-tight mb-6"
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="font-display font-bold text-primary-foreground leading-tight mb-4 md:mb-6"
           >
-            Tu equipo externo de{" "}
             {/*
-              Truco de layout: el span invisible con la palabra más larga
-              reserva el ancho exacto para que el título no salte al rotar.
-              La palabra animada se posiciona absolute encima.
+              MOBILE (< md): título en dos líneas limpias.
+              La palabra animada ocupa su propia línea como bloque,
+              con altura fija para que no haya saltos de layout.
             */}
-            <span className="relative inline-flex items-end">
-              <span className="invisible select-none" aria-hidden="true">
-                atención al cliente
-              </span>
+            <span className="md:hidden">
+              <span className="block text-3xl mb-1">Tu equipo externo de</span>
               <AnimatePresence mode="wait">
                 <motion.span
                   key={titleNumber}
-                  className="absolute left-0 bottom-0 text-gradient whitespace-nowrap"
-                  initial={{ opacity: 0, y: 20 }}
+                  className="block text-3xl text-gradient"
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  exit={{ opacity: 0, y: -16 }}
                   transition={{ type: "spring", stiffness: 60, damping: 14 }}
                 >
                   {titles[titleNumber]}
                 </motion.span>
               </AnimatePresence>
             </span>
+
+            {/*
+              DESKTOP (md+): todo inline, span invisible reserva el ancho
+              de la palabra más larga para que el layout no salte.
+            */}
+            <span className="hidden md:inline text-5xl lg:text-6xl">
+              Tu equipo externo de{" "}
+              <span className="relative inline-flex items-end">
+                <span className="invisible select-none" aria-hidden="true">
+                  atención al cliente
+                </span>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={titleNumber}
+                    className="absolute left-0 bottom-0 text-gradient whitespace-nowrap"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ type: "spring", stiffness: 60, damping: 14 }}
+                  >
+                    {titles[titleNumber]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </span>
           </motion.h1>
 
-          {/* Subheadline */}
+          {/* Subheadline — oculto en mobile, visible desde md */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-base md:text-lg text-primary-foreground/70 mb-8 max-w-2xl leading-relaxed"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="hidden md:block text-base lg:text-lg text-primary-foreground/70 mb-8 max-w-[560px] lg:max-w-[640px] leading-relaxed"
           >
-            Resolvé el 75% de los casos en el primer contacto y liberá la capacidad operativa de tu equipo interno.
-            Somos especialistas en operaciones de <br /> alta demanda como{" "}
+            Resolvé el 75% de los casos en el primer contacto y liberá la
+            capacidad operativa de tu equipo interno. Especialistas en
+            operaciones de alta demanda como{" "}
             <span className="text-primary-foreground/90 font-medium">
               ISPs, fintechs y e-commerce
             </span>
             .
           </motion.p>
 
-          {/* Bullets con íconos personalizados */}
+          {/* Bullets */}
           <motion.ul
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="text-base md:text-lg text-primary-foreground/75 mb-10 max-w-2xl leading-relaxed space-y-3 list-none"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="text-sm md:text-base lg:text-lg text-primary-foreground/75 mb-7 md:mb-10 max-w-2xl leading-relaxed space-y-2.5 md:space-y-3 list-none"
           >
             <li className="flex items-start gap-3">
               <IconCostos />
@@ -179,17 +167,15 @@ const Hero = () => {
             </li>
           </motion.ul>
 
-          {/* CTA único */}
+          {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-3 md:gap-4"
           >
             <a
               href="/request"
               className="inline-flex items-center justify-center gap-2
-                px-8 py-4 rounded-lg font-semibold text-lg text-accent-foreground
+                px-6 md:px-8 py-3.5 md:py-4 rounded-lg font-semibold text-base md:text-lg text-accent-foreground
                 animate-shimmer2
                 bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
                 bg-[length:200%_100%]
@@ -199,7 +185,7 @@ const Hero = () => {
             >
               Hablemos de tu operación
               <ArrowRight
-                size={20}
+                size={18}
                 className="transition-transform duration-150 group-hover:translate-x-1"
               />
             </a>
@@ -208,9 +194,9 @@ const Hero = () => {
               href="https://wa.me/5493512193103"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground px-8 py-4 rounded-lg font-semibold text-lg hover:border-accent hover:text-accent transition-colors"
+              className="inline-flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground px-6 md:px-8 py-3.5 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:border-accent hover:text-accent transition-colors"
             >
-              <MessageCircle size={20} />
+              <MessageCircle size={18} />
               WhatsApp
             </a>
           </motion.div>
