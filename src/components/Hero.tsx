@@ -150,9 +150,8 @@ const Hero = () => {
             transition={{ delay: 0.4 }}
             className="text-base md:text-lg text-primary-foreground/70 mb-8 max-w-2xl leading-relaxed"
           >
-            Resolvé más del 70% de los casos en el primer contacto y liberá a
-            tu equipo interno para tareas más rentables. Especialistas en
-            operaciones de alta demanda como{" "}
+            Resolvé el 75% de los casos en el primer contacto y liberá la capacidad operativa de tu equipo interno.
+            Somos especialistas en operaciones de <br /> alta demanda como{" "}
             <span className="text-primary-foreground/90 font-medium">
               ISPs, fintechs y e-commerce
             </span>
