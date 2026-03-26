@@ -3,8 +3,8 @@ import { TrendingDown, Users, Clock, Award, ClipboardList, GraduationCap, Rocket
 import { useEffect, useRef } from "react";
 
 const stats = [
-  { icon: TrendingDown, value: 40,   suffix: "%", label: "Reducción de costos operativos" },
-  { icon: Users,        value: 95,   suffix: "%", label: "Retención de clientes" },
+  { icon: TrendingDown, value: 30,   suffix: "%", label: "Reducción de costos operativos" },
+  { icon: Users,        value: 75,   suffix: "%", label: "Resolución en el primer contacto (FCR)" },
   { icon: Clock,        value: null, display: "24/7", label: "Cobertura sin interrupciones" },
   { icon: Award,        value: 10,   prefix: "+", label: "Años de trayectoria" },
 ];

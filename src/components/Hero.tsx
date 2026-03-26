@@ -1,9 +1,18 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Check, MessageCircle } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 
+// ✏️ CAMBIÁ ESTAS PALABRAS cuando quieras
+const ANIMATED_WORDS = [
+  "soporte técnico",
+  "atención al cliente",
+  "ventas y campañas",
+  "gestión de reclamos",
+];
+
 // ─── Íconos SVG personalizados por bullet ───────────────────────────────────
- 
+
 function IconCostos() {
   return (
     <svg
@@ -24,7 +33,7 @@ function IconCostos() {
     </svg>
   );
 }
- 
+
 function IconProductividad() {
   return (
     <svg
@@ -44,7 +53,7 @@ function IconProductividad() {
     </svg>
   );
 }
- 
+
 function IconEscala() {
   return (
     <svg
@@ -63,62 +72,121 @@ function IconEscala() {
     </svg>
   );
 }
- 
+
 // ─── Componente principal ────────────────────────────────────────────────────
 
-
 const Hero = () => {
+  const titles = useMemo(() => ANIMATED_WORDS, []);
+  const [titleNumber, setTitleNumber] = useState(0);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setTitleNumber((prev) => (prev === titles.length - 1 ? 0 : prev + 1));
+    }, 2200);
+    return () => clearTimeout(id);
+  }, [titleNumber, titles]);
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Fondo */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="Equipo de soporte" className="w-full h-full object-cover" />
+        <img
+          src={heroBg}
+          alt="Equipo de soporte"
+          className="w-full h-full object-cover"
+        />
         <div className="absolute inset-0 hero-gradient opacity-90" />
       </div>
 
       <div className="container mx-auto relative z-10 py-20 lg:py-28">
         <div className="max-w-3xl">
+
+          {/* Eyebrow */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
             className="text-accent font-semibold text-sm uppercase tracking-widest mb-4"
           >
             Desde 2016 transformando la atención al cliente
           </motion.p>
 
+          {/* Título con palabra animada inline */}
           <motion.h1
-            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
             className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-primary-foreground leading-tight mb-6"
           >
             Tu equipo externo de{" "}
-            <span className="text-gradient">soporte y atención</span>{" "}
-            al cliente
+            {/*
+              Truco de layout: el span invisible con la palabra más larga
+              reserva el ancho exacto para que el título no salte al rotar.
+              La palabra animada se posiciona absolute encima.
+            */}
+            <span className="relative inline-flex items-end">
+              <span className="invisible select-none" aria-hidden="true">
+                atención al cliente
+              </span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={titleNumber}
+                  className="absolute left-0 bottom-0 text-gradient whitespace-nowrap"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ type: "spring", stiffness: 60, damping: 14 }}
+                >
+                  {titles[titleNumber]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
           </motion.h1>
 
-{/* Bullets con íconos personalizados */}
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-base md:text-lg text-primary-foreground/70 mb-8 max-w-2xl leading-relaxed"
+          >
+            Resolvé más del 70% de los casos en el primer contacto y liberá a
+            tu equipo interno para tareas más rentables. Especialistas en
+            operaciones de alta demanda como{" "}
+            <span className="text-primary-foreground/90 font-medium">
+              ISPs, fintechs y e-commerce
+            </span>
+            .
+          </motion.p>
+
+          {/* Bullets con íconos personalizados */}
           <motion.ul
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45 }}
-            className="text-lg md:text-xl text-primary-foreground/75 mb-10 max-w-2xl leading-relaxed space-y-3 list-none"
+            transition={{ delay: 0.5 }}
+            className="text-base md:text-lg text-primary-foreground/75 mb-10 max-w-2xl leading-relaxed space-y-3 list-none"
           >
             <li className="flex items-start gap-3">
               <IconCostos />
-              <span>Reducimos tus costos operativos y eliminamos tus contingencias laborales.</span>
+              <span>Reducí costos operativos y evitá contingencias laborales.</span>
             </li>
             <li className="flex items-start gap-3">
               <IconProductividad />
-              <span>Potenciamos la productividad de tu equipo con atención 24/7 y tecnología omnicanal.</span>
+              <span>Atención 24/7 con integración total a tus sistemas.</span>
             </li>
             <li className="flex items-start gap-3">
               <IconEscala />
-              <span>Somos la inversión estratégica que tu empresa necesita para escalar.</span>
+              <span>Nos adaptamos a tus procesos, canales y tono de marca.</span>
             </li>
           </motion.ul>
 
+          {/* CTA único */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            {/* Botón CTA shimmer */}
             <a
               href="/request"
               className="inline-flex items-center justify-center gap-2
@@ -127,10 +195,14 @@ const Hero = () => {
                 bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
                 bg-[length:200%_100%]
                 shadow-lg shadow-accent/30
-                transition-opacity hover:opacity-90"
+                transition-opacity hover:opacity-90
+                group"
             >
               Hablemos de tu operación
-              <ArrowRight size={20} />
+              <ArrowRight
+                size={20}
+                className="transition-transform duration-150 group-hover:translate-x-1"
+              />
             </a>
 
             <a
@@ -143,9 +215,11 @@ const Hero = () => {
               WhatsApp
             </a>
           </motion.div>
+
         </div>
       </div>
 
+      {/* Fade inferior */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
