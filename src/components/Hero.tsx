@@ -85,7 +85,7 @@ const Hero = () => {
           {/* Título */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="font-display font-bold text-primary-foreground leading-tight mb-4 md:mb-6"
+            className="font-display font-bold text-primary-foreground leading-tight mb-6 md:mb-6"
           >
             {/*
               MOBILE (< md): título en dos líneas limpias.
@@ -134,10 +134,10 @@ const Hero = () => {
             </span>
           </motion.h1>
 
-          {/* Subheadline — oculto en mobile, visible desde md */}
+          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-            className="hidden md:block text-base lg:text-lg text-primary-foreground/70 mb-8 max-w-[560px] lg:max-w-[640px] leading-relaxed"
+            className="text-sm md:text-base lg:text-lg text-primary-foreground/70 mb-8 md:mb-8 max-w-[560px] lg:max-w-[640px] leading-relaxed"
           >
             Resolvé el 75% de los casos en el primer contacto y liberá la
             capacidad operativa de tu equipo interno. Especialistas en
@@ -151,7 +151,7 @@ const Hero = () => {
           {/* Bullets */}
           <motion.ul
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-            className="text-sm md:text-base lg:text-lg text-primary-foreground/75 mb-7 md:mb-10 max-w-2xl leading-relaxed space-y-2.5 md:space-y-3 list-none"
+            className="text-sm md:text-base lg:text-lg text-primary-foreground/75 mb-8 md:mb-10 max-w-2xl leading-relaxed space-y-4 md:space-y-3 list-none"
           >
             <li className="flex items-start gap-3">
               <IconCostos />
@@ -194,7 +194,7 @@ const Hero = () => {
               href="https://wa.me/5493512193103"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground px-6 md:px-8 py-3.5 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:border-accent hover:text-accent transition-colors"
+              className="hidden md:inline-flex items-center justify-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground px-6 md:px-8 py-3.5 md:py-4 rounded-lg font-semibold text-base md:text-lg hover:border-accent hover:text-accent transition-colors"
             >
               <MessageCircle size={18} />
               WhatsApp
@@ -205,7 +205,7 @@ const Hero = () => {
       </div>
 
       {/* Fade inferior */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-12 md:h-24 bg-gradient-to-t from-background to-transparent" />
     </section>
   );
 };
