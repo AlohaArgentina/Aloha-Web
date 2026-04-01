@@ -14,7 +14,7 @@ const Footer = () => {
             </a>
             <p className="text-primary-foreground/60 text-sm mt-1">Aloha Argentina SAS</p>
           </div>
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/60">
+          <div id="footer_nav" className="flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/60">
             <a href="#servicios" className="hover:text-accent transition-colors">Servicios</a>
             <a href="#nosotros" className="hover:text-accent transition-colors">Nosotros</a>
             <a href="#tecnologia" className="hover:text-accent transition-colors">Tecnología</a>
