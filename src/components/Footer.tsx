@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="hero-gradient text-primary-foreground py-12">
@@ -24,7 +26,12 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 pt-6 border-t border-primary-foreground/10 text-center text-primary-foreground/40 text-sm">
-          © {new Date().getFullYear()} Aloha Argentina SAS. Todos los derechos reservados.
+          <p>© {new Date().getFullYear()} Aloha Argentina SAS. Todos los derechos reservados.</p>
+          <div className="mt-3 flex justify-center gap-4">
+            <Link to="/privacidad" className="hover:text-accent transition-colors underline underline-offset-2">Política de Privacidad</Link>
+            <span>|</span>
+            <Link to="/terminos" className="hover:text-accent transition-colors underline underline-offset-2">Términos y Condiciones</Link>
+          </div>
         </div>
       </div>
     </footer>

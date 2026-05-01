@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TrabajaConNosotros from "./pages/TrabajaConNosotros";
 import CotizarServicio from "./pages/CotizarServicio";
+import PoliticaPrivacidad from "./pages/PoliticaPrivacidad";
+import TerminosCondiciones from "./pages/TerminosCondiciones";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +22,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/empleos" element={<TrabajaConNosotros />} />
           <Route path="/request" element={<CotizarServicio />} />
+          <Route path="/privacidad" element={<PoliticaPrivacidad />} />
+          <Route path="/terminos" element={<TerminosCondiciones />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
