@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
+import { usePostHog } from "@posthog/react";
 import { motion } from "framer-motion";
 import { Send, Users, TrendingUp, Heart, Star, AlertCircle, CheckCircle, Clock, MessageCircle, CalendarDays, UserCheck } from "lucide-react";
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -109,6 +110,7 @@ function ParticleCanvas() {
 }
 
 const TrabajaConNosotros = () => {
+  const posthog = usePostHog();
   const [form, setForm]                     = useState({ nombre: "", email: "", telefono: "" });
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
@@ -278,7 +280,7 @@ const TrabajaConNosotros = () => {
                     method="POST"
                     data-netlify="true"
                     encType="multipart/form-data"
-                    onSubmit={(e) => { if (!isVerified) e.preventDefault(); }}
+                    onSubmit={(e) => { if (!isVerified) { e.preventDefault(); return; } posthog.capture("job_application_submitted"); }}
                     className="space-y-3 flex-1 flex flex-col"
                   >
                     <input type="hidden" name="form-name" value="trabaja-con-nosotros" />

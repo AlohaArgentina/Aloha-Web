@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { usePostHog } from "@posthog/react";
 import { motion } from "framer-motion";
 import { Send, MessageCircle, MapPin, Mail, Phone, AlertCircle, ArrowRight } from "lucide-react";
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -9,7 +10,13 @@ const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
-  const handleSubmit = () => {};
+  const posthog = usePostHog();
+  const handleSubmit = () => {
+    posthog.capture("contact_form_submitted", {
+      has_phone: !!form.telefono,
+      empresa: form.empresa,
+    });
+  };
   const isVerified = !!turnstileToken;
 
   return (

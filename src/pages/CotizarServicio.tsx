@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { usePostHog } from "@posthog/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, AlertCircle, CheckCircle, Wifi, ShoppingBag, Cpu, Building2, ChevronRight, ArrowRight } from "lucide-react";
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -145,6 +146,7 @@ async function submitForm(formName: string, data: Record<string, string>) {
 // FORMULARIO ISP — 3 pasos (paso 4 fusionado en paso 3)
 // ════════════════════════════════════════════════════════════
 function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
+  const posthog = usePostHog();
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
@@ -188,6 +190,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
         motivo: motivo.join(", "),
         plazo, comentarios,
       });
+      posthog.capture("service_quote_submitted", { sector: "ISP / Telecomunicaciones" });
       onSubmitted();
     } catch { setLoading(false); }
   };
@@ -381,6 +384,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
 // FORMULARIO RETAIL — 2 pasos
 // ════════════════════════════════════════════════════════════
 function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
+  const posthog = usePostHog();
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
@@ -411,6 +415,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
         necesidad: necesidad.join(", "),
         plazo, comentarios,
       });
+      posthog.capture("service_quote_submitted", { sector: "Retail / E-commerce" });
       onSubmitted();
     } catch { setLoading(false); }
   };
@@ -459,6 +464,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
 // FORMULARIO TECNOLOGÍA / SaaS — 2 pasos
 // ════════════════════════════════════════════════════════════
 function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
+  const posthog = usePostHog();
   const [step, setStep]                     = useState(1);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
@@ -489,6 +495,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
         necesidad: necesidad.join(", "),
         plazo, comentarios,
       });
+      posthog.capture("service_quote_submitted", { sector: "Tecnologia / SaaS" });
       onSubmitted();
     } catch { setLoading(false); }
   };
@@ -537,6 +544,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
 // FORMULARIO OTRO RUBRO — 2 pasos
 // ════════════════════════════════════════════════════════════
 function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
+  const posthog = usePostHog();
   const [step, setStep]                       = useState(1);
   const [turnstileToken, setTurnstileToken]   = useState<string | null>(null);
   const [turnstileError, setTurnstileError]   = useState(false);
@@ -565,6 +573,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
         necesidad: necesidad.join(", "),
         plazo, comentarios,
       });
+      posthog.capture("service_quote_submitted", { sector: "Otro" });
       onSubmitted();
     } catch { setLoading(false); }
   };

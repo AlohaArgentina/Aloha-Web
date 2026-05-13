@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { usePostHog } from "@posthog/react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -14,6 +15,7 @@ const navItems = [
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const posthog = usePostHog();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -41,6 +43,7 @@ const Navbar = () => {
           ))}
           {/* Shimmer CTA */}
           <a href="/request"
+            onClick={() => posthog.capture("cta_clicked", { location: "desktop_nav" })}
             className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold text-accent-foreground shadow-md
               animate-shimmer2
               bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
@@ -73,7 +76,7 @@ const Navbar = () => {
                   {item.label}
                 </a>
               ))}
-              <a href="/request" onClick={() => setOpen(false)}
+              <a href="/request" onClick={() => { setOpen(false); posthog.capture("cta_clicked", { location: "mobile_nav" }); }}
                 className="text-sm font-semibold text-center text-accent-foreground px-5 py-2.5 rounded-lg mt-2
                   animate-shimmer2
                   bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
