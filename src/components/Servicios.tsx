@@ -141,7 +141,7 @@ const Servicios = () => {
         >
           <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Servicios</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
-            Soluciones integrales adaptadas a su industria
+            Soluciones adaptadas a tu industria
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Servicios de atención al cliente y soporte técnico diseñados para cada sector.
@@ -177,7 +177,7 @@ const Servicios = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  className="bg-card rounded-xl p-5 border border-border hover:glow-primary transition-shadow duration-300 group"
+                  className="bg-card rounded-xl p-5 border border-border transition-shadow duration-300 group"
                 >
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
                     <s.icon className="text-primary" size={18} />

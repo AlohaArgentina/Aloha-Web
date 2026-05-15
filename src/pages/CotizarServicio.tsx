@@ -210,16 +210,16 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             </div>
             <div>
               <label className={labelClass}>Nombre de la empresa *</label>
-              <input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} />
+              <input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} />
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Teléfono *</label>
-                <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} />
+                <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} />
               </div>
               <div>
                 <label className={labelClass}>Correo electrónico *</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} />
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} />
               </div>
             </div>
             <div className="pt-3">
@@ -427,10 +427,10 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
+            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
+              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
+              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
             </div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -507,10 +507,10 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
+            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
+              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
+              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
             </div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -585,10 +585,10 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" className={inputClass} /></div>
+            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" className={inputClass} /></div>
+              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
+              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
             </div>
             <div><label className={labelClass}>¿A qué se dedica tu empresa?</label><input type="text" value={rubro} onChange={e => setRubro(e.target.value)} placeholder="Describí a qué se dedica" className={inputClass} /></div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
@@ -626,6 +626,7 @@ function ParticleCanvas() {
     const canvas = canvasRef.current; const section = sectionRef.current;
     if (!canvas || !section) return;
     const ctx = canvas.getContext("2d"); if (!ctx) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let rafId: number; let t = 0; const S = 38;
     let dots: { x: number; y: number; phase: number }[] = [];
     const resize = () => { canvas.width = section.offsetWidth; canvas.height = section.offsetHeight; dots = []; for (let x = 0; x < canvas.width + S; x += S) for (let y = 0; y < canvas.height + S; y += S) dots.push({ x, y, phase: Math.random() * Math.PI * 2 }); };

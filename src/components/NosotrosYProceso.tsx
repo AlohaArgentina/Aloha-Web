@@ -76,6 +76,7 @@ const NosotrosYProceso = () => {
     if (!canvas || !section) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const SPACING = 40;
     let dots: { x: number; y: number }[] = [];
@@ -152,7 +153,7 @@ const NosotrosYProceso = () => {
             Nuestra esencia
           </h2>
           <p className="text-primary-foreground/70 text-lg max-w-2xl mx-auto leading-relaxed">
-            Desde 2016, Aloha Argentina se consolida como el socio estratégico en la externalización de procesos de atención al cliente.
+            Desde 2016 ayudamos a empresas a mejorar su atención al cliente sin tener que armar un equipo propio.
           </p>
         </motion.div>
 
@@ -189,7 +190,7 @@ const NosotrosYProceso = () => {
           <ul className="space-y-3 text-primary-foreground/80">
             {[
               "Equipos capacitados y dedicados exclusivamente a tu operación",
-              "Tecnología de punta: WhatsApp Business, Telefonía IP, CRM integrado",
+              "WhatsApp Business, Telefonía IP y CRM conectados con tus sistemas",
               "Métricas en tiempo real y reportes transparentes",
               "Flexibilidad para escalar según tu demanda",
               "Sin inversión inicial en infraestructura",

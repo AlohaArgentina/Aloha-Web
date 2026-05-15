@@ -66,7 +66,7 @@ const Hero = () => {
     <section className="relative min-h-[100svh] md:min-h-screen flex items-start md:items-center overflow-hidden">
       {/* Fondo */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="Equipo de soporte" className="w-full h-full object-cover" />
+        <img src={heroBg} alt="Equipo de soporte" className="w-full h-full object-cover" fetchPriority="high" />
         <div className="absolute inset-0 hero-gradient opacity-90" />
       </div>
 

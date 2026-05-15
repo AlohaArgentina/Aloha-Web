@@ -19,10 +19,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:url" content="https://aloha.net.ar/" />
     <meta property="og:image" content="https://aloha.net.ar/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Aloha Argentina" />
     <meta name="twitter:image" content="https://aloha.net.ar/og-image.png" />
+    <link rel="canonical" href="https://aloha.net.ar/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.png" type="image/png" />
-
 
     <script src="https://t.contentsquare.net/uxa/0c42627f579cf.js"></script>
     <script type="application/ld+json">
@@ -61,6 +64,38 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   "sameAs": []
 }
 </script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cómo garantizan la calidad operativa?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Implementamos procesos de control de calidad continuos con auditorías internas, grabación y monitoreo de interacciones, métricas en tiempo real (SLA, CSAT, FCR) y capacitación permanente de nuestros equipos. Cada cliente cuenta con un responsable de cuenta dedicado que supervisa los indicadores clave."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Sus soluciones poseen compatibilidad con sistemas externos (CRM/ERP)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. Nuestras soluciones se integran nativamente con los principales CRM y ERP del mercado, como Salesforce, HubSpot, Zoho, SAP y sistemas propietarios mediante APIs REST. Trabajamos con tu equipo de IT para garantizar una integración fluida y segura."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Se requiere inversión en infraestructura física?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Toda nuestra operación se basa en infraestructura cloud, lo que elimina la necesidad de inversión en hardware, servidores o instalaciones físicas. Tu empresa accede a tecnología actualizada sin costos de capital, pagando únicamente por el servicio utilizado."
+      }
+    }
+  ]
+}
+</script>
   </head>
 
   <body class="overflow-x-hidden">
@@ -96,6 +131,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="email" name="email" />
       <input type="text" name="clientes" />
       <input type="text" name="reclamos" />
+      <input type="text" name="servicios" />
       <input type="text" name="canales" />
       <input type="text" name="horario_actual" />
       <input type="text" name="tipo_cobertura" />
@@ -116,6 +152,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="text" name="canales" />
       <input type="text" name="necesidad" />
       <input type="text" name="plazo" />
+      <textarea name="comentarios"></textarea>
     </form>
 
     <!-- Netlify Forms: cotizar-tech -->
@@ -128,6 +165,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="text" name="canales_soporte" />
       <input type="text" name="necesidad" />
       <input type="text" name="plazo" />
+      <textarea name="comentarios"></textarea>
     </form>
 
     <!-- Netlify Forms: cotizar-otro -->
@@ -139,6 +177,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="text" name="tamaño_empresa" />
       <input type="text" name="necesidad" />
       <input type="text" name="plazo" />
-    </form>  
+      <textarea name="comentarios"></textarea>
+    </form>
   </body>
 </html>

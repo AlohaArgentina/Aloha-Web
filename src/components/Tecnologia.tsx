@@ -13,7 +13,7 @@ import logoZoiper from "@/assets/logo-zoiper.png";
 import logoWhatsapp from "@/assets/logo-whatsapp-business.png";
 
 const techItems = [
-  { icon: MessageCircle, title: "WhatsApp & Chatbot IA", desc: "Gestión híbrida avanzada: combinamos la eficiencia de la IA con la capacidad resolutiva de nuestro equipo experto." },
+  { icon: MessageCircle, title: "WhatsApp & Chatbot IA", desc: "Automatizamos lo repetitivo con IA y escalamos al equipo humano cuando el caso lo necesita." },
   { icon: Phone, title: "Telefonía IP / VoIP", desc: "Infraestructura de llamadas escalable, sin hardware, con grabación y monitoreo." },
   { icon: Mail, title: "Email & Ticketing", desc: "Gestión centralizada de correos con SLAs y escalamiento automático." },
   { icon: Globe, title: "Redes Sociales", desc: "Respuesta en Facebook, Instagram, Twitter y más desde una única plataforma." },
@@ -36,7 +36,7 @@ const stackLogos = [
 
 const Tecnologia = () => {
   return (
-    <section id="tecnologia" className="py-24 lg:py-32" style={{ backgroundColor: "#e8ecf1" }}>
+    <section id="tecnologia" className="py-24 lg:py-32" style={{ backgroundColor: "hsl(var(--section-tecnologia))" }}>
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,6 +99,7 @@ const Tecnologia = () => {
               <img
                 src={logo.src}
                 alt={logo.alt}
+                loading="lazy"
                 className={`${logo.wide ? "max-h-10 max-w-[180px]" : logo.tall ? "max-h-[70px]" : "max-h-12"} w-auto object-contain transition-all duration-500 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:scale-105`}
                 style={{ mixBlendMode: "multiply" }}
               />

@@ -57,6 +57,9 @@
     --section-alt: 185 30% 96%;
     --glow-primary: 185 70% 30%;
     --glow-accent: 16 85% 58%;
+    --section-tecnologia: 210 20% 91%;
+    --section-clientes: 210 13% 95%;
+    --section-clientes-border: 220 9% 91%;
   }
 
   .dark {

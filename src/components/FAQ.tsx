@@ -38,7 +38,7 @@ const FAQ = () => {
             Preguntas Frecuentes
           </p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
-            Resolución de consultas
+            Lo que más nos preguntan
           </h2>
         </motion.div>
 
