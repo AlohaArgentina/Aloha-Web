@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { usePostHog } from "@posthog/react";
+import { useState, FormEvent } from "react";
+import { usePostHog } from "posthog-js/react";
 import { motion } from "framer-motion";
 import { Send, MessageCircle, MapPin, Mail, Phone, AlertCircle, ArrowRight } from "lucide-react";
 import { Turnstile } from "@marsidev/react-turnstile";
@@ -11,11 +11,25 @@ const Contacto = () => {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
   const posthog = usePostHog();
-  const handleSubmit = () => {
-    posthog.capture("contact_form_submitted", {
-      has_phone: !!form.telefono,
-      empresa: form.empresa,
-    });
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!turnstileToken && !import.meta.env.DEV) {
+      setTurnstileError(true);
+      return;
+    }
+
+    try {
+      posthog.capture("contact_form_submitted", {
+        has_company_name: !!form.empresa.trim(),
+        has_phone: !!form.telefono.trim(),
+        has_email: !!form.email.trim(),
+        all_required_complete:
+          !!form.empresa.trim() && !!form.telefono.trim() && !!form.email.trim(),
+      });
+    } catch (error) {
+      console.error("Error al enviar:", error);
+    }
   };
   const isVerified = !!turnstileToken;
 
@@ -67,7 +81,7 @@ const Contacto = () => {
               )}
               <button
                 type="submit"
-                disabled={!isVerified}
+                disabled={!isVerified && !import.meta.env.DEV}
                 className="inline-flex items-center justify-center gap-2
                   px-8 py-4 rounded-lg font-semibold text-accent-foreground w-[300px]
                   animate-shimmer2
