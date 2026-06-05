@@ -44,7 +44,6 @@ const Tecnologia = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Tecnología</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
             Omnicanalidad de verdad
           </h2>

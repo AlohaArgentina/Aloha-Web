@@ -7,6 +7,7 @@ const navItems = [
   { label: "Servicios",            href: "/#servicios" },
   { label: "Nosotros",             href: "/#nosotros" },
   { label: "Tecnología",           href: "/#tecnologia" },
+  { label: "AlohaAgent",           href: "/#alohaagent" },
   { label: "Casos de Éxito",       href: "/#clientes" },
   { label: "Contacto",             href: "/#contacto" },
   { label: "Trabajá con Nosotros", href: "/empleos" },
@@ -41,14 +42,13 @@ const Navbar = () => {
               {item.label}
             </a>
           ))}
-          {/* Shimmer CTA */}
+          {/* CTA principal */}
           <a href="/request"
             onClick={() => posthog.capture("cta_clicked", { location: "desktop_nav" })}
             className="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-semibold text-accent-foreground shadow-md
-              animate-shimmer2
-              bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
-              bg-[length:200%_100%]
-              transition-opacity hover:opacity-90"
+              bg-accent hover:bg-accent/90
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-secondary
+              transition-colors"
           >
             Hablemos de tu operación
           </a>
@@ -78,9 +78,7 @@ const Navbar = () => {
               ))}
               <a href="/request" onClick={() => { setOpen(false); posthog.capture("cta_clicked", { location: "mobile_nav" }); }}
                 className="text-sm font-semibold text-center text-accent-foreground px-5 py-2.5 rounded-lg mt-2
-                  animate-shimmer2
-                  bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
-                  bg-[length:200%_100%]"
+                  bg-accent hover:bg-accent/90 transition-colors"
               >
                 Hablemos de tu operación
               </a>

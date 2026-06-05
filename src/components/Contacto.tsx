@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { usePostHog } from "posthog-js/react";
 import { motion } from "framer-motion";
 import { Send, MessageCircle, MapPin, Mail, Phone, AlertCircle, ArrowRight, CheckCircle } from "lucide-react";
@@ -7,7 +8,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAACnIcJCY0rNYR6j2";
 
 const labelClass = "block text-sm font-medium text-foreground mb-1";
-const inputClass = "w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition";
+const inputClass = "w-full px-4 py-3 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition";
 
 const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", empresa: "", email: "", telefono: "", mensaje: "" });
@@ -15,6 +16,7 @@ const Contacto = () => {
   const [turnstileError, setTurnstileError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const posthog = usePostHog();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -26,6 +28,7 @@ const Contacto = () => {
     }
 
     setLoading(true);
+    setSubmitError(false);
     try {
       const body = new URLSearchParams({
         "form-name": "contacto-aloha",
@@ -49,6 +52,7 @@ const Contacto = () => {
       setSubmitted(true);
     } catch (error) {
       console.error("Error al enviar:", error);
+      setSubmitError(true);
     } finally {
       setLoading(false);
     }
@@ -85,7 +89,6 @@ const Contacto = () => {
     <section id="contacto" className="py-24 lg:py-32">
       <div className="container mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Contacto</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
             Solicitá tu asesoría gratuita
           </h2>
@@ -142,16 +145,21 @@ const Contacto = () => {
                   <span>La verificación falló o expiró. Por favor, reintentá.</span>
                 </div>
               )}
+              {submitError && (
+                <div role="alert" className="flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle size={16} />
+                  <span>No pudimos enviar tu consulta. Reintentá o escribinos por WhatsApp.</span>
+                </div>
+              )}
               <button
                 type="submit"
                 disabled={(!isVerified && !import.meta.env.DEV) || loading}
                 className="inline-flex items-center justify-center gap-2
-                  px-8 py-4 rounded-lg font-semibold text-accent-foreground w-[300px]
-                  animate-shimmer2
-                  bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
-                  bg-[length:200%_100%]
+                  px-8 py-4 rounded-lg font-semibold text-accent-foreground w-full sm:w-[300px]
+                  bg-accent hover:bg-accent/90
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background
                   disabled:opacity-40 disabled:cursor-not-allowed
-                  transition-opacity hover:opacity-90"
+                  transition-colors"
               >
                 {loading ? "Enviando..." : "Enviar Consulta"}
                 <Send size={18} />
@@ -192,19 +200,19 @@ const Contacto = () => {
               <p className="text-sm text-secondary-foreground/80 leading-relaxed mb-5">
                 Sin compromiso, analizamos tu operación actual y te presentamos un plan de mejora con presupuesto personalizado.
               </p>
-              <a
-                href="/request"
+              <Link
+                to="/request"
+                onClick={() => posthog.capture("cta_clicked", { location: "contacto_asesoria" })}
                 className="inline-flex items-center justify-center gap-2 w-full
                   px-5 py-3 rounded-lg font-semibold text-sm text-accent-foreground
-                  animate-shimmer2
-                  bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
-                  bg-[length:200%_100%]
+                  bg-accent hover:bg-accent/90
                   shadow-md shadow-accent/20
-                  transition-opacity hover:opacity-90"
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-secondary
+                  transition-colors"
               >
                 Cotizar Ahora
                 <ArrowRight size={16} />
-              </a>
+              </Link>
             </div>
           </motion.div>
         </div>

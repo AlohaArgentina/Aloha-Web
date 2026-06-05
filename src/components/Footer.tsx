@@ -17,11 +17,12 @@ const Footer = () => {
             <p className="text-primary-foreground/60 text-sm mt-1">Aloha Argentina SAS</p>
           </div>
           <div id="footer_nav" className="flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/60">
-            <a href="#servicios" className="hover:text-accent transition-colors">Servicios</a>
-            <a href="#nosotros" className="hover:text-accent transition-colors">Nosotros</a>
-            <a href="#tecnologia" className="hover:text-accent transition-colors">Tecnología</a>
-            <a href="#clientes" className="hover:text-accent transition-colors">Casos de Éxito</a>
-            <a href="#contacto" className="hover:text-accent transition-colors">Contacto</a>
+            <a href="/#servicios" className="hover:text-accent transition-colors">Servicios</a>
+            <a href="/#nosotros" className="hover:text-accent transition-colors">Nosotros</a>
+            <a href="/#tecnologia" className="hover:text-accent transition-colors">Tecnología</a>
+            <a href="/#alohaagent" className="hover:text-accent transition-colors">AlohaAgent</a>
+            <a href="/#clientes" className="hover:text-accent transition-colors">Casos de Éxito</a>
+            <a href="/#contacto" className="hover:text-accent transition-colors">Contacto</a>
             <a href="/empleos" className="hover:text-accent transition-colors">Trabajá con Nosotros</a>
           </div>
         </div>

@@ -148,7 +148,6 @@ const NosotrosYProceso = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Nosotros</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
             Nuestra esencia
           </h2>

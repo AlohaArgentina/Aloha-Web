@@ -94,6 +94,11 @@
     @apply bg-background text-foreground font-body antialiased;
   }
 
+  /* Compensa el navbar fijo al saltar a una sección por ancla (#tecnologia, etc.). */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
   }
@@ -121,5 +126,26 @@
 
   .glow-accent {
     box-shadow: 0 0 40px -10px hsl(var(--glow-accent) / 0.3);
+  }
+}
+
+/* Accesibilidad: respetar prefers-reduced-motion en todo el sitio.
+   Neutraliza animaciones CSS (shimmer del CTA, marquee de clientes, keyframes
+   de entrada) para usuarios que pidieron menos movimiento. Las animaciones de
+   framer-motion se manejan vía <MotionConfig reducedMotion="user"> en App.tsx. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* El marquee de logos debe quedar en su posición inicial, no en el frame final. */
+  .animate-scroll {
+    animation: none !important;
+    transform: none !important;
   }
 }

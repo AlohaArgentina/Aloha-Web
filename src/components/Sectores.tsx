@@ -34,7 +34,6 @@ const Sectores = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className="text-accent font-semibold text-sm uppercase tracking-widest mb-3">Sectores</p>
           <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
             Especializados en tu industria
           </h2>

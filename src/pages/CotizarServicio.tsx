@@ -15,18 +15,17 @@ const rubros = [
   { id: "otro",       icon: Building2,   label: "Otro rubro",               desc: "Empresa en crecimiento de cualquier industria" },
 ];
 
-// ── Shimmer Button ───────────────────────────────────────────
+// ── CTA Button ───────────────────────────────────────────────
 function ShimmerButton({ children, className = "", disabled = false, type = "button", onClick }: {
   children: React.ReactNode; className?: string; disabled?: boolean;
   type?: "button" | "submit"; onClick?: () => void;
 }) {
   return (
     <button type={type} disabled={disabled} onClick={onClick}
-      className={`inline-flex items-center justify-center gap-2
-        animate-shimmer2 rounded-lg
-        bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
-        bg-[length:200%_100%] px-8 py-4 font-semibold text-accent-foreground
-        shadow-lg shadow-accent/20 transition-opacity hover:opacity-90
+      className={`inline-flex items-center justify-center gap-2 rounded-lg
+        bg-accent hover:bg-accent/90 px-8 py-4 font-semibold text-accent-foreground
+        shadow-lg shadow-accent/20 transition-colors
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background
         disabled:opacity-40 disabled:cursor-not-allowed ${className}`}>
       {children}
     </button>

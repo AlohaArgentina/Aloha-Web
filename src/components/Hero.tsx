@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 
@@ -54,19 +54,22 @@ function IconEscala() {
 const Hero = () => {
   const titles = useMemo(() => ANIMATED_WORDS, []);
   const [titleNumber, setTitleNumber] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
+    // Respetar prefers-reduced-motion: no rotar el texto (WCAG 2.2.2).
+    if (prefersReducedMotion) return;
     const id = setTimeout(() => {
       setTitleNumber((prev) => (prev === titles.length - 1 ? 0 : prev + 1));
     }, 2200);
     return () => clearTimeout(id);
-  }, [titleNumber, titles]);
+  }, [titleNumber, titles, prefersReducedMotion]);
 
   return (
     <section className="relative min-h-[100svh] md:min-h-screen flex items-start md:items-center overflow-hidden">
       {/* Fondo */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="Equipo de soporte" className="w-full h-full object-cover" fetchPriority="high" />
+        <img src={heroBg} alt="" className="w-full h-full object-cover" fetchPriority="high" />
         <div className="absolute inset-0 hero-gradient opacity-90" />
       </div>
 
@@ -137,7 +140,7 @@ const Hero = () => {
           {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-            className="text-sm md:text-base lg:text-lg text-primary-foreground/70 mb-8 md:mb-8 max-w-[560px] lg:max-w-[640px] leading-relaxed"
+            className="text-sm md:text-base lg:text-lg text-primary-foreground/90 mb-8 md:mb-8 max-w-[560px] lg:max-w-[640px] leading-relaxed"
           >
             Resolvé el 75% de los casos en el primer contacto y liberá la
             capacidad operativa de tu equipo interno. Especialistas en
@@ -151,7 +154,7 @@ const Hero = () => {
           {/* Bullets */}
           <motion.ul
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-            className="text-sm md:text-base lg:text-lg text-primary-foreground/75 mb-8 md:mb-10 max-w-2xl leading-relaxed space-y-4 md:space-y-3 list-none"
+            className="text-sm md:text-base lg:text-lg text-primary-foreground/90 mb-8 md:mb-10 max-w-2xl leading-relaxed space-y-4 md:space-y-3 list-none"
           >
             <li className="flex items-start gap-3">
               <IconCostos />
@@ -176,11 +179,10 @@ const Hero = () => {
               href="/request"
               className="inline-flex items-center justify-center gap-2
                 px-6 md:px-8 py-3.5 md:py-4 rounded-lg font-semibold text-base md:text-lg text-accent-foreground
-                animate-shimmer2
-                bg-[linear-gradient(110deg,hsl(var(--accent)),45%,hsl(var(--accent)/0.65),55%,hsl(var(--accent)))]
-                bg-[length:200%_100%]
+                bg-accent hover:bg-accent/90
                 shadow-lg shadow-accent/30
-                transition-opacity hover:opacity-90
+                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-secondary
+                transition-colors
                 group"
             >
               Hablemos de tu operación
