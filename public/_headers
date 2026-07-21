@@ -1,0 +1,18 @@
+# Cabeceras de seguridad para Netlify.
+# https://docs.netlify.com/routing/headers/
+#
+# Nota: no se incluye Content-Security-Policy todavía. El sitio carga varios
+# scripts de terceros (GTM inline, Contentsquare, PostHog, Turnstile, Calendly)
+# y una CSP mal armada los bloquearía. Conviene construirla y validarla en un
+# deploy preview antes de activarla en producción.
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Los assets con hash en el nombre son inmutables: cache agresivo.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
