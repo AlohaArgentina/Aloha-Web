@@ -5,6 +5,7 @@ import { Send, Users, TrendingUp, Heart, Star, AlertCircle, CheckCircle, Clock, 
 import { Turnstile } from "@marsidev/react-turnstile";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 import { cn } from "@/lib/utils";
 import type { JSX } from "react";
 
@@ -141,6 +142,11 @@ const TrabajaConNosotros = () => {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="Trabajá con nosotros | Aloha Argentina"
+        description="Sumate al equipo de Aloha Argentina. Buscamos personas con empatía y ganas de crecer para atención al cliente y soporte técnico. Enviá tu CV y postulate."
+        path="/empleos"
+      />
       <Navbar />
 
       {/* ── HERO ── */}

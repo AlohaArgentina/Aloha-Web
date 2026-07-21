@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 import { useEffect } from "react";
 
 const TerminosCondiciones = () => {
@@ -9,6 +10,11 @@ const TerminosCondiciones = () => {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="Términos y Condiciones | Aloha Argentina"
+        description="Términos y condiciones de uso del sitio web y los servicios de atención al cliente y soporte técnico de Aloha Argentina."
+        path="/terminos"
+      />
       <Navbar />
 
       {/* Hero header */}
