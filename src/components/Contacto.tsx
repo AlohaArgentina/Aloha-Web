@@ -38,11 +38,14 @@ const Contacto = () => {
         telefono: form.telefono,
         mensaje: form.mensaje,
       });
-      await fetch("/", {
+      const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: body.toString(),
       });
+      if (!response.ok) {
+        throw new Error(`Envío rechazado por el servidor (HTTP ${response.status})`);
+      }
       posthog.capture("contact_form_submitted", {
         has_company_name: !!form.empresa.trim(),
         has_phone: !!form.telefono.trim(),

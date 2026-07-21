@@ -134,11 +134,14 @@ const stepVariants = {
 
 async function submitForm(formName: string, data: Record<string, string>) {
   const body = new URLSearchParams({ "form-name": formName, ...data });
-  await fetch("/", {
+  const response = await fetch("/", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: body.toString(),
   });
+  if (!response.ok) {
+    throw new Error(`Envío rechazado por el servidor (HTTP ${response.status})`);
+  }
 }
 
 // ════════════════════════════════════════════════════════════
@@ -150,6 +153,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
   const [loading, setLoading]               = useState(false);
+  const [submitError, setSubmitError]       = useState(false);
   const isVerified = !!turnstileToken;
 
   const [empresa, setEmpresa]               = useState("");
@@ -175,6 +179,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-isp", {
         rubro: "ISP / Telecomunicaciones",
@@ -191,7 +196,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
       });
       posthog.capture("service_quote_submitted", { sector: "ISP / Telecomunicaciones" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -359,6 +364,11 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
                   <AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span>
                 </div>
               )}
+              {submitError && (
+                <div role="alert" className="flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3">
@@ -390,6 +400,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
   const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
 
+  const [submitError, setSubmitError]   = useState(false);
   const [empresa, setEmpresa]           = useState("");
   const [telefono, setTelefono]         = useState("");
   const [email, setEmail]               = useState("");
@@ -405,6 +416,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-retail", {
         rubro: "Retail / E-commerce",
@@ -416,7 +428,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
       });
       posthog.capture("service_quote_submitted", { sector: "Retail / E-commerce" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -449,6 +461,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
+              {submitError && <div role="alert" className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span></div>}
             </div>
             <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
@@ -470,6 +483,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
   const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
 
+  const [submitError, setSubmitError]       = useState(false);
   const [empresa, setEmpresa]               = useState("");
   const [telefono, setTelefono]             = useState("");
   const [email, setEmail]                   = useState("");
@@ -485,6 +499,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-tech", {
         rubro: "Tecnología / SaaS",
@@ -496,7 +511,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
       });
       posthog.capture("service_quote_submitted", { sector: "Tecnologia / SaaS" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -529,6 +544,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
+              {submitError && <div role="alert" className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span></div>}
             </div>
             <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
@@ -550,6 +566,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
   const [loading, setLoading]                 = useState(false);
   const isVerified = !!turnstileToken;
 
+  const [submitError, setSubmitError]         = useState(false);
   const [empresa, setEmpresa]                 = useState("");
   const [telefono, setTelefono]               = useState("");
   const [email, setEmail]                     = useState("");
@@ -564,6 +581,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-otro", {
         empresa, telefono, email,
@@ -574,7 +592,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
       });
       posthog.capture("service_quote_submitted", { sector: "Otro" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -605,6 +623,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
+              {submitError && <div role="alert" className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span></div>}
             </div>
             <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>

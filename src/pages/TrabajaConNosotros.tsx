@@ -115,7 +115,29 @@ const TrabajaConNosotros = () => {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
   const [submitted, setSubmitted]           = useState(false);
+  const [loading, setLoading]               = useState(false);
+  const [submitError, setSubmitError]       = useState(false);
   const isVerified = !!turnstileToken;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!isVerified) { setTurnstileError(true); return; }
+    setLoading(true);
+    setSubmitError(false);
+    try {
+      const response = await fetch("/", { method: "POST", body: new FormData(e.currentTarget) });
+      if (!response.ok) {
+        throw new Error(`Envío rechazado por el servidor (HTTP ${response.status})`);
+      }
+      posthog.capture("job_application_submitted");
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Error al enviar la postulación:", error);
+      setSubmitError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -280,7 +302,7 @@ const TrabajaConNosotros = () => {
                     method="POST"
                     data-netlify="true"
                     encType="multipart/form-data"
-                    onSubmit={(e) => { if (!isVerified) { e.preventDefault(); return; } posthog.capture("job_application_submitted"); }}
+                    onSubmit={handleSubmit}
                     className="space-y-3 flex-1 flex flex-col"
                   >
                     <input type="hidden" name="form-name" value="trabaja-con-nosotros" />
@@ -324,11 +346,17 @@ const TrabajaConNosotros = () => {
                           <span>La verificación falló. Por favor reintentá.</span>
                         </div>
                       )}
+                      {submitError && (
+                        <div role="alert" className="flex items-center gap-2 text-destructive text-sm">
+                          <AlertCircle size={16} />
+                          <span>No pudimos enviar tu postulación. Reintentá o escribinos por WhatsApp.</span>
+                        </div>
+                      )}
                       <button
-                        type="submit" disabled={!isVerified}
+                        type="submit" disabled={!isVerified || loading}
                         className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition-opacity w-full disabled:opacity-40 disabled:cursor-not-allowed"
                       >
-                        Enviar postulación
+                        {loading ? "Enviando..." : "Enviar postulación"}
                         <Send size={18} />
                       </button>
                     </div>
