@@ -178,7 +178,7 @@ const Contacto = () => {
             <div>
               <h3 className="font-display font-semibold text-foreground mb-4">Otros canales</h3>
               <div className="space-y-4">
-                <a href="https://wa.me/5493512193103" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
+                <a href="https://wa.me/5493512193103" target="_blank" rel="noopener noreferrer" onClick={() => posthog.capture("whatsapp_click", { location: "contacto" })} className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
                   <MessageCircle size={20} className="text-accent" />
                   <span>WhatsApp</span>
                 </a>

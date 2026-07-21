@@ -660,6 +660,7 @@ function ParticleCanvas() {
 // Página principal
 // ════════════════════════════════════════════════════════════
 const CotizarServicio = () => {
+  const posthog = usePostHog();
   const [rubroId, setRubroId]     = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const rubroSeleccionado = rubros.find(r => r.id === rubroId);
@@ -698,7 +699,7 @@ const CotizarServicio = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   {rubros.map((r, i) => (
                     <motion.button key={r.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-                      onClick={() => setRubroId(r.id)}
+                      onClick={() => { setRubroId(r.id); posthog.capture("quote_rubro_selected", { rubro: r.id }); }}
                       className="flex items-start gap-4 bg-card border border-border rounded-xl p-5 text-left hover:border-primary/40 hover:glow-primary transition-all duration-300 group">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors"><r.icon className="text-primary" size={20} /></div>
                       <div className="flex-1"><p className="font-display font-semibold text-foreground text-sm mb-0.5">{r.label}</p><p className="text-xs text-muted-foreground leading-relaxed">{r.desc}</p></div>
