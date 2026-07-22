@@ -1,18 +1,15 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MotionConfig } from "framer-motion";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import TrabajaConNosotros from "./pages/TrabajaConNosotros";
-import CotizarServicio from "./pages/CotizarServicio";
-import PoliticaPrivacidad from "./pages/PoliticaPrivacidad";
-import TerminosCondiciones from "./pages/TerminosCondiciones";
 
-const queryClient = new QueryClient();
+/* Rutas secundarias en lazy-load: no forman parte del bundle inicial de la
+   home, que es la que más importa para el LCP y el SEO. */
+const NotFound = lazy(() => import("./pages/NotFound"));
+const TrabajaConNosotros = lazy(() => import("./pages/TrabajaConNosotros"));
+const CotizarServicio = lazy(() => import("./pages/CotizarServicio"));
+const PoliticaPrivacidad = lazy(() => import("./pages/PoliticaPrivacidad"));
+const TerminosCondiciones = lazy(() => import("./pages/TerminosCondiciones"));
 
 /* Scrollea a la sección del hash (#tecnologia, #contacto, ...) incluso cuando
    se llega desde otra ruta (/empleos, /request). Reintenta unos instantes
@@ -39,25 +36,21 @@ function ScrollToHash() {
 }
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <MotionConfig reducedMotion="user">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <ScrollToHash />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/empleos" element={<TrabajaConNosotros />} />
-            <Route path="/request" element={<CotizarServicio />} />
-            <Route path="/privacidad" element={<PoliticaPrivacidad />} />
-            <Route path="/terminos" element={<TerminosCondiciones />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </MotionConfig>
-  </QueryClientProvider>
+  <MotionConfig reducedMotion="user">
+    <BrowserRouter>
+      <ScrollToHash />
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/empleos" element={<TrabajaConNosotros />} />
+          <Route path="/request" element={<CotizarServicio />} />
+          <Route path="/privacidad" element={<PoliticaPrivacidad />} />
+          <Route path="/terminos" element={<TerminosCondiciones />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  </MotionConfig>
 );
 
 export default App;

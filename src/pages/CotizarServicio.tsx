@@ -5,6 +5,7 @@ import { Send, AlertCircle, CheckCircle, Wifi, ShoppingBag, Cpu, Building2, Chev
 import { Turnstile } from "@marsidev/react-turnstile";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAACnIcJCY0rNYR6j2";
 
@@ -132,13 +133,16 @@ const stepVariants = {
   exit:   { opacity: 0, x: -30 },
 };
 
-async function submitForm(formName: string, data: Record<string, string>) {
-  const body = new URLSearchParams({ "form-name": formName, ...data });
-  await fetch("/", {
+async function submitForm(formName: string, data: Record<string, string>, turnstileToken?: string | null) {
+  const body = new URLSearchParams({ "form-name": formName, "cf-turnstile-response": turnstileToken || "", ...data });
+  const response = await fetch("/", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: body.toString(),
   });
+  if (!response.ok) {
+    throw new Error(`Envío rechazado por el servidor (HTTP ${response.status})`);
+  }
 }
 
 // ════════════════════════════════════════════════════════════
@@ -150,6 +154,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileError, setTurnstileError] = useState(false);
   const [loading, setLoading]               = useState(false);
+  const [submitError, setSubmitError]       = useState(false);
   const isVerified = !!turnstileToken;
 
   const [empresa, setEmpresa]               = useState("");
@@ -175,6 +180,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-isp", {
         rubro: "ISP / Telecomunicaciones",
@@ -188,10 +194,10 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
         dias_horario: diasHorario,
         motivo: motivo.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "ISP / Telecomunicaciones" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -359,6 +365,11 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
                   <AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span>
                 </div>
               )}
+              {submitError && (
+                <div role="alert" className="flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3">
@@ -390,6 +401,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
   const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
 
+  const [submitError, setSubmitError]   = useState(false);
   const [empresa, setEmpresa]           = useState("");
   const [telefono, setTelefono]         = useState("");
   const [email, setEmail]               = useState("");
@@ -405,6 +417,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-retail", {
         rubro: "Retail / E-commerce",
@@ -413,10 +426,10 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
         canales: canales.join(", "),
         necesidad: necesidad.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "Retail / E-commerce" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -449,6 +462,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
+              {submitError && <div role="alert" className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span></div>}
             </div>
             <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
@@ -470,6 +484,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
   const [loading, setLoading]               = useState(false);
   const isVerified = !!turnstileToken;
 
+  const [submitError, setSubmitError]       = useState(false);
   const [empresa, setEmpresa]               = useState("");
   const [telefono, setTelefono]             = useState("");
   const [email, setEmail]                   = useState("");
@@ -485,6 +500,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-tech", {
         rubro: "Tecnología / SaaS",
@@ -493,10 +509,10 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
         canales_soporte: soporte.join(", "),
         necesidad: necesidad.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "Tecnologia / SaaS" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -529,6 +545,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
+              {submitError && <div role="alert" className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span></div>}
             </div>
             <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
@@ -550,6 +567,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
   const [loading, setLoading]                 = useState(false);
   const isVerified = !!turnstileToken;
 
+  const [submitError, setSubmitError]         = useState(false);
   const [empresa, setEmpresa]                 = useState("");
   const [telefono, setTelefono]               = useState("");
   const [email, setEmail]                     = useState("");
@@ -564,6 +582,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
     e.preventDefault();
     if (!isVerified) return;
     setLoading(true);
+    setSubmitError(false);
     try {
       await submitForm("cotizar-otro", {
         empresa, telefono, email,
@@ -571,10 +590,10 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
         tamaño_empresa: tamaño,
         necesidad: necesidad.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "Otro" });
       onSubmitted();
-    } catch { setLoading(false); }
+    } catch { setSubmitError(true); setLoading(false); }
   };
 
   return (
@@ -605,6 +624,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
+              {submitError && <div role="alert" className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>No pudimos enviar tu solicitud. Reintentá o escribinos por WhatsApp.</span></div>}
             </div>
             <div className="flex gap-3"><button type="button" onClick={() => setStep(1)} className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:bg-muted transition-colors">← Atrás</button><ShimmerButton type="submit" disabled={!isVerified || loading} className="flex-1">{loading ? "Enviando..." : "Cotizá tu equipo a medida"} <Send size={18} /></ShimmerButton></div>
             <p className="text-xs text-muted-foreground text-center">En menos de 48 hs te enviamos una propuesta. Sin compromiso.</p>
@@ -640,12 +660,18 @@ function ParticleCanvas() {
 // Página principal
 // ════════════════════════════════════════════════════════════
 const CotizarServicio = () => {
+  const posthog = usePostHog();
   const [rubroId, setRubroId]     = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const rubroSeleccionado = rubros.find(r => r.id === rubroId);
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="Cotizá tu servicio de atención al cliente | Aloha Argentina"
+        description="Contanos sobre tu operación y en menos de 48 hs te enviamos una propuesta de atención al cliente y soporte técnico externo adaptada a tu empresa. Sin costo ni compromiso."
+        path="/request"
+      />
       <Navbar />
       <section className="relative hero-gradient text-primary-foreground overflow-hidden">
         <ParticleCanvas />
@@ -673,7 +699,7 @@ const CotizarServicio = () => {
                 <div className="grid sm:grid-cols-2 gap-4">
                   {rubros.map((r, i) => (
                     <motion.button key={r.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-                      onClick={() => setRubroId(r.id)}
+                      onClick={() => { setRubroId(r.id); posthog.capture("quote_rubro_selected", { rubro: r.id }); }}
                       className="flex items-start gap-4 bg-card border border-border rounded-xl p-5 text-left hover:border-primary/40 hover:glow-primary transition-all duration-300 group">
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors"><r.icon className="text-primary" size={20} /></div>
                       <div className="flex-1"><p className="font-display font-semibold text-foreground text-sm mb-0.5">{r.label}</p><p className="text-xs text-muted-foreground leading-relaxed">{r.desc}</p></div>

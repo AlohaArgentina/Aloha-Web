@@ -32,17 +32,21 @@ const Contacto = () => {
     try {
       const body = new URLSearchParams({
         "form-name": "contacto-aloha",
+        "cf-turnstile-response": turnstileToken || "",
         nombre: form.nombre,
         empresa: form.empresa,
         email: form.email,
         telefono: form.telefono,
         mensaje: form.mensaje,
       });
-      await fetch("/", {
+      const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: body.toString(),
       });
+      if (!response.ok) {
+        throw new Error(`Envío rechazado por el servidor (HTTP ${response.status})`);
+      }
       posthog.capture("contact_form_submitted", {
         has_company_name: !!form.empresa.trim(),
         has_phone: !!form.telefono.trim(),
@@ -175,7 +179,7 @@ const Contacto = () => {
             <div>
               <h3 className="font-display font-semibold text-foreground mb-4">Otros canales</h3>
               <div className="space-y-4">
-                <a href="https://wa.me/5493512193103" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
+                <a href="https://wa.me/5493512193103" target="_blank" rel="noopener noreferrer" onClick={() => posthog.capture("whatsapp_click", { location: "contacto" })} className="flex items-center gap-3 text-foreground hover:text-accent transition-colors">
                   <MessageCircle size={20} className="text-accent" />
                   <span>WhatsApp</span>
                 </a>

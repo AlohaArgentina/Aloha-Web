@@ -5,7 +5,7 @@ import { MessageCircle, CalendarDays, Wifi, CreditCard, UserPlus, ArrowRightLeft
 
 const WHATSAPP_BOT = "5493512135419";
 const DEMO_URL = "https://calendly.com/comercial-aloha/30min";
-const CHATWOOT_IMG = "/panel-chatwoot.png";
+const CHATWOOT_IMG = "/panel-chatwoot.webp";
 
 const WHATSAPP_HREF =
   `https://wa.me/${WHATSAPP_BOT}?text=` +
