@@ -32,6 +32,7 @@ const Contacto = () => {
     try {
       const body = new URLSearchParams({
         "form-name": "contacto-aloha",
+        "cf-turnstile-response": turnstileToken || "",
         nombre: form.nombre,
         empresa: form.empresa,
         email: form.email,

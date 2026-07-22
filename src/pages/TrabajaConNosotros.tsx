@@ -126,7 +126,9 @@ const TrabajaConNosotros = () => {
     setLoading(true);
     setSubmitError(false);
     try {
-      const response = await fetch("/", { method: "POST", body: new FormData(e.currentTarget) });
+      const formData = new FormData(e.currentTarget);
+      formData.set("cf-turnstile-response", turnstileToken || "");
+      const response = await fetch("/", { method: "POST", body: formData });
       if (!response.ok) {
         throw new Error(`Envío rechazado por el servidor (HTTP ${response.status})`);
       }

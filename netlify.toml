@@ -1,0 +1,8 @@
+# Configuración de Netlify.
+# Solo declaramos el directorio de funciones. El comando de build y el
+# directorio de publicación se mantienen como estén configurados en la UI
+# de Netlify (no se sobrescriben acá a propósito).
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

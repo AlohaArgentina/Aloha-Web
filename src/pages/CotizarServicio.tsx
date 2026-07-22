@@ -133,8 +133,8 @@ const stepVariants = {
   exit:   { opacity: 0, x: -30 },
 };
 
-async function submitForm(formName: string, data: Record<string, string>) {
-  const body = new URLSearchParams({ "form-name": formName, ...data });
+async function submitForm(formName: string, data: Record<string, string>, turnstileToken?: string | null) {
+  const body = new URLSearchParams({ "form-name": formName, "cf-turnstile-response": turnstileToken || "", ...data });
   const response = await fetch("/", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -194,7 +194,7 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
         dias_horario: diasHorario,
         motivo: motivo.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "ISP / Telecomunicaciones" });
       onSubmitted();
     } catch { setSubmitError(true); setLoading(false); }
@@ -426,7 +426,7 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
         canales: canales.join(", "),
         necesidad: necesidad.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "Retail / E-commerce" });
       onSubmitted();
     } catch { setSubmitError(true); setLoading(false); }
@@ -509,7 +509,7 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
         canales_soporte: soporte.join(", "),
         necesidad: necesidad.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "Tecnologia / SaaS" });
       onSubmitted();
     } catch { setSubmitError(true); setLoading(false); }
@@ -590,7 +590,7 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
         tamaño_empresa: tamaño,
         necesidad: necesidad.join(", "),
         plazo, comentarios,
-      });
+      }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "Otro" });
       onSubmitted();
     } catch { setSubmitError(true); setLoading(false); }
