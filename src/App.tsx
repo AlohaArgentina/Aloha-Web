@@ -2,6 +2,7 @@ import { MotionConfig } from "framer-motion";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
 import Index from "./pages/Index";
+import CookieBanner from "./components/CookieBanner";
 
 /* Rutas secundarias en lazy-load: no forman parte del bundle inicial de la
    home, que es la que más importa para el LCP y el SEO. */
@@ -49,6 +50,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+      <CookieBanner />
     </BrowserRouter>
   </MotionConfig>
 );

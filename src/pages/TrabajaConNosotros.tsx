@@ -330,8 +330,9 @@ const TrabajaConNosotros = () => {
                       className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition text-sm"
                     />
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">Adjuntá tu CV</label>
+                      <label htmlFor="postulacion-cv" className="block text-sm font-medium text-foreground mb-1.5">Adjuntá tu CV</label>
                       <input
+                        id="postulacion-cv"
                         type="file" name="cv" accept=".pdf,.doc,.docx" required
                         className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground text-sm
                           file:mr-4 file:py-1.5 file:px-4 file:rounded-md file:border-0

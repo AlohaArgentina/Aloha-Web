@@ -24,7 +24,7 @@ const PoliticaPrivacidad = () => {
             Política de Privacidad
           </h1>
           <p className="text-primary-foreground/60 text-sm">
-            Última actualización: Mayo 2026
+            Última actualización: Julio 2026
           </p>
         </div>
       </section>
@@ -75,22 +75,54 @@ const PoliticaPrivacidad = () => {
 
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-3">4. Cookies y Tecnologías de Seguimiento</h2>
-              <p className="leading-relaxed">
-                Nuestro sitio web puede utilizar cookies y tecnologías similares para mejorar la funcionalidad
-                y la experiencia del usuario. Las cookies son pequeños archivos de texto almacenados en su
-                dispositivo. Usted puede configurar su navegador para rechazar cookies, aunque esto puede
-                afectar el funcionamiento de algunas características del sitio.
+              <p className="leading-relaxed mb-3">
+                Utilizamos dos tipos de cookies y tecnologías similares:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-foreground/70">
+                <li>
+                  <strong className="text-foreground/90">Necesarias:</strong> imprescindibles para el
+                  funcionamiento del sitio y la seguridad de los formularios. No requieren consentimiento.
+                </li>
+                <li>
+                  <strong className="text-foreground/90">Analíticas:</strong> nos permiten entender cómo se
+                  utiliza el sitio para mejorarlo. Solo se activan si usted las acepta.
+                </li>
+              </ul>
+              <p className="leading-relaxed mt-3">
+                Al ingresar por primera vez, le solicitamos su consentimiento mediante un aviso. Hasta que
+                usted acepte, no se activan las cookies analíticas. Puede rechazarlas sin que ello afecte el
+                funcionamiento del sitio ni el envío de formularios, y puede modificar su decisión en
+                cualquier momento borrando los datos de navegación de su navegador.
               </p>
             </div>
 
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-3">5. Compartir Información con Terceros</h2>
-              <p className="leading-relaxed">
+              <p className="leading-relaxed mb-3">
                 Aloha no vende, alquila ni comparte información personal con terceros para fines de marketing
                 sin su consentimiento expreso. Podemos compartir información con proveedores de servicios que
                 nos asisten en la operación del sitio web, siempre bajo acuerdos de confidencialidad y
-                únicamente para los fines establecidos en esta política.
+                únicamente para los fines establecidos en esta política. Actualmente utilizamos:
               </p>
+              <ul className="list-disc list-inside space-y-2 text-foreground/70">
+                <li>
+                  <strong className="text-foreground/90">Netlify:</strong> alojamiento del sitio y recepción
+                  de los formularios de contacto, cotización y postulación.
+                </li>
+                <li>
+                  <strong className="text-foreground/90">Cloudflare Turnstile:</strong> verificación
+                  antiautomatización de los formularios. Procesa datos técnicos, como la dirección IP, con la
+                  finalidad de distinguir personas de programas automatizados.
+                </li>
+                <li>
+                  <strong className="text-foreground/90">PostHog:</strong> analítica de uso del sitio. Solo se
+                  activa con su consentimiento.
+                </li>
+                <li>
+                  <strong className="text-foreground/90">Google Tag Manager:</strong> gestión de etiquetas de
+                  medición. Solo se activa con su consentimiento.
+                </li>
+              </ul>
             </div>
 
             <div>
@@ -124,9 +156,20 @@ const PoliticaPrivacidad = () => {
 
             <div>
               <h2 className="text-xl font-semibold text-foreground mb-3">8. Retención de Datos</h2>
-              <p className="leading-relaxed">
+              <p className="leading-relaxed mb-3">
                 Conservaremos su información personal únicamente durante el tiempo necesario para cumplir
                 con los fines para los que fue recopilada, o según lo requieran las leyes y regulaciones aplicables.
+                Como referencia general:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-foreground/70">
+                <li>Consultas y solicitudes de cotización: hasta 12 meses desde el último contacto.</li>
+                <li>Postulaciones laborales y CV: hasta 6 meses desde su recepción.</li>
+                <li>Datos de navegación analíticos: según la configuración del proveedor.</li>
+              </ul>
+              <p className="leading-relaxed mt-3">
+                Cumplido el plazo, los datos se eliminan o se anonimizan, salvo que exista una obligación
+                legal o contractual que exija conservarlos por más tiempo. Puede solicitar su supresión
+                anticipada en cualquier momento según lo indicado en el punto 7.
               </p>
             </div>
 
