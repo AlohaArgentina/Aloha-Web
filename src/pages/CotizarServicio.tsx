@@ -170,9 +170,6 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
   const [nivelSoporte, setNivelSoporte]     = useState<string[]>([]);
   const [cobertura, setCobertura]           = useState<string[]>([]);
   const [usaIA, setUsaIA]                   = useState("");
-  const [diasHorario, setDiasHorario]       = useState("");
-  const [motivo, setMotivo]                 = useState<string[]>([]);
-  const [motivoOtro, setMotivoOtro]         = useState("");
   const [plazo, setPlazo]                   = useState("");
   const [comentarios, setComentarios]       = useState("");
 
@@ -191,8 +188,6 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
         nivel_soporte: nivelSoporte.join(", "),
         tipo_cobertura: cobertura.join(", "),
         usa_ia: usaIA,
-        dias_horario: diasHorario,
-        motivo: motivo.join(", "),
         plazo, comentarios,
       }, turnstileToken);
       posthog.capture("service_quote_submitted", { sector: "ISP / Telecomunicaciones" });
