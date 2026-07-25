@@ -3,12 +3,14 @@ import App from "./App.tsx";
 import "./index.css";
 import posthog from "posthog-js";
 import { PostHogProvider, PostHogErrorBoundary } from "@posthog/react";
+import { getStoredConsent, enableAnalytics } from "@/lib/consent";
 
-if (import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN) {
-  posthog.init(import.meta.env.VITE_PUBLIC_POSTHOG_PROJECT_TOKEN, {
-    api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
-    defaults: "2026-01-30",
-  });
+/* La analítica (PostHog + GTM) solo arranca si el visitante ya dio su
+   consentimiento en una visita anterior. Si todavía no decidió, o si rechazó,
+   no se inicializa nada: cero peticiones y cero cookies de analítica.
+   El banner llama a enableAnalytics() cuando el visitante acepta. */
+if (getStoredConsent() === "accepted") {
+  enableAnalytics();
 }
 
 createRoot(document.getElementById("root")!).render(
