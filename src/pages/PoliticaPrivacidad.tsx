@@ -162,8 +162,8 @@ const PoliticaPrivacidad = () => {
                 Como referencia general:
               </p>
               <ul className="list-disc list-inside space-y-2 text-foreground/70">
-                <li>Consultas y solicitudes de cotización: hasta 24 meses desde el último contacto.</li>
-                <li>Postulaciones laborales y CV: hasta 12 meses desde su recepción.</li>
+                <li>Consultas y solicitudes de cotización: hasta 12 meses desde el último contacto.</li>
+                <li>Postulaciones laborales y CV: hasta 6 meses desde su recepción.</li>
                 <li>Datos de navegación analíticos: según la configuración del proveedor.</li>
               </ul>
               <p className="leading-relaxed mt-3">
