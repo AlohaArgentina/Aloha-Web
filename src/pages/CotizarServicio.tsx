@@ -662,11 +662,7 @@ const CotizarServicio = () => {
 
   return (
     <div className="min-h-screen">
-      <Seo
-        title="Cotizá tu servicio de atención al cliente | Aloha Argentina"
-        description="Contanos sobre tu operación y en menos de 48 hs te enviamos una propuesta de atención al cliente y soporte técnico externo adaptada a tu empresa. Sin costo ni compromiso."
-        path="/request"
-      />
+      <Seo path="/request" />
       <Navbar />
       <section className="relative hero-gradient text-primary-foreground overflow-hidden">
         <ParticleCanvas />

@@ -1,23 +1,12 @@
 import { useEffect } from "react";
+import { SITE_URL, getSeo } from "@/lib/seo-data";
 
-/* Gestión de metadatos por ruta para la SPA.
+/* Mantiene sincronizados los metadatos de la pestaña actual.
 
-   Sin SSR, index.html sirve una sola cabecera (title + canonical apuntando a
-   la home) para TODAS las rutas. Eso hacía que /empleos, /request, etc. se
-   declararan como duplicados de "/" y quedaran fuera del índice de Google.
-
-   Este componente actualiza en cliente el <title>, la meta description, las
-   etiquetas Open Graph/Twitter y el <link rel="canonical"> según la ruta.
-   Googlebot ejecuta JS, así que recoge estos valores actualizados. */
-
-const SITE_URL = "https://aloha.net.ar";
-
-interface SeoProps {
-  title: string;
-  description: string;
-  /** Ruta absoluta del sitio, p. ej. "/empleos". */
-  path: string;
-}
+   El HTML de cada ruta ya se genera con sus metadatos correctos al construir
+   el sitio (ver scripts/prerender.mjs), así que los bots que no ejecutan
+   JavaScript los reciben directamente. Este componente cubre la navegación
+   dentro de la SPA, donde el documento no se vuelve a cargar. */
 
 function upsertMeta(key: "name" | "property", value: string, content: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${key}="${value}"]`);
@@ -39,8 +28,9 @@ function upsertCanonical(href: string) {
   el.setAttribute("href", href);
 }
 
-export default function Seo({ title, description, path }: SeoProps) {
+export default function Seo({ path }: { path: string }) {
   useEffect(() => {
+    const { title, description } = getSeo(path);
     const url = `${SITE_URL}${path}`;
     document.title = title;
     upsertMeta("name", "description", description);
@@ -50,7 +40,7 @@ export default function Seo({ title, description, path }: SeoProps) {
     upsertMeta("name", "twitter:title", title);
     upsertMeta("name", "twitter:description", description);
     upsertCanonical(url);
-  }, [title, description, path]);
+  }, [path]);
 
   return null;
 }

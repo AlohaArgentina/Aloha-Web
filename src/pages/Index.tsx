@@ -13,11 +13,7 @@ import Seo from "@/components/Seo";
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <Seo
-        title="Aloha Argentina | Atención al Cliente y Soporte Técnico"
-        description="Servicios de atención al cliente y soporte técnico externo para ISPs, telecomunicaciones, retail y tecnología. Desde 2016."
-        path="/"
-      />
+      <Seo path="/" />
       <Navbar />
       <Hero />
       <Servicios />

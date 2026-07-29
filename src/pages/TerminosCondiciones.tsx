@@ -10,11 +10,7 @@ const TerminosCondiciones = () => {
 
   return (
     <div className="min-h-screen">
-      <Seo
-        title="Términos y Condiciones | Aloha Argentina"
-        description="Términos y condiciones de uso del sitio web y los servicios de atención al cliente y soporte técnico de Aloha Argentina."
-        path="/terminos"
-      />
+      <Seo path="/terminos" />
       <Navbar />
 
       {/* Hero header */}
