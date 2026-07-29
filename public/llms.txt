@@ -1,0 +1,64 @@
+# Aloha Argentina
+
+> Empresa argentina de tercerización de atención al cliente y soporte técnico
+> (BPO) con base en Córdoba. Desde 2016 opera como equipo externo de atención
+> para ISPs y telecomunicaciones, retail y e-commerce, y empresas de tecnología
+> y SaaS.
+
+## Qué hace
+
+- **Soporte técnico nivel 1 y 2**: diagnóstico, gestión de reclamos, activaciones
+  y cobranzas. Especialidad principal: proveedores de internet.
+- **Atención al cliente omnicanal**: teléfono, WhatsApp, email, chat web y redes
+  sociales gestionados desde una sola plataforma (Chatwoot).
+- **Ventas y campañas**: preventa, posventa, retención y recupero.
+- **AlohaAgent**: agente con IA que resuelve consultas iniciales las 24 horas por
+  WhatsApp, Instagram y chat web, y deriva al equipo humano con el contexto ya
+  cargado.
+
+## Para quién
+
+Empresas que necesitan escalar su atención sin armar un equipo propio:
+ISPs y telecomunicaciones, retail y e-commerce, tecnología y SaaS, y compañías
+en crecimiento de cualquier industria. Opera en Argentina, en español.
+
+## Qué problemas resuelve
+
+- Costo y contingencias laborales de sostener un equipo interno de atención.
+- Cobertura 24/7/365 sin costos fijos de personal nocturno.
+- Canales de contacto dispersos y sin trazabilidad.
+- Consultas repetitivas que saturan al equipo humano.
+- Herramientas de soporte desconectadas del CRM o ERP.
+
+## Cómo trabaja
+
+Implementación en menos de un mes: relevamiento de la operación, armado y
+capacitación del equipo, puesta en marcha con monitoreo, y mejora continua con
+reportes de SLA, CSAT y FCR. Infraestructura en la nube, sin inversión en
+hardware. Integraciones con Salesforce, HubSpot, Zoho, SAP y sistemas propios
+vía API REST.
+
+## Páginas
+
+- [Inicio](https://aloha.net.ar/): propuesta de valor, servicios, tecnología,
+  AlohaAgent, preguntas frecuentes y contacto.
+- [Cotizar un servicio](https://aloha.net.ar/request): formulario por industria
+  para recibir una propuesta.
+- [Trabajá con nosotros](https://aloha.net.ar/empleos): búsquedas laborales y
+  postulación.
+- [Política de Privacidad](https://aloha.net.ar/privacidad)
+- [Términos y Condiciones](https://aloha.net.ar/terminos)
+
+## Contacto
+
+- Email: administracion@aloha.net.ar
+- Teléfono y WhatsApp: +54 9 351 219 3103
+- Ubicación: Córdoba, Argentina
+- Razón social: Aloha Argentina SAS
+
+## Uso de este contenido
+
+El contenido público de este sitio puede leerse y citarse para responder
+consultas, indicando la fuente. Los términos y condiciones restringen la
+extracción masiva y automatizada con fines de reproducción o explotación
+comercial del contenido.

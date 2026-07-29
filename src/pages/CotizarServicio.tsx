@@ -664,6 +664,7 @@ const CotizarServicio = () => {
     <div className="min-h-screen">
       <Seo path="/request" />
       <Navbar />
+      <main>
       <section className="relative hero-gradient text-primary-foreground overflow-hidden">
         <ParticleCanvas />
         <div className="container mx-auto text-center relative z-10 py-28 lg:py-36 max-w-2xl">
@@ -733,6 +734,7 @@ const CotizarServicio = () => {
           </AnimatePresence>
         </div>
       </section>
+      </main>
       <Footer />
     </div>
   );

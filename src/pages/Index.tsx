@@ -15,14 +15,16 @@ const Index = () => {
     <div className="min-h-screen">
       <Seo path="/" />
       <Navbar />
-      <Hero />
-      <Servicios />
-      <NosotrosYProceso />
-      <Tecnologia />
-      <AlohaAgent />
-      <Clientes />
-      <FAQ />
-      <Contacto />
+      <main>
+        <Hero />
+        <Servicios />
+        <NosotrosYProceso />
+        <Tecnologia />
+        <AlohaAgent />
+        <Clientes />
+        <FAQ />
+        <Contacto />
+      </main>
       <Footer />
     </div>
   );

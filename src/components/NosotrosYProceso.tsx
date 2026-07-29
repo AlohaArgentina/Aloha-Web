@@ -1,4 +1,4 @@
-import { motion, animate, useInView } from "framer-motion";
+import { motion, animate, useInView, useReducedMotion } from "framer-motion";
 import { TrendingDown, Users, Clock, Award, ClipboardList, GraduationCap, Rocket, BarChart3 } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -42,24 +42,45 @@ const steps = [
   },
 ];
 
+/* Muestra una métrica y, al entrar en pantalla, la anima contando hasta su valor.
+
+   El valor final se renderiza desde el primer momento: es lo que queda en el
+   HTML estático que leen los buscadores y los asistentes de IA, y lo que ve
+   quien tenga el JavaScript deshabilitado o interrumpa la animación. Antes se
+   renderizaba un cero y solo el contador lo corregía, así que una lectura
+   automática podía quedarse con "0% de reducción de costos".
+
+   La animación es un agregado visual: si no llega a correr, el número correcto
+   ya está en su lugar. */
 function AnimatedNumber({ value, prefix = "", suffix = "", display }: {
   value: number | null; prefix?: string; suffix?: string; display?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const prefersReducedMotion = useReducedMotion();
+  const valorFinal = display ?? prefix + value + suffix;
 
   useEffect(() => {
     if (!inView || value === null || !ref.current) return;
     const node = ref.current;
+
+    // Con "menos movimiento" activado, el número ya está puesto: no se anima.
+    if (prefersReducedMotion) return;
+
     const controls = animate(0, value, {
       duration: 1.8,
       ease: [0.16, 1, 0.3, 1],
       onUpdate(v) { node.textContent = prefix + Math.round(v).toString() + suffix; },
     });
-    return () => controls.stop();
-  }, [inView, value, prefix, suffix]);
+    // Si la animación se interrumpe, se restituye el valor real en lugar de
+    // dejar a la vista una cifra intermedia.
+    return () => {
+      controls.stop();
+      node.textContent = valorFinal;
+    };
+  }, [inView, value, prefix, suffix, prefersReducedMotion, valorFinal]);
 
-  return <span ref={ref}>{display ?? (prefix + "0" + suffix)}</span>;
+  return <span ref={ref}>{valorFinal}</span>;
 }
 
 const NosotrosYProceso = () => {

@@ -12,6 +12,7 @@ const PoliticaPrivacidad = () => {
     <div className="min-h-screen">
       <Seo path="/privacidad" />
       <Navbar />
+      <main>
 
       {/* Hero header */}
       <section className="hero-gradient pt-32 pb-16">
@@ -192,6 +193,7 @@ const PoliticaPrivacidad = () => {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   );
