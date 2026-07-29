@@ -1,64 +1,46 @@
 # Aloha Argentina
 
-> Empresa argentina de tercerización de atención al cliente y soporte técnico
-> (BPO) con base en Córdoba. Desde 2016 opera como equipo externo de atención
-> para ISPs y telecomunicaciones, retail y e-commerce, y empresas de tecnología
-> y SaaS.
+> Aloha Argentina es una empresa de tercerización (BPO) de atención al cliente y soporte técnico para empresas de Argentina, especializada en ISPs/telecomunicaciones, retail/e-commerce y tecnología/SaaS. Opera desde 2016, con sede en Córdoba.
 
-## Qué hace
+Aloha ofrece un equipo externo de atención al cliente y soporte técnico. Según las cifras que la empresa declara en su sitio, alcanza un 75% de resolución en el primer contacto (FCR), una reducción del 30% en costos operativos y más de 10 años de trayectoria, con cobertura 24/7. El servicio incluye atención omnicanal (WhatsApp, telefonía IP, email, chat web y redes sociales), integración con CRM y ERP (Salesforce, HubSpot, Zoho, SAP y sistemas propietarios vía API REST) y AlohaAgent, un asistente conversacional con IA que resuelve consultas iniciales y deriva a un agente humano con el contexto ya cargado.
 
-- **Soporte técnico nivel 1 y 2**: diagnóstico, gestión de reclamos, activaciones
-  y cobranzas. Especialidad principal: proveedores de internet.
-- **Atención al cliente omnicanal**: teléfono, WhatsApp, email, chat web y redes
-  sociales gestionados desde una sola plataforma (Chatwoot).
-- **Ventas y campañas**: preventa, posventa, retención y recupero.
-- **AlohaAgent**: agente con IA que resuelve consultas iniciales las 24 horas por
-  WhatsApp, Instagram y chat web, y deriva al equipo humano con el contexto ya
-  cargado.
+## Servicios por industria
 
-## Para quién
+- [ISPs y Telecomunicaciones](https://aloha.net.ar/#servicios): sector principal de Aloha. Soporte técnico nivel 1 y 2, gestión de reclamos, activaciones y cobranzas para proveedores de internet.
+- [Retail y E-commerce](https://aloha.net.ar/#servicios): atención pre y post venta, gestión de devoluciones, seguimiento de pedidos y fidelización.
+- [Tecnología y SaaS](https://aloha.net.ar/#servicios): help desk especializado, onboarding de usuarios y soporte de producto.
+- [Empresas en crecimiento](https://aloha.net.ar/#servicios): tercerización completa del área de atención al cliente para PyMEs, scale-ups y corporaciones de cualquier rubro.
 
-Empresas que necesitan escalar su atención sin armar un equipo propio:
-ISPs y telecomunicaciones, retail y e-commerce, tecnología y SaaS, y compañías
-en crecimiento de cualquier industria. Opera en Argentina, en español.
+## Producto
 
-## Qué problemas resuelve
+- [AlohaAgent](https://aloha.net.ar/#alohaagent): soporte digital 24/7 por WhatsApp, Instagram y chat web. Resuelve consultas iniciales (estado de conexión, saldo, facturación, captación de contactos fuera de horario) y deriva al agente humano en segundos con el contexto ya cargado. Integrado de forma nativa con Chatwoot.
 
-- Costo y contingencias laborales de sostener un equipo interno de atención.
-- Cobertura 24/7/365 sin costos fijos de personal nocturno.
-- Canales de contacto dispersos y sin trazabilidad.
-- Consultas repetitivas que saturan al equipo humano.
-- Herramientas de soporte desconectadas del CRM o ERP.
+## Empresa
 
-## Cómo trabaja
+- [Sobre Aloha](https://aloha.net.ar/#nosotros): fundada en 2016, con sede en Córdoba, Argentina.
+- [Cómo trabajan](https://aloha.net.ar/#nosotros): proceso por etapas, de la asesoría gratuita al go-live, en menos de un mes.
+- [Tecnología](https://aloha.net.ar/#tecnologia): integraciones con WhatsApp Business, telefonía IP/VoIP, CRM y ERP, y herramientas como Zendesk, Chatwoot, Botmaker y Net2Phone.
 
-Implementación en menos de un mes: relevamiento de la operación, armado y
-capacitación del equipo, puesta en marcha con monitoreo, y mejora continua con
-reportes de SLA, CSAT y FCR. Infraestructura en la nube, sin inversión en
-hardware. Integraciones con Salesforce, HubSpot, Zoho, SAP y sistemas propios
-vía API REST.
+## Problemas que resuelve
 
-## Páginas
+- Costo y contingencias laborales de sostener un equipo interno de atención al cliente.
+- Cobertura 24/7/365 sin asumir costos fijos de personal nocturno o de fin de semana.
+- Canales de contacto dispersos y sin trazabilidad entre teléfono, WhatsApp, email y redes.
+- Consultas repetitivas que saturan al equipo humano y demoran los casos complejos.
+- Herramientas de soporte desconectadas del CRM o el ERP de la empresa.
+- Picos de demanda que exigen escalar o reducir el equipo sin contratar personal fijo.
 
-- [Inicio](https://aloha.net.ar/): propuesta de valor, servicios, tecnología,
-  AlohaAgent, preguntas frecuentes y contacto.
-- [Cotizar un servicio](https://aloha.net.ar/request): formulario por industria
-  para recibir una propuesta.
-- [Trabajá con nosotros](https://aloha.net.ar/empleos): búsquedas laborales y
-  postulación.
-- [Política de Privacidad](https://aloha.net.ar/privacidad)
-- [Términos y Condiciones](https://aloha.net.ar/terminos)
+## Cotizar y contacto
 
-## Contacto
+- [Solicitar cotización](https://aloha.net.ar/request): formulario segmentado por rubro (ISP/Telecom, Retail/E-commerce, Tecnología/SaaS, Otro). Respuesta en menos de 48 hs, sin costo ni compromiso.
+- [Trabajá con nosotros](https://aloha.net.ar/empleos): postulaciones para el equipo de atención al cliente.
+- Contacto directo: WhatsApp +54 9 351 219 3103, email administracion@aloha.net.ar.
 
-- Email: administracion@aloha.net.ar
-- Teléfono y WhatsApp: +54 9 351 219 3103
-- Ubicación: Córdoba, Argentina
-- Razón social: Aloha Argentina SAS
+## Legal
 
-## Uso de este contenido
+- [Política de Privacidad](https://aloha.net.ar/privacidad): tratamiento de datos personales conforme a la Ley N° 25.326 de la República Argentina.
+- [Términos y Condiciones](https://aloha.net.ar/terminos): condiciones de uso del sitio. El contenido público puede leerse y citarse indicando la fuente.
 
-El contenido público de este sitio puede leerse y citarse para responder
-consultas, indicando la fuente. Los términos y condiciones restringen la
-extracción masiva y automatizada con fines de reproducción o explotación
-comercial del contenido.
+## Optional
+
+- [Clientes](https://aloha.net.ar/#clientes): empresas de telecomunicaciones y retail que utilizan los servicios de Aloha, entre ellas Airsat, Fiberty, AVC, 2F Internet, 37 Sur e Intercity.
