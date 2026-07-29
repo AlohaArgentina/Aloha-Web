@@ -6,11 +6,7 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted">
-      <Seo
-        title="Página no encontrada | Aloha Argentina"
-        description="La página que buscás no existe o fue movida."
-        path={location.pathname}
-      />
+      <Seo path={location.pathname} />
       <div className="text-center px-6">
         <h1 className="mb-4 text-5xl font-display font-bold text-foreground">404</h1>
         <p className="mb-6 text-xl text-muted-foreground">Uy, no encontramos esta página.</p>

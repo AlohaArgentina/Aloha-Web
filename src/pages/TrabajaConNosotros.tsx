@@ -21,7 +21,11 @@ interface TextShimmerProps {
 }
 
 function TextShimmer({ children, as: Component = "p", className, duration = 2.5, spread = 2 }: TextShimmerProps) {
-  const MotionComponent = motion(Component as keyof JSX.IntrinsicElements);
+  // Memorizado: crear el componente en cada render lo remontaría y cortaría la animación.
+  const MotionComponent = useMemo(
+    () => motion.create(Component as keyof JSX.IntrinsicElements),
+    [Component]
+  );
   const dynamicSpread = useMemo(() => children.length * spread, [children, spread]);
   return (
     <MotionComponent
@@ -144,11 +148,7 @@ const TrabajaConNosotros = () => {
 
   return (
     <div className="min-h-screen">
-      <Seo
-        title="Trabajá con nosotros | Aloha Argentina"
-        description="Sumate al equipo de Aloha Argentina. Buscamos personas con empatía y ganas de crecer para atención al cliente y soporte técnico. Enviá tu CV y postulate."
-        path="/empleos"
-      />
+      <Seo path="/empleos" />
       <Navbar />
 
       {/* ── HERO ── */}

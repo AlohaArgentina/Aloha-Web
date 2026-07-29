@@ -10,11 +10,7 @@ const PoliticaPrivacidad = () => {
 
   return (
     <div className="min-h-screen">
-      <Seo
-        title="Política de Privacidad | Aloha Argentina"
-        description="Cómo Aloha Argentina recopila, utiliza, almacena y protege tus datos personales, en cumplimiento con la Ley N° 25.326 de Protección de Datos Personales."
-        path="/privacidad"
-      />
+      <Seo path="/privacidad" />
       <Navbar />
 
       {/* Hero header */}

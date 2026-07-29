@@ -71,7 +71,9 @@ const Hero = () => {
     <section className="relative min-h-[100svh] md:min-h-screen flex items-start md:items-center overflow-hidden">
       {/* Fondo */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="" className="w-full h-full object-cover" fetchPriority="high" />
+        {/* fetchpriority en minúscula: React 18 no reconoce la forma camelCase
+            y la descarta al renderizar en el servidor. */}
+        <img src={heroBg} alt="" className="w-full h-full object-cover" {...{ fetchpriority: "high" }} />
         <div className="absolute inset-0 hero-gradient opacity-90" />
       </div>
 
