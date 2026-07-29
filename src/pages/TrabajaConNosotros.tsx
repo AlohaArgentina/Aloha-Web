@@ -150,6 +150,7 @@ const TrabajaConNosotros = () => {
     <div className="min-h-screen">
       <Seo path="/empleos" />
       <Navbar />
+      <main>
 
       {/* ── HERO ── */}
       <section className="relative hero-gradient text-primary-foreground overflow-hidden">
@@ -377,6 +378,7 @@ const TrabajaConNosotros = () => {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   );

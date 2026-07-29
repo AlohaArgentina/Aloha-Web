@@ -12,6 +12,7 @@ const TerminosCondiciones = () => {
     <div className="min-h-screen">
       <Seo path="/terminos" />
       <Navbar />
+      <main>
 
       {/* Hero header */}
       <section className="hero-gradient pt-32 pb-16">
@@ -71,7 +72,13 @@ const TerminosCondiciones = () => {
                 <li>Intentar acceder de manera no autorizada a sistemas o bases de datos de Aloha</li>
                 <li>Reproducir, duplicar o explotar comercialmente cualquier parte del sitio sin autorización</li>
                 <li>Introducir virus, malware o cualquier código malicioso</li>
-                <li>Utilizar herramientas automatizadas para extraer contenido del sitio (scraping)</li>
+                <li>
+                  Extraer contenido del sitio de forma masiva y automatizada (scraping) con el
+                  fin de reproducirlo o explotarlo comercialmente. Queda expresamente permitido
+                  el acceso de buscadores, asistentes de inteligencia artificial y otros
+                  servicios que indexen o citen el contenido público del sitio, conforme a lo
+                  declarado en nuestro archivo robots.txt
+                </li>
               </ul>
             </div>
 
@@ -149,6 +156,7 @@ const TerminosCondiciones = () => {
         </div>
       </section>
 
+      </main>
       <Footer />
     </div>
   );
