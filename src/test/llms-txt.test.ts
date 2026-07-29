@@ -70,6 +70,17 @@ describe("llms.txt", () => {
     expect(llms).toContain(localidad!);
   });
 
+  /* Decisión del 29/07: no se nombran clientes en este archivo. Sus logos siguen
+     en el sitio, pero acá la mención sería explícita y fácil de citar por una IA,
+     y todavía no está pedido el permiso de uso de marca (ver KAN-36). */
+  it("no nombra clientes", () => {
+    const clientes = ["Airsat", "Fiberty", "2F Internet", "37 Sur", "Intercity", "AVC"];
+    for (const cliente of clientes) {
+      expect(llms.toLowerCase(), `no debe nombrarse a ${cliente} sin permiso de uso de marca`)
+        .not.toContain(cliente.toLowerCase());
+    }
+  });
+
   it("no atribuye cifras a Aloha sin aclarar que son declaradas por la empresa", () => {
     // Las métricas (75% FCR, 30% de reducción) no están auditadas por un tercero.
     if (/\b(75\s*%|30\s*%)/.test(llms)) {

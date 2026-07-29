@@ -43,4 +43,4 @@ Aloha ofrece un equipo externo de atención al cliente y soporte técnico. Segú
 
 ## Optional
 
-- [Clientes](https://aloha.net.ar/#clientes): empresas de telecomunicaciones y retail que utilizan los servicios de Aloha, entre ellas Airsat, Fiberty, AVC, 2F Internet, 37 Sur e Intercity.
+- [Clientes](https://aloha.net.ar/#clientes): Aloha presta servicio a proveedores de internet y empresas de retail en Argentina. Los nombres de las empresas no se listan acá; sus marcas figuran en el sitio.
