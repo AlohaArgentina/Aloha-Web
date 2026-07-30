@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render } from "./entry-server";
 import { PRERENDER_PATHS, SEO_BY_PATH } from "./lib/seo-data";
+import { FAQS } from "./lib/faq-data";
 
 /* Estos tests protegen el prerenderizado.
 
@@ -49,6 +50,15 @@ describe("entry-server", () => {
     // compiten por el mismo término en los buscadores.
     const titulos = PRERENDER_PATHS.map((r) => SEO_BY_PATH[r].title);
     expect(new Set(titulos).size).toBe(titulos.length);
+  });
+
+  it("la portada muestra todas las preguntas del FAQ en el HTML estático", () => {
+    const html = render("/");
+    for (const { question } of FAQS) {
+      // El HTML escapa los signos de interrogación de apertura y las tildes.
+      const fragmento = question.replace(/^¿/, "").slice(0, 25);
+      expect(html, `falta la pregunta "${question}" en el HTML`).toContain(fragmento);
+    }
   });
 
   it("falla de forma explícita ante una ruta desconocida", () => {

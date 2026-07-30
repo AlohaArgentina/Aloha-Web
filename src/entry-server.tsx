@@ -44,3 +44,4 @@ export function render(url: string): string {
 }
 
 export { SEO_BY_PATH, PRERENDER_PATHS, SITE_URL } from "./lib/seo-data";
+export { buildFaqJsonLd } from "./lib/faq-data";

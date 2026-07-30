@@ -5,24 +5,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { FAQS } from "@/lib/faq-data";
 
-const faqs = [
-  {
-    question: "¿Cómo garantizan la calidad operativa?",
-    answer:
-      "Implementamos procesos de control de calidad continuos con auditorías internas, grabación y monitoreo de interacciones, métricas en tiempo real (SLA, CSAT, FCR) y capacitación permanente de nuestros equipos. Cada cliente cuenta con un responsable de cuenta dedicado que supervisa los indicadores clave.",
-  },
-  {
-    question: "¿Sus soluciones poseen compatibilidad con sistemas externos (CRM/ERP)?",
-    answer:
-      "Sí. Nuestras soluciones se integran nativamente con los principales CRM y ERP del mercado, como Salesforce, HubSpot, Zoho, SAP y sistemas propietarios mediante APIs REST. Trabajamos con tu equipo de IT para garantizar una integración fluida y segura.",
-  },
-  {
-    question: "¿Se requiere inversión en infraestructura física?",
-    answer:
-      "No. Toda nuestra operación se basa en infraestructura cloud, lo que elimina la necesidad de inversión en hardware, servidores o instalaciones físicas. Tu empresa accede a tecnología de punta sin costos de capital, pagando únicamente por el servicio utilizado.",
-  },
-];
+const faqs = FAQS;
 
 const FAQ = () => {
   return (

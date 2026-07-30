@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dist = path.join(raiz, "dist");
 
-const { render, SEO_BY_PATH, PRERENDER_PATHS, SITE_URL } = await import(
+const { render, SEO_BY_PATH, PRERENDER_PATHS, SITE_URL, buildFaqJsonLd } = await import(
   path.join(raiz, "dist-ssr", "entry-server.js")
 );
 
@@ -57,6 +57,17 @@ for (const ruta of PRERENDER_PATHS) {
     /<link rel="canonical" href="[^"]*" \/>/,
     `<link rel="canonical" href="${url}" />`
   );
+
+  /* El bloque FAQPage va solo en la portada, que es donde el visitante ve las
+     preguntas: Google pide que los datos estructurados correspondan al
+     contenido de esa página. Se genera desde src/lib/faq-data.ts, la misma
+     fuente que alimenta el FAQ visible, así no pueden divergir. */
+  if (ruta === "/") {
+    html = html.replace(
+      "</head>",
+      `    <script type="application/ld+json">\n${buildFaqJsonLd()}\n</script>\n  </head>`
+    );
+  }
 
   const destino = ruta === "/" ? path.join(dist, "index.html") : path.join(dist, ruta, "index.html");
   fs.mkdirSync(path.dirname(destino), { recursive: true });
