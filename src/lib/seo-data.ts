@@ -37,6 +37,11 @@ export const SEO_BY_PATH: Record<string, SeoData> = {
     description:
       "Términos y condiciones de uso del sitio web y los servicios de atención al cliente y soporte técnico de Aloha Argentina.",
   },
+  "/eliminacion-datos": {
+    title: "Eliminación de Datos | Aloha Argentina",
+    description:
+      "Cómo solicitar la eliminación de tus datos personales almacenados por Aloha Argentina: procedimiento, plazos y qué información se elimina.",
+  },
 };
 
 /** Rutas que se prerenderizan al construir el sitio. */

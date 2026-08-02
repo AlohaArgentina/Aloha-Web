@@ -11,6 +11,7 @@ const TrabajaConNosotros = lazy(() => import("./pages/TrabajaConNosotros"));
 const CotizarServicio = lazy(() => import("./pages/CotizarServicio"));
 const PoliticaPrivacidad = lazy(() => import("./pages/PoliticaPrivacidad"));
 const TerminosCondiciones = lazy(() => import("./pages/TerminosCondiciones"));
+const EliminacionDatos = lazy(() => import("./pages/EliminacionDatos"));
 
 /* Scrollea a la sección del hash (#tecnologia, #contacto, ...) incluso cuando
    se llega desde otra ruta (/empleos, /request). Reintenta unos instantes
@@ -47,6 +48,7 @@ const App = () => (
           <Route path="/request" element={<CotizarServicio />} />
           <Route path="/privacidad" element={<PoliticaPrivacidad />} />
           <Route path="/terminos" element={<TerminosCondiciones />} />
+          <Route path="/eliminacion-datos" element={<EliminacionDatos />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

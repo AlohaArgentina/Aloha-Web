@@ -7,6 +7,7 @@ import TrabajaConNosotros from "./pages/TrabajaConNosotros";
 import CotizarServicio from "./pages/CotizarServicio";
 import PoliticaPrivacidad from "./pages/PoliticaPrivacidad";
 import TerminosCondiciones from "./pages/TerminosCondiciones";
+import EliminacionDatos from "./pages/EliminacionDatos";
 
 /* Punto de entrada usado solo al construir el sitio (ver scripts/prerender.mjs).
 
@@ -28,6 +29,7 @@ const PAGES: Record<string, () => JSX.Element> = {
   "/request": CotizarServicio,
   "/privacidad": PoliticaPrivacidad,
   "/terminos": TerminosCondiciones,
+  "/eliminacion-datos": EliminacionDatos,
 };
 
 export function render(url: string): string {

@@ -32,6 +32,8 @@ const Footer = () => {
             <Link to="/privacidad" className="hover:text-accent transition-colors underline underline-offset-2">Política de Privacidad</Link>
             <span>|</span>
             <Link to="/terminos" className="hover:text-accent transition-colors underline underline-offset-2">Términos y Condiciones</Link>
+            <span>|</span>
+            <Link to="/eliminacion-datos" className="hover:text-accent transition-colors underline underline-offset-2">Eliminación de Datos</Link>
           </div>
         </div>
       </div>
