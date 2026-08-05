@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { usePostHog } from "@posthog/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, AlertCircle, CheckCircle, Wifi, ShoppingBag, Cpu, Building2, ChevronRight, ArrowRight } from "lucide-react";
@@ -6,6 +6,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
+import ParticleCanvas from "@/components/ParticleCanvas";
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAACnIcJCY0rNYR6j2";
 
@@ -50,12 +51,14 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
 }
 
 // ── CheckGroup — otroTexto es estado externo para evitar resets ──
-function CheckGroup({ options, value, onChange, otroTexto = "", onOtroTexto }: {
+function CheckGroup({ options, value, onChange, otroTexto = "", onOtroTexto, labelId }: {
   options: string[];
   value: string[];
   onChange: (v: string[]) => void;
   otroTexto?: string;
   onOtroTexto?: (t: string) => void;
+  /** Id de la etiqueta que enuncia la pregunta, para que el grupo se anuncie con ella. */
+  labelId?: string;
 }) {
   const OTRO = "Otro";
   const hasOtro = options.includes(OTRO);
@@ -81,15 +84,20 @@ function CheckGroup({ options, value, onChange, otroTexto = "", onOtroTexto }: {
     onChange(texto.trim() ? [...sinOtro, `Otro: ${texto}`] : [...sinOtro, OTRO]);
   };
 
+  /* Los botones llevan role="checkbox" y aria-checked: sin eso, un lector de
+     pantalla los anuncia como botones comunes y no hay forma de saber cuáles
+     están seleccionados. El contenedor se agrupa para que se lean como un
+     conjunto de opciones y no como botones sueltos. */
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2" role="group" aria-labelledby={labelId}>
         {options.map(opt => {
           const isSelected = opt === OTRO
             ? otroActivo
             : value.includes(opt);
           return (
             <button key={opt} type="button" onClick={() => toggle(opt)}
+              role="checkbox" aria-checked={isSelected}
               className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${isSelected ? "bg-primary/15 border-primary/40 text-primary font-medium" : "border-border bg-background text-muted-foreground hover:border-primary/30"}`}>
               {opt}
             </button>
@@ -110,11 +118,14 @@ function CheckGroup({ options, value, onChange, otroTexto = "", onOtroTexto }: {
   );
 }
 
-function RadioGroup({ options, value, onChange }: { options: string[]; value: string; onChange: (v: string) => void }) {
+/* Selección única. Igual que CheckGroup, los botones necesitan rol y estado
+   explícitos para que se anuncien como opciones y no como botones sueltos. */
+function RadioGroup({ options, value, onChange, labelId }: { options: string[]; value: string; onChange: (v: string) => void; labelId?: string }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2" role="radiogroup" aria-labelledby={labelId}>
       {options.map(opt => (
         <button key={opt} type="button" onClick={() => onChange(opt)}
+          role="radio" aria-checked={value === opt}
           className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${value === opt ? "bg-primary/15 border-primary/40 text-primary font-medium" : "border-border bg-background text-muted-foreground hover:border-primary/30"}`}>
           {opt}
         </button>
@@ -209,17 +220,17 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
               <p className="text-sm text-muted-foreground">Empecemos con los datos básicos de contacto.</p>
             </div>
             <div>
-              <label className={labelClass}>Nombre de la empresa *</label>
-              <input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} />
+              <label htmlFor="empresa" className={labelClass}>Nombre de la empresa *</label>
+              <input id="empresa" type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} />
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className={labelClass}>Teléfono *</label>
-                <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} />
+                <label htmlFor="telefono" className={labelClass}>Teléfono *</label>
+                <input id="telefono" type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>Correo electrónico *</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} />
+                <label htmlFor="email" className={labelClass}>Correo electrónico *</label>
+                <input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} />
               </div>
             </div>
             <div className="pt-3">
@@ -241,9 +252,9 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
 
             {/* ✅ FIX 1: servicios usa sus propias variables, ya no "canales" */}
             <div>
-              <label className={labelClass}>¿Que servicios ofrece?</label>
+              <label id="grupo-1" className={labelClass}>¿Que servicios ofrece?</label>
               <p className={subClass}>Seleccione los que aplique</p>
-              <CheckGroup
+              <CheckGroup labelId="grupo-1"
                 options={["Internet", "TV", "Telefonía IP", "Otro"]}
                 value={servicios}
                 onChange={setServicios}
@@ -253,20 +264,20 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             </div>
 
             <div>
-              <label className={labelClass}>¿Cuántos clientes tiene en servicio?</label>
+              <label id="grupo-2" className={labelClass}>¿Cuántos clientes tiene en servicio?</label>
               <p className={subClass}>Cantidad aproximada</p>
-              <RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={clientes} onChange={setClientes} />
+              <RadioGroup labelId="grupo-2" options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={clientes} onChange={setClientes} />
             </div>
             <div>
-              <label className={labelClass}>¿Cuántos reclamos recibe por mes?</label>
+              <label id="grupo-3" className={labelClass}>¿Cuántos reclamos recibe por mes?</label>
               <p className={subClass}>Todos los canales</p>
-              <RadioGroup options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={reclamos} onChange={setReclamos} />
+              <RadioGroup labelId="grupo-3" options={["Menos de 500", "500 – 2.000", "2.000 – 5.000", "Más de 5.000"]} value={reclamos} onChange={setReclamos} />
             </div>
 
             <div>
-              <label className={labelClass}>¿Por qué canales recibe contactos?</label>
+              <label id="grupo-4" className={labelClass}>¿Por qué canales recibe contactos?</label>
               <p className={subClass}>Seleccione todos los que apliquen</p>
-              <CheckGroup
+              <CheckGroup labelId="grupo-4"
                 options={["Teléfono / llamada", "WhatsApp", "Email", "Chat web", "Redes sociales", "Otro"]}
                 value={canales}
                 onChange={setCanales}
@@ -276,8 +287,8 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             </div>
 
             <div>
-              <label className={labelClass}>Horario actual de atención</label>
-              <input type="text" value={horario} onChange={e => setHorario(e.target.value)} placeholder="Indicá días y horarios" className={inputClass} />
+              <label htmlFor="horario" className={labelClass}>Horario actual de atención</label>
+              <input id="horario" type="text" value={horario} onChange={e => setHorario(e.target.value)} placeholder="Indicá días y horarios" className={inputClass} />
             </div>
 
             <div className="flex gap-3 pt-2">
@@ -297,9 +308,9 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             </div>
 
             <div>
-              <label className={labelClass}>¿Qué nivel de soporte técnico requiere?</label>
+              <label id="grupo-5" className={labelClass}>¿Qué nivel de soporte técnico requiere?</label>
               <p className={subClass}>Seleccione una o más opciones</p>
-              <CheckGroup
+              <CheckGroup labelId="grupo-5"
                 options={[
                   "Nivel 1 (L1): atención inicial, pruebas básicas y resolución de consultas frecuentes",
                   "Nivel 2 (L2): diagnóstico técnico avanzado y configuración de equipos",
@@ -312,8 +323,8 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             </div>
 
             <div>
-              <label className={labelClass}>¿Qué tipo de cobertura necesita?</label>
-              <CheckGroup
+              <label id="grupo-6" className={labelClass}>¿Qué tipo de cobertura necesita?</label>
+              <CheckGroup labelId="grupo-6"
                 options={[
                   "Refuerzo por desborde de líneas propias",
                   "Cobertura fuera de horario",
@@ -326,19 +337,19 @@ function FormularioISP({ onSubmitted }: { onSubmitted: () => void }) {
             </div>
 
             <div>
-              <label className={labelClass}>¿Considera soluciones de IA en su soporte?</label>
-              <RadioGroup options={["Sí", "No", "No lo sé"]} value={usaIA} onChange={setUsaIA} />
+              <label id="grupo-7" className={labelClass}>¿Considera soluciones de IA en su soporte?</label>
+              <RadioGroup labelId="grupo-7" options={["Sí", "No", "No lo sé"]} value={usaIA} onChange={setUsaIA} />
             </div>
 
             <div>
-              <label className={labelClass}>¿En qué plazo necesita el servicio operativo?</label>
-              <RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Más de 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} />
+              <label id="grupo-8" className={labelClass}>¿En qué plazo necesita el servicio operativo?</label>
+              <RadioGroup labelId="grupo-8" options={["Menos de 1 mes", "1 – 3 meses", "Más de 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} />
             </div>
 
             {/* ✅ FIX 2: contenido del ex-paso 4 fusionado aquí */}
             <div>
-              <label className={labelClass}>Comentarios adicionales</label>
-              <textarea
+              <label htmlFor="comentarios" className={labelClass}>Comentarios adicionales</label>
+              <textarea id="comentarios"
                 rows={4}
                 value={comentarios}
                 onChange={e => setComentarios(e.target.value)}
@@ -434,10 +445,10 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
+            <div><label htmlFor="empresa-2" className={labelClass}>Nombre de la empresa *</label><input id="empresa-2" type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
+              <div><label htmlFor="telefono-2" className={labelClass}>Teléfono *</label><input id="telefono-2" type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
+              <div><label htmlFor="email-2" className={labelClass}>Correo electrónico *</label><input id="email-2" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
             </div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -445,15 +456,15 @@ function FormularioRetail({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 2 && (
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-5">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Tu operación</h3><p className="text-sm text-muted-foreground">Algunas preguntas rápidas para armar tu propuesta.</p></div>
-            <div><label className={labelClass}>¿Cuántos pedidos / consultas recibís por mes?</label><RadioGroup options={["Menos de 200", "200 – 1.000", "1.000 – 5.000", "Más de 5.000"]} value={volumen} onChange={setVolumen} /></div>
-            <div><label className={labelClass}>¿Por qué canales atienden actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p>
-              <CheckGroup options={["Teléfono", "WhatsApp", "Email", "Chat web", "Redes sociales", "Marketplace", "Otro"]} value={canales} onChange={setCanales} otroTexto={canalesOtro} onOtroTexto={setCanalesOtro} />
+            <div><label id="grupo-9" className={labelClass}>¿Cuántos pedidos / consultas recibís por mes?</label><RadioGroup labelId="grupo-9" options={["Menos de 200", "200 – 1.000", "1.000 – 5.000", "Más de 5.000"]} value={volumen} onChange={setVolumen} /></div>
+            <div><label id="grupo-10" className={labelClass}>¿Por qué canales atienden actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p>
+              <CheckGroup labelId="grupo-10" options={["Teléfono", "WhatsApp", "Email", "Chat web", "Redes sociales", "Marketplace", "Otro"]} value={canales} onChange={setCanales} otroTexto={canalesOtro} onOtroTexto={setCanalesOtro} />
             </div>
-            <div><label className={labelClass}>¿Qué necesitás mejorar?</label>
-              <CheckGroup options={["Atención pre-venta", "Soporte post-venta", "Gestión de devoluciones", "Atención fuera de horario", "Reducir costos operativos", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
+            <div><label id="grupo-11" className={labelClass}>¿Qué necesitás mejorar?</label>
+              <CheckGroup labelId="grupo-11" options={["Atención pre-venta", "Soporte post-venta", "Gestión de devoluciones", "Atención fuera de horario", "Reducir costos operativos", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
             </div>
-            <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
-            <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
+            <div><label id="grupo-12" className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup labelId="grupo-12" options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
+            <div><label htmlFor="comentarios-2" className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea id="comentarios-2" rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
@@ -517,10 +528,10 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
+            <div><label htmlFor="empresa-3" className={labelClass}>Nombre de la empresa *</label><input id="empresa-3" type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
+              <div><label htmlFor="telefono-3" className={labelClass}>Teléfono *</label><input id="telefono-3" type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
+              <div><label htmlFor="email-3" className={labelClass}>Correo electrónico *</label><input id="email-3" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
             </div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
@@ -528,15 +539,15 @@ function FormularioTech({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 2 && (
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-5">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Tu producto y soporte</h3><p className="text-sm text-muted-foreground">Algunas preguntas rápidas para armar tu propuesta.</p></div>
-            <div><label className={labelClass}>¿Cuántos usuarios activos tiene tu producto?</label><RadioGroup options={["Menos de 500", "500 – 5.000", "5.000 – 20.000", "Más de 20.000"]} value={usuarios} onChange={setUsuarios} /></div>
-            <div><label className={labelClass}>¿Qué canales de soporte ofrecés actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p>
-              <CheckGroup options={["Email / ticket", "Chat en vivo", "WhatsApp", "Teléfono", "Base de conocimiento", "Sin soporte aún", "Otro"]} value={soporte} onChange={setSoporte} otroTexto={soporteOtro} onOtroTexto={setSoporteOtro} />
+            <div><label id="grupo-13" className={labelClass}>¿Cuántos usuarios activos tiene tu producto?</label><RadioGroup labelId="grupo-13" options={["Menos de 500", "500 – 5.000", "5.000 – 20.000", "Más de 20.000"]} value={usuarios} onChange={setUsuarios} /></div>
+            <div><label id="grupo-14" className={labelClass}>¿Qué canales de soporte ofrecés actualmente?</label><p className={subClass}>Seleccione todos los que apliquen</p>
+              <CheckGroup labelId="grupo-14" options={["Email / ticket", "Chat en vivo", "WhatsApp", "Teléfono", "Base de conocimiento", "Sin soporte aún", "Otro"]} value={soporte} onChange={setSoporte} otroTexto={soporteOtro} onOtroTexto={setSoporteOtro} />
             </div>
-            <div><label className={labelClass}>¿Qué necesitás mejorar?</label>
-              <CheckGroup options={["Help desk nivel 1 y 2", "Onboarding de nuevos usuarios", "Soporte fuera de horario", "Reducir tiempo de respuesta", "Escalar el equipo de soporte", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
+            <div><label id="grupo-15" className={labelClass}>¿Qué necesitás mejorar?</label>
+              <CheckGroup labelId="grupo-15" options={["Help desk nivel 1 y 2", "Onboarding de nuevos usuarios", "Soporte fuera de horario", "Reducir tiempo de respuesta", "Escalar el equipo de soporte", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
             </div>
-            <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
-            <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
+            <div><label id="grupo-16" className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup labelId="grupo-16" options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
+            <div><label htmlFor="comentarios-3" className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea id="comentarios-3" rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
@@ -598,24 +609,24 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
         {step === 1 && (
           <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-4">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 1 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Datos de contacto</h3><p className="text-sm text-muted-foreground">Empecemos con los datos básicos de tu empresa.</p></div>
-            <div><label className={labelClass}>Nombre de la empresa *</label><input type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
+            <div><label htmlFor="empresa-4" className={labelClass}>Nombre de la empresa *</label><input id="empresa-4" type="text" value={empresa} onChange={e => setEmpresa(e.target.value)} placeholder="Nombre de tu empresa" autoComplete="organization" className={inputClass} /></div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <div><label className={labelClass}>Teléfono *</label><input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
-              <div><label className={labelClass}>Correo electrónico *</label><input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
+              <div><label htmlFor="telefono-4" className={labelClass}>Teléfono *</label><input id="telefono-4" type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Teléfono de contacto" autoComplete="tel" className={inputClass} /></div>
+              <div><label htmlFor="email-4" className={labelClass}>Correo electrónico *</label><input id="email-4" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="correo@tuempresa.com" autoComplete="email" className={inputClass} /></div>
             </div>
-            <div><label className={labelClass}>¿A qué se dedica tu empresa?</label><input type="text" value={rubro} onChange={e => setRubro(e.target.value)} placeholder="Describí a qué se dedica" className={inputClass} /></div>
+            <div><label htmlFor="rubro" className={labelClass}>¿A qué se dedica tu empresa?</label><input id="rubro" type="text" value={rubro} onChange={e => setRubro(e.target.value)} placeholder="Describí a qué se dedica" className={inputClass} /></div>
             <div className="pt-3"><ShimmerButton onClick={() => { if (empresa && telefono && email) setStep(2); }} disabled={!empresa || !telefono || !email} className="w-full">Continuar <ArrowRight size={18} /></ShimmerButton></div>
           </motion.div>
         )}
         {step === 2 && (
           <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3 }} className="space-y-5">
             <div className="mb-5"><p className="text-xs font-semibold text-accent uppercase tracking-widest mb-1">Paso 2 de 2</p><h3 className="text-lg font-display font-bold text-foreground">Tu empresa y necesidades</h3><p className="text-sm text-muted-foreground">Algunas preguntas rápidas para armar tu propuesta.</p></div>
-            <div><label className={labelClass}>¿De qué tamaño es tu empresa?</label><RadioGroup options={["1 – 10 empleados", "10 – 50 empleados", "50 – 200 empleados", "Más de 200 empleados"]} value={tamaño} onChange={setTamaño} /></div>
-            <div><label className={labelClass}>¿Qué necesitás mejorar en tu atención?</label>
-              <CheckGroup options={["Reducir costos operativos", "Ampliar horario de atención", "Mejorar la calidad del servicio", "Escalar sin contratar personal fijo", "Atención multicanal", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
+            <div><label id="grupo-17" className={labelClass}>¿De qué tamaño es tu empresa?</label><RadioGroup labelId="grupo-17" options={["1 – 10 empleados", "10 – 50 empleados", "50 – 200 empleados", "Más de 200 empleados"]} value={tamaño} onChange={setTamaño} /></div>
+            <div><label id="grupo-18" className={labelClass}>¿Qué necesitás mejorar en tu atención?</label>
+              <CheckGroup labelId="grupo-18" options={["Reducir costos operativos", "Ampliar horario de atención", "Mejorar la calidad del servicio", "Escalar sin contratar personal fijo", "Atención multicanal", "Otro"]} value={necesidad} onChange={setNecesidad} otroTexto={necesidadOtro} onOtroTexto={setNecesidadOtro} />
             </div>
-            <div><label className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
-            <div><label className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
+            <div><label id="grupo-19" className={labelClass}>¿En qué plazo necesitás el servicio?</label><RadioGroup labelId="grupo-19" options={["Menos de 1 mes", "1 – 3 meses", "Estoy evaluando"]} value={plazo} onChange={setPlazo} /></div>
+            <div><label htmlFor="comentarios-4" className={labelClass}>Comentarios adicionales <span className="text-muted-foreground font-normal">(opcional)</span></label><textarea id="comentarios-4" rows={3} value={comentarios} onChange={e => setComentarios(e.target.value)} placeholder="Cualquier detalle que nos ayude a preparar una propuesta más precisa..." className={`${inputClass} resize-none`} /></div>
             <div className="flex flex-col items-start gap-4 pt-2">
               <Turnstile siteKey={TURNSTILE_SITE_KEY} onSuccess={(t) => { setTurnstileToken(t); setTurnstileError(false); }} onError={() => { setTurnstileToken(null); setTurnstileError(true); }} onExpire={() => { setTurnstileToken(null); setTurnstileError(true); }} options={{ theme: "light", size: "normal" }} />
               {turnstileError && <div className="flex items-center gap-2 text-destructive text-sm"><AlertCircle size={16} /><span>La verificación falló. Por favor reintentá.</span></div>}
@@ -633,23 +644,6 @@ function FormularioOtro({ onSubmitted }: { onSubmitted: () => void }) {
 // ════════════════════════════════════════════════════════════
 // Canvas de partículas
 // ════════════════════════════════════════════════════════════
-function ParticleCanvas() {
-  const canvasRef  = useRef<HTMLCanvasElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const canvas = canvasRef.current; const section = sectionRef.current;
-    if (!canvas || !section) return;
-    const ctx = canvas.getContext("2d"); if (!ctx) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let rafId: number; let t = 0; const S = 38;
-    let dots: { x: number; y: number; phase: number }[] = [];
-    const resize = () => { canvas.width = section.offsetWidth; canvas.height = section.offsetHeight; dots = []; for (let x = 0; x < canvas.width + S; x += S) for (let y = 0; y < canvas.height + S; y += S) dots.push({ x, y, phase: Math.random() * Math.PI * 2 }); };
-    const draw = () => { ctx.clearRect(0, 0, canvas.width, canvas.height); t += 0.008; for (const d of dots) { const p = 0.5 + 0.5 * Math.sin(t + d.phase); ctx.beginPath(); ctx.arc(d.x, d.y, 1 + p * 1.2, 0, Math.PI * 2); ctx.fillStyle = `rgba(31,200,184,${0.04 + p * 0.18})`; ctx.fill(); } rafId = requestAnimationFrame(draw); };
-    resize(); draw(); window.addEventListener("resize", resize);
-    return () => { cancelAnimationFrame(rafId); window.removeEventListener("resize", resize); };
-  }, []);
-  return <div ref={sectionRef} className="absolute inset-0 pointer-events-none"><canvas ref={canvasRef} className="absolute inset-0" /></div>;
-}
 
 // ════════════════════════════════════════════════════════════
 // Página principal

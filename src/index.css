@@ -1,10 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+/* Las tipografías de Google se cargan con <link> desde index.html, no con
+   @import: un @import obliga al navegador a descargar primero esta hoja de
+   estilos, leerla y recién entonces pedir las fuentes, en cascada. El <link>
+   las pide en paralelo. */
 
 @font-face {
   font-family: 'RidleyGrotesk-Bold';
-  src: url('/fonts/RidleyGrotesk-Bold.ttf') format('truetype');
+  src: url('/fonts/RidleyGrotesk-Bold.woff2') format('woff2'),
+       url('/fonts/RidleyGrotesk-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
+  /* Sin esto el texto queda invisible hasta que la fuente termina de cargar. */
+  font-display: swap;
 }
 
 @tailwind base;
