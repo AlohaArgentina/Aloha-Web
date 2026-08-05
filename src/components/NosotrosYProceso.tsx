@@ -111,7 +111,16 @@ const NosotrosYProceso = () => {
           dots.push({ x, y });
     };
 
+    /* La animación se detiene cuando la sección sale de pantalla. Antes seguía
+       corriendo indefinidamente, gastando procesador y batería mientras el
+       visitante leía cualquier otra parte de la página. */
+    let visible = true;
+
     const draw = () => {
+      if (!visible) {
+        rafRef.current = undefined;
+        return;
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const { x: mx, y: my } = mouseRef.current;
       const RADIUS = 130;
@@ -139,6 +148,12 @@ const NosotrosYProceso = () => {
     };
     const onMouseLeave = () => { mouseRef.current = { x: -9999, y: -9999 }; };
 
+    const observador = new IntersectionObserver(([entrada]) => {
+      visible = entrada.isIntersecting;
+      if (visible && rafRef.current === undefined) rafRef.current = requestAnimationFrame(draw);
+    });
+    observador.observe(section);
+
     resize();
     draw();
     section.addEventListener("mousemove",  onMouseMove);
@@ -147,6 +162,7 @@ const NosotrosYProceso = () => {
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      observador.disconnect();
       section.removeEventListener("mousemove",  onMouseMove);
       section.removeEventListener("mouseleave", onMouseLeave);
       window.removeEventListener("resize", resize);

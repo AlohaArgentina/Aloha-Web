@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { usePostHog } from "@posthog/react";
 import { motion } from "framer-motion";
 import { Send, Users, TrendingUp, Heart, Star, AlertCircle, CheckCircle, Clock, MessageCircle, CalendarDays, UserCheck } from "lucide-react";
@@ -6,6 +6,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
+import ParticleCanvas from "@/components/ParticleCanvas";
 import { cn } from "@/lib/utils";
 import type { JSX } from "react";
 
@@ -65,54 +66,6 @@ const valores = [
   "Motivación para crecer y seguir aprendiendo",
 ];
 
-function ParticleCanvas() {
-  const canvasRef  = useRef<HTMLCanvasElement>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const canvas  = canvasRef.current;
-    const section = sectionRef.current;
-    if (!canvas || !section) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    let rafId: number;
-    let t = 0;
-    const SPACING = 38;
-    let dots: { x: number; y: number; phase: number }[] = [];
-    const resize = () => {
-      canvas.width  = section.offsetWidth;
-      canvas.height = section.offsetHeight;
-      dots = [];
-      for (let x = 0; x < canvas.width + SPACING; x += SPACING)
-        for (let y = 0; y < canvas.height + SPACING; y += SPACING)
-          dots.push({ x, y, phase: Math.random() * Math.PI * 2 });
-    };
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      t += 0.008;
-      for (const dot of dots) {
-        const pulse   = 0.5 + 0.5 * Math.sin(t + dot.phase);
-        const opacity = 0.04 + pulse * 0.18;
-        const radius  = 1 + pulse * 1.2;
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(31, 200, 184, ${opacity})`;
-        ctx.fill();
-      }
-      rafId = requestAnimationFrame(draw);
-    };
-    resize();
-    draw();
-    window.addEventListener("resize", resize);
-    return () => { cancelAnimationFrame(rafId); window.removeEventListener("resize", resize); };
-  }, []);
-
-  return (
-    <div ref={sectionRef} className="absolute inset-0 pointer-events-none">
-      <canvas ref={canvasRef} className="absolute inset-0" />
-    </div>
-  );
-}
 
 const TrabajaConNosotros = () => {
   const posthog = usePostHog();

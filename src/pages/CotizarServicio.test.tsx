@@ -135,3 +135,53 @@ describe("CotizarServicio", () => {
     expect(await screen.findByText(/¿a qué rubro pertenece su empresa\?/i)).toBeInTheDocument();
   });
 });
+
+describe("CotizarServicio · accesibilidad", () => {
+  it("cada campo de texto está asociado a su etiqueta", async () => {
+    const user = userEvent.setup();
+    renderPagina();
+    await user.click(screen.getByRole("button", { name: /isp \/ telecomunicaciones/i }));
+
+    // getByLabelText solo encuentra el campo si la etiqueta está bien asociada.
+    expect(await screen.findByLabelText(/nombre de la empresa/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^teléfono/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/correo electrónico/i)).toBeInTheDocument();
+  });
+
+  it("las opciones múltiples se anuncian con su estado de selección", async () => {
+    const user = userEvent.setup();
+    renderPagina();
+    await llegarAlPaso2(user, /retail \/ e-commerce/i);
+
+    const whatsapp = await screen.findByRole("checkbox", { name: "WhatsApp" });
+    expect(whatsapp).toHaveAttribute("aria-checked", "false");
+
+    await user.click(whatsapp);
+    expect(whatsapp).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("las opciones únicas se anuncian como grupo de radio", async () => {
+    const user = userEvent.setup();
+    renderPagina();
+    await llegarAlPaso2(user, /retail \/ e-commerce/i);
+
+    const opcion = await screen.findByRole("radio", { name: "200 – 1.000" });
+    expect(opcion).toHaveAttribute("aria-checked", "false");
+
+    await user.click(opcion);
+    expect(opcion).toHaveAttribute("aria-checked", "true");
+  });
+
+  it("cada grupo de opciones se anuncia con la pregunta que lo encabeza", async () => {
+    const user = userEvent.setup();
+    renderPagina();
+    await llegarAlPaso2(user, /retail \/ e-commerce/i);
+
+    expect(
+      await screen.findByRole("radiogroup", { name: /cuántos pedidos \/ consultas recibís por mes/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("group", { name: /por qué canales atienden actualmente/i })
+    ).toBeInTheDocument();
+  });
+});
